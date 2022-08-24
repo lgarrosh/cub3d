@@ -5,7 +5,7 @@ UNAME:=$(shell uname)
 
 ifeq ($(UNAME), Linux)
 	CFLAGS		= -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3
-	FLAGS		= -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
+	FLAGS		= -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 else
 	CFLAGS		= -Wall -Wextra -Werror -Imlx
 	FLAGS		= -Lmlx -lmlx -framework OpenGL -framework AppKit
@@ -24,12 +24,12 @@ SRC_F 		=	$(addprefix $(SRC_D)$(MAIN), $(MAIN_S)) \
 				$(addprefix $(SRC_D)$(TOOLS), $(TOOLS_S)) \
 
 MAIN_S		= main.c
-TOOLS_S		= vector_operations.c
+TOOLS_S		= vector_operations.c mlx_tools.c color.c init.c
 
 OBJ_F 		= $(subst $(SRC_D),$(OBJ_D),$(SRC_F:%.c=%.o)) 
 
 $(OBJ_D)%.o: $(SRC_D)%.c
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIB_DIR)
 
 .PHONY: all clean fclean re
 
@@ -40,7 +40,7 @@ $(OBJ_D):
 		@mkdir -p $(addprefix $@/, $(MAIN) $(TOOLS))
 
 $(NAME): $(OBJ_D) $(OBJ_F) $(LIBFT) $(INC_DIR)
-	$(CC) $(FLAGS) $(OBJ_F) -o $(NAME) $(LIBFT)	-I$(INC_DIR)
+	$(CC) $(OBJ_F) $(FLAGS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
 	@make -C $(LIB_DIR) --no-print-directory
