@@ -1,9 +1,7 @@
 #include "cub.h"
 
-void 	*error(int fd, char *error, int _return)
+int	ft_error(int fd, char *error, int ret)
 {
 	write(fd, error, ft_strlen(error));
-	if (!_return)
-		return(NULL);
-	return((void *)&_return);
+	return(ret);
 }

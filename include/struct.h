@@ -1,8 +1,8 @@
 #ifndef STRUCT_H
-# define STRUCT_h
+# define STRUCT_H
 
-# define HIGTH_WINDOW 600
-# define WIDTH_WINDOW 800
+# define HIGTH_WINDOW 1020
+# define WIDTH_WINDOW 1720
 
 typedef struct s_vector
 {

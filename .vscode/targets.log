@@ -1,0 +1,388 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Mon Aug 29 14:00:57 2022
+
+# Variables
+
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/lgarrosh/Desktop/cub3d
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"ru","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 10)
+CFLAGS = -Wall -Wextra -Werror -Imlx
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# makefile (from `Makefile', line 16)
+LIB_DIR = libft/
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/zz/zyxvpxvq6csfxvn_n0001yrc000gp3/T/vscode-ipc-f77b4f3f-e064-40b5-9a6b-bd7a529c508d.sock
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /Users/lgarrosh/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/usr/local/munki:/Library/Apple/usr/bin
+# environment
+C_INCLUDE_PATH = /usr/local/include/
+# environment
+LIBRARY_PATH = /usr/local/Cellar/check/0.15.2/lib:/usr/local/lib
+# makefile (from `Makefile', line 29)
+OBJ_F = $(subst $(SRC_D),$(OBJ_D),$(SRC_F:%.c=%.o)) 
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.EMvjFjwzn4/Listeners
+# environment
+CPLUS_INCLUDE_PATH = /usr/local/include/
+# automatic
+%F = $(notdir $%)
+# environment
+HOMEBREW_TEMP = /tmp/lgarrosh/Homebrew/Temp
+# environment
+VSCODE_PIPE_LOGGING = true
+# makefile (from `Makefile', line 27)
+TOOLS_S = vector_operations.c mlx_tools.c color.c init.c error.c
+# environment
+PWD = /Users/lgarrosh/Desktop/cub3d
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# makefile (from `Makefile', line 15)
+INC_DIR = include/
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/lgarrosh
+# default
+MAKEFILEPATH := /Applications/Xcode.app/Contents/Developer/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/lgarrosh/Library/Application Support/Code/CachedData/dfd34e8260c270da74b5c2d86d61aee4b6d56977
+# environment
+LOGNAME = lgarrosh
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# makefile (from `Makefile', line 17)
+SRC_D = src/
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+HOMEBREW_CACHE = /tmp/lgarrosh/Homebrew/Caches
+# environment
+SHLVL = 1
+# makefile (from `Makefile', line 14)
+LIBFT = libft/libft.a
+# makefile (from `Makefile', line 2)
+CC = cc
+# makefile (from `Makefile', line 3)
+UNAME := Darwin
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = lgarrosh
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from `Makefile', line 1)
+NAME = cub3D
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Applications/Xcode.app/Contents/Developer/usr/bin/make
+# makefile (from `Makefile', line 21)
+TOOLS = tools/
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/zz/zyxvpxvq6csfxvn_n0001yrc000gp3/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/lgarrosh/Library/Application Support/Code/1.66.2-main.sock
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+ 
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# makefile (from `Makefile', line 20)
+MAIN = main/
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.12886341739.12886341942
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+__CF_USER_TEXT_ENCODING = 0x3EC3:0x7:0x31
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+LC_ALL = C
+# makefile (from `Makefile', line 18)
+OBJ_D = obj/
+# makefile (from `Makefile', line 26)
+MAIN_S = main.c
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# makefile (from `Makefile', line 11)
+FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+MAKELEVEL := 0
+# environment
+LANG = C
+# makefile (from `Makefile', line 23)
+SRC_F = $(addprefix $(SRC_D)$(MAIN), $(MAIN_S)) $(addprefix $(SRC_D)$(TOOLS), $(TOOLS_S)) 
+# environment
+VSCODE_PID = 73103
+# variable set hash-table stats:
+# Load=83/1024=8%, Rehash=0, Collisions=5/135=4%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777230, inode 188479): 13 files, no impossibilities.
+# src/main (device 16777230, inode 188698): 3 files, no impossibilities so far.
+# src (device 16777230, inode 188697): No files, no impossibilities so far.
+
+# 16 files, no impossibilities in 3 directories.
+
+# Implicit Rules
+
+obj/%.o: src/%.c
+#  commands to execute (from `Makefile', line 32):
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIB_DIR)
+	
+
+# 1 implicit rules, 0 (0.0%) terminal.
+
+# Files
+
+# Not a target:
+obj/tools/init.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+all: Makefile cub3D
+#  Phony target (prerequisite of .PHONY).
+#  Command-line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+
+# Not a target:
+obj/tools/vector_operations.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+.PHONY: all clean fclean re
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+cub3D: obj/ obj/main/main.o obj/tools/vector_operations.o obj/tools/mlx_tools.o obj/tools/color.o obj/tools/init.o obj/tools/error.o libft/libft.a include/
+#  Implicit rule search has not been done.
+#  Last modified 2022-08-29 13:08:25
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  commands to execute (from `Makefile', line 43):
+	$(CC) $(OBJ_F) $(FLAGS) $(LIBFT) -o $(NAME)
+	
+
+# Not a target:
+src/main/main.c:
+#  Implicit rule search has been done.
+#  Last modified 2022-08-29 13:09:38
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+include/:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-08-29 13:09:46
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+libft/libft.a:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 46):
+	@make -C $(LIB_DIR) --no-print-directory
+	
+
+# Not a target:
+obj/tools/mlx_tools.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+fclean: clean
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 53):
+	@make -C $(LIB_DIR) fclean --no-print-directory
+	rm -rfv $(NAME)
+	
+
+obj/:
+#  Implicit rule search has not been done.
+#  Last modified 2022-08-29 12:54:49
+#  File has been updated.
+#  Successfully updated.
+#  commands to execute (from `Makefile', line 39):
+	@mkdir -p $@
+	@mkdir -p $(addprefix $@/, $(MAIN) $(TOOLS))
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+re: fclean all
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+clean:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 49):
+	@make -C $(LIB_DIR) clean --no-print-directory
+	rm -rfv $(OBJ_D)
+	
+
+# Not a target:
+obj/tools/error.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/tools/color.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+obj/main/main.o: src/main/main.c
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: `main/main'
+#  Last modified 2022-08-29 13:08:25
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+ 
+# @ := obj/main/main.o
+# automatic
+# % := 
+# automatic
+# * := main/main
+# automatic
+# + := src/main/main.c
+# automatic
+# | := 
+# automatic
+# < := src/main/main.c
+# automatic
+# ^ := src/main/main.c
+# automatic
+# ? := src/main/main.c
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/16=12%
+#  commands to execute (from `Makefile', line 32):
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(INC_DIR) -I$(LIB_DIR)
+	
+
+# files hash-table stats:
+# Load=19/1024=2%, Rehash=0, Collisions=3/53=6%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Mon Aug 29 14:00:57 2022
+
+ 
