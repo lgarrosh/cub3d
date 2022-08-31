@@ -19,10 +19,18 @@ typedef struct	s_data_img
 	int		endian;
 }				t_data_img;
 
+typedef struct s_struct
+{
+	int color;
+	int mouse_x;
+	int mouse_y;
+} 				t_struct;
+
 typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
+	t_struct	other;
 	t_data_img	*img;
 }				t_data;
 

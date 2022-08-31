@@ -2,16 +2,18 @@
 
 void	init_img(t_data *data, int width, int heigth)
 {
-	
+	t_data_img *img;
+
 	data->img = ft_calloc(sizeof(t_data_img), 1);
-	if (!data->img)
+	img = data->img;
+	if (!img)
 	{
 		ft_error(2, "error: memory allocation error in function 'init_img'", 1);
 		return ;
 	}
-	data->img->img = mlx_new_image(data->mlx, width, heigth);
-	data->img->addr = mlx_get_data_addr(data->img->img, &data->img->bits_per_pixel, &data->img->line_length,
-								&data->img->endian);
+	img->img = mlx_new_image(data->mlx, width, heigth);
+	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length,
+								&img->endian);
 }
 
 t_vector	*init_vector(double x, double y)

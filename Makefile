@@ -7,7 +7,7 @@ ifeq ($(UNAME), Linux)
 	CFLAGS		= -Wall -Wextra -Werror -I/usr/include -Imlx_linux -O3
 	FLAGS		= -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 else
-	CFLAGS		= -Wall -Wextra -Werror -Imlx
+	CFLAGS		= -g -Wall -Wextra -Werror -Imlx
 	FLAGS		= -Lmlx -lmlx -framework OpenGL -framework AppKit
 endif
 
