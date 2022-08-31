@@ -1,6 +1,6 @@
 #include "cub.h"
 
-t_data	*init_img(t_vars *var, int width, int higth)
+t_data_img	*init_img(t_vars *var, int width, int higth)
 {
 	t_data_img	*img;
 
@@ -43,8 +43,8 @@ t_data	*init_data(int width, int higth)
 		ft_error(2, "error: memory allocation error in function 'init_data'", 1);
 		return (NULL);
 	}
-	var = init_winow(WIDTH_WINDOW, HIGTH_WINDOW);
-	img = init_img(var, WIDTH_WINDOW,HIGTH_WINDOW);
+	var = init_winow(width, higth);
+	img = init_img(var, width, higth);
 	data->img = img;
 	data->var = var;
 	return (data);
