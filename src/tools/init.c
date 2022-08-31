@@ -2,6 +2,7 @@
 
 void	init_img(t_data *data, int width, int heigth)
 {
+	
 	data->img = ft_calloc(sizeof(t_data_img), 1);
 	if (!data->img)
 	{
