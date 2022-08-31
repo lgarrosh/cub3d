@@ -1,4 +1,4 @@
-#include "cub.h"
+#include "cube.h"
 
 int	ft_error(int fd, char *error, int ret)
 {

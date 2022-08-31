@@ -1,4 +1,4 @@
-#include "cub.h"
+#include "cube.h"
 
 double	mod_vectir(t_vector	vec)
 {

@@ -1,4 +1,4 @@
-#include "cub.h"
+#include "cube.h"
 
 void	my_mlx_pixel_put(t_data_img *data, int x, int y, int color)
 {
@@ -10,9 +10,9 @@ void	my_mlx_pixel_put(t_data_img *data, int x, int y, int color)
 
 int	close_window(void *param)
 {
-	t_vars *var;
+	t_data	*data;
 
-	var = (t_vars *)param;
-	mlx_destroy_window(var->mlx, var->win);
+	data = (t_data *)param;
+	mlx_destroy_window(data->mlx, data->win);
 	return (0);
 }
