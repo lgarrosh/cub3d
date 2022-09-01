@@ -26,7 +26,7 @@ SRC_F 		=	$(addprefix $(SRC_D)$(MAIN), $(MAIN_S)) \
 				$(addprefix $(SRC_D)$(RAYCAST), $(RAYCAST_S))
 
 MAIN_S		= main.c
-TOOLS_S		= vector_operations.c mlx_tools.c color.c init.c error.c
+TOOLS_S		= parser.c checker.c vector_operations.c mlx_tools.c color.c init.c error.c
 RAYCAST_S	= mouse.c raycasting.c
 
 OBJ_F 		= $(subst $(SRC_D),$(OBJ_D),$(SRC_F:%.c=%.o)) 

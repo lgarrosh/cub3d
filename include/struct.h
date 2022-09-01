@@ -29,9 +29,12 @@ typedef struct	s_data_img
 
 typedef struct s_struct
 {
-	int color;
-	int mouse_x;
-	int mouse_y;
+	int		color;
+	int		f_color;
+	int		c_color;
+	char	*map;
+	int		mouse_x;
+	int		mouse_y;
 } 				t_struct;
 
 typedef struct s_data

@@ -2,7 +2,7 @@
 
 void	init_img(t_data *data, int width, int heigth)
 {
-	t_data_img *img;
+	t_data_img	*img;
 
 	data->img = ft_calloc(sizeof(t_data_img), 1);
 	img = data->img;
@@ -12,8 +12,7 @@ void	init_img(t_data *data, int width, int heigth)
 		return ;
 	}
 	img->img = mlx_new_image(data->mlx, width, heigth);
-	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length,
-								&img->endian);
+	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length,&img->endian);
 }
 
 t_vector	*init_vector(double x, double y)
@@ -36,7 +35,7 @@ void	init_data(t_data *data)
 	data->play = play;
 	data->mlx = mlx_init();
 	data->fps = 30;
-	// data.other.color = 0x00000000;
+	data->other.color = 0x00000000;
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
 	init_img(data, WIDTH_WINDOW, HEIGTH_WINDOW);
 }

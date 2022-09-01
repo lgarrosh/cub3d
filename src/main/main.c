@@ -10,10 +10,12 @@ int	esc(int keycode, void *param)
 	return (0);
 }
 
-int	main (void)
+int	main(int argc, char *argv[])
 {
 	t_data	data;
-	
+
+	if (parser(argc, argv, &data))
+		return (0);
 	init_data(&data);
 	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_hook(data.win, 2, 1L<<0, esc, &data);
