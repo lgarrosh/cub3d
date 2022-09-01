@@ -1,4 +1,5 @@
 obj/
 libft/*.o
+libft/libft.a
 cub3D
 .DS_Store
