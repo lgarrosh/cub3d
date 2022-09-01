@@ -1,39 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_operations.c                                :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/01 17:02:56 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/01 17:02:57 by lgarrosh         ###   ########.fr       */
+/*   Created: 2022/09/01 17:02:51 by lgarrosh          #+#    #+#             */
+/*   Updated: 2022/09/01 20:22:53 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-double	mod_vectir(t_vector	vec)
+int	find_time(void)
 {
-	double	mod;
-	int		x;
-	int		y;
-	
-	x = vec.x * vec.x;
-	y = vec.y * vec.y;
-	mod = sqrt(x + y);
-	return (mod);
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec % 100000) * 1000 + t.tv_usec / 1000);
 }
 
-t_vector	*sum_vector(t_vector v1, t_vector v2)
+void	ft_sleep(int time)
 {
-	t_vector	*newvector;
+	int	tmp;
 
-	newvector = init_vector(v1.x + v2.x, v1.y + v2.y);
-	return (newvector);
+	tmp = find_time();
+	while (1)
+	{
+		if ((find_time() - tmp) >= time)
+			break ;
+		usleep(100);
+	}
 }
 
-void	umnoj_v(t_vector *v, double nb)
+void	cufoff_frime(int *time, int fps)
 {
-	v->x = v->x * nb;
-	v->y = v->y * nb;
+	int	time_sleep;
+
+	time_sleep = time[0] + 1000 / fps - time[1];
+	if (time_sleep > 0)
+	{
+		ft_sleep(time_sleep);
+		time[1] = find_time();
+	}
 }
