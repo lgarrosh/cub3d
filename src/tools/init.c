@@ -27,3 +27,33 @@ t_vector	*init_vector(double x, double y)
 	vc->y = y;
 	return (vc);
 }
+
+void	init_data(t_data *data)
+{
+	t_player	play;
+
+	init_player(&play);
+	data->play = play;
+	data->mlx = mlx_init();
+	data->fps = 30;
+	// data.other.color = 0x00000000;
+	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
+	init_img(data, WIDTH_WINDOW, HEIGTH_WINDOW);
+}
+
+void	init_player(t_player *play)
+{
+	t_vector	pos;
+	t_vector	dir;
+	t_vector	plane;
+
+	pos.x = 0;
+	pos.y = 0;
+	dir.x = pos.x + 2;
+	dir.y = pos.y + 0;
+	plane.x = dir.x + 0;
+	plane.y = dir.y + -0.5;
+	play->pos = pos;
+	play->dir = dir;
+	play->plane = plane;
+}

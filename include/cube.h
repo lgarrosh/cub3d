@@ -16,7 +16,12 @@ int			close_window(t_data *data);
 int			ft_error(int fd, char *error, int ret);
 //	init
 void        init_img(t_data *data, int width, int higth);
-t_data		*init_data(int width, int higth);
+void        init_data(t_data *data);
 t_vector	*init_vector(double x, double y);
+void	    init_player(t_player *play);
+// raycasting
+int	    raycast_loop(t_data	*data);
+int     mouse_action(int x, int y, void *param);
+int	    render(void *param);
 
 #endif

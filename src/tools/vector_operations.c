@@ -8,7 +8,7 @@ double	mod_vectir(t_vector	vec)
 	
 	x = vec.x * vec.x;
 	y = vec.y * vec.y;
-	mod = sqrt(vec.x + vec.y);
+	mod = sqrt(x + y);
 	return (mod);
 }
 
