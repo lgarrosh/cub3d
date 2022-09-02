@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:22 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/01 19:59:55 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/02 13:58:02 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ void			init_player(t_player *play);
 int				raycast_loop(t_data	*data);
 int				mouse_action(int x, int y, void *param);
 int				render(void *param);
+void			line_dda(t_data *data, double x1, double y1, double x2, double y2);
+void			put_cell(t_data *data);
 
 #endif

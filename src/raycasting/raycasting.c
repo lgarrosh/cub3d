@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:03 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/01 22:00:15 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/02 13:49:08 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	verLine(t_data *data, int x, int start, int end, int color)
 	{
 		my_mlx_pixel_put(data->img, x, y, color);
 	}
+	printf("%d %d %d %d\n", x, start, end, color);
 }
 
 int worldMap[24][24]=
@@ -82,8 +83,8 @@ void	raycasting(t_data *data)
 		camera_x = 2 * x / WIDTH_WINDOW - 1;
 		raydir.x = play.dir.x + play.plane.x * camera_x;
 		raydir.y = play.dir.y + play.plane.y * camera_x;
-		deltadist.x = abs(1/raydir.x);
-		deltadist.y = abs(1/raydir.y);
+		deltadist.x = fabs(1/raydir.x);
+		deltadist.y = fabs(1/raydir.y);
 		if (raydir.x < 0)
 		{
 			stepX = -1;
@@ -96,12 +97,12 @@ void	raycasting(t_data *data)
 		}
 		if (raydir.y < 0)
 		{
-			stepX = -1;
+			stepY = -1;
 			sidedist.y = (play.pos.y - mapy) * deltadist.y;
 		}
 		else
 		{
-			stepX = 1;
+			stepY = 1;
 			sidedist.y = (mapy + 1.0 - play.pos.y) * deltadist.y;
 		}
 		while (hit == 0)
@@ -142,6 +143,7 @@ void	raycasting(t_data *data)
 		}
 		if (side == 1) 
 			color /= 2;
+		verLine(data, x, drawStart, drawEnd, color);
 		x++;
 	}
 }
