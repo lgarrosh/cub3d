@@ -34,7 +34,9 @@ typedef struct s_struct
 	int		color;
 	int		f_color;
 	int		c_color;
-	char	*map;
+	char	**map;
+	int		bitmap_width;
+	int		bitmap_height;
 	int		mouse_x;
 	int		mouse_y;
 } 				t_struct;

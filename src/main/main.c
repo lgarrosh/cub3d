@@ -11,6 +11,7 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 
+	printf("%d\n", getpid());
 	if (parser(argc, argv, &data))
 		return (0);
 	init_data(&data);
