@@ -24,9 +24,6 @@
 # include "struct.h"
 # include "libft.h"
 
-#define mapWidth 24 
-#define mapHeight 24 
-
 //tools
 void			my_mlx_pixel_put(t_data_img *data, int x, int y, int color);
 int				create_trgb(int t, int r, int g, int b);

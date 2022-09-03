@@ -43,6 +43,12 @@ void	init_data(t_data *data)
 	t_player	play;
 
 	init_player(&play);
+	play.pos.x = 22;
+	play.pos.y = 12;
+	play.dir.x = -1;
+	play.dir.y = 0;
+	play.plane.x = 0;
+	play.plane.y = 0.66;
 	data->other.mouse_x = 0;
 	data->other.mouse_y = 0;
 	data->play = play;
