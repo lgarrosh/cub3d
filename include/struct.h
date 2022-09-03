@@ -36,21 +36,34 @@ typedef struct s_data_img
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		width;
+	int		height;
 }				t_data_img;
 
 typedef struct s_struct
 {
-	int	color;
-	int	mouse_x;
-	int	mouse_y;
-}				t_struct;
+	int		color;
+	int		f_color;
+	int		c_color;
+	char	*map;
+	int		mouse_x;
+	int		mouse_y;
+} 				t_struct;
+
+typedef struct s_minimap
+{
+	t_vector	player;
+	t_data_img	*img;
+} 				t_minimap;
 
 typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
 	t_struct	other;
-	t_data_img	*img;
+	t_data_img	*bg;
+	t_data_img	*raycast;
+	t_minimap	minimap;
 	t_player	play;
 	int			fps;
 }				t_data;

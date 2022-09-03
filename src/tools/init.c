@@ -12,20 +12,18 @@
 
 #include "cube.h"
 
-void	init_img(t_data *data, int width, int heigth)
+void	init_img(t_data *data, t_data_img **img, int width, int heigth)
 {
-	t_data_img	*img;
-
-	data->img = ft_calloc(sizeof(t_data_img), 1);
-	img = data->img;
+	*img = ft_calloc(sizeof(t_data_img), 1);
 	if (!img)
 	{
 		ft_error(2, "error: memory allocation error in function 'init_img'", 1);
 		return ;
 	}
-	img->img = mlx_new_image(data->mlx, width, heigth);
-	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
-			&img->line_length, &img->endian);
+	(*img)->img = mlx_new_image(data->mlx, width, heigth);
+	(*img)->addr = mlx_get_data_addr((*img)->img, &(*img)->bits_per_pixel, &(*img)->line_length, &(*img)->endian);
+	(*img)->width = width;
+	(*img)->height = heigth;
 }
 
 t_vector	*init_vector(double x, double y)
@@ -45,13 +43,16 @@ void	init_data(t_data *data)
 	t_player	play;
 
 	init_player(&play);
+	data->other.mouse_x = 0;
+	data->other.mouse_y = 0;
 	data->play = play;
 	data->mlx = mlx_init();
-	data->fps = 60;
+	data->fps = 30;
 	data->other.color = 0x00000000;
-	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW,
-			HEIGTH_WINDOW, "Spice Boys");
-	init_img(data, WIDTH_WINDOW, HEIGTH_WINDOW);
+	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
+	init_img(data, &data->raycast, WIDTH_WINDOW, HEIGTH_WINDOW);
+	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
+	init_img(data, &data->minimap.img, 200, 200);
 }
 
 void	init_player(t_player *play)

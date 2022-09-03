@@ -20,7 +20,7 @@ void line_dda(t_data *data, double x1, double y1, double x2, double y2)
 	// особый случай, на экране закрашивается ровно один пиксел
 	if (length == 0)
 	{
-		my_mlx_pixel_put(data->img, iX1, iY1, 0x00FFFFFF);
+		my_mlx_pixel_put(data->bg, iX1, iY1, 0x00FFFFFF);
 		return;
 	}
 	// Вычисляем приращения на каждом шаге по осям абсцисс и ординат
@@ -35,7 +35,7 @@ void line_dda(t_data *data, double x1, double y1, double x2, double y2)
 	{
 		x += dX;
 		y += dY;
-		my_mlx_pixel_put(data->img, roundf(x), roundf(y), 0x00FFFFFF);
+		my_mlx_pixel_put(data->bg, roundf(x), roundf(y), 0x00FFFFFF);
 	}
 }
 

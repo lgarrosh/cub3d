@@ -14,7 +14,7 @@
 
 void	put_frime(t_data *data, int *time)
 {
-	mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
 	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 30,
 		HEIGTH_WINDOW - 18, 0x00FFFFFF, ft_itoa(1000 / (time[1] - time[0])));
 }
@@ -23,7 +23,7 @@ void	verLine(t_data *data, int x, int start, int end, int color)
 {
 	for (int y = start; y < end; y++)
 	{
-		my_mlx_pixel_put(data->img, x, y, color);
+		my_mlx_pixel_put(data->raycast, x, y, color);
 	}
 	printf("%d %d %d %d\n", x, start, end, color);
 }
@@ -62,6 +62,8 @@ void	raycasting(t_data *data)
 	t_vector	sidedist;
 	t_vector	deltadist;
 	t_player	play;
+	play.pos.x = 10;
+	play.pos.y = 10;
 	double		camera_x;
 	double		perpwalldist;
 	int			x;
@@ -148,14 +150,53 @@ void	raycasting(t_data *data)
 	}
 }
 
-int	raycast_loop(t_data *data)
+void	floor_ceiling(t_data *data)
 {
-	int	time[2];
+	int	x;
+	int	y;
 
-	time[0] = find_time();
+	x = 0;
+	y = 0;
+	while (y < HEIGTH_WINDOW / 2)
+	{
+		while (x < WIDTH_WINDOW)
+			my_mlx_pixel_put(data->bg, x++, y, data->other.c_color);
+		x = 0;
+		y++;
+	}
+	while (y < HEIGTH_WINDOW)
+	{
+		while (x < WIDTH_WINDOW)
+			my_mlx_pixel_put(data->bg, x++, y, data->other.f_color);
+		x = 0;
+		y++;
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
+}
+
+void	mini_map(t_data *data, char *map)
+{
+	int	x;
+	int	y;
+	// int	i;
+	(void)map;
+
+	x = 0;
+	y = 0;
+	while (y < data->minimap.img->height)
+	{
+		while (x < data->minimap.img->width)
+			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0FFFFFF);
+		x = 0;
+		y++;
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
+}
+
+int	raycast_loop(t_data	*data)
+{
+	floor_ceiling(data);
+	mini_map(data, data->other.map);
 	raycasting(data);
-	time[1] = find_time();
-	cufoff_frime(time, data->fps);
-	put_frime(data, time);
 	return (0);
 }

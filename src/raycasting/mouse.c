@@ -45,7 +45,7 @@ int	render(void *param)
 	{
 		while (x < WIDTH_WINDOW)
 		{
-			my_mlx_pixel_put(data->img, x, y, 0x00000000);
+			my_mlx_pixel_put(data->bg, x, y, 0x00000000);
 			x++;
 		}
 		x = 0;
@@ -55,7 +55,7 @@ int	render(void *param)
 	put_cell(data);
 	time[1] = find_time();
 	cufoff_frime(time, data->fps);
-	mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
 	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 30,	HEIGTH_WINDOW - 18, 0x00FFFFFF,
 		ft_itoa(1000 / (time[1] - time[0])));
 	return (0);

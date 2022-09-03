@@ -32,7 +32,7 @@ void	ft_sleep(int time)
 		usleep(100);
 	}
 }
-
+// отсечка кадров 
 void	cufoff_frime(int *time, int fps)
 {
 	int	time_sleep;

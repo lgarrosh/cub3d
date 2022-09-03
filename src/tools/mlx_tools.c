@@ -22,7 +22,7 @@ void	my_mlx_pixel_put(t_data_img *img, int x, int y, int color)
 
 int	close_window(t_data *data)
 {
-	free(data->img);
+	// free(data->img);
 	mlx_destroy_window(data->mlx, data->win);
 	exit(1);
 	return (0);
