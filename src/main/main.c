@@ -1,8 +1,5 @@
 #include "cube.h"
 
-#define mapWidth 24 
-#define mapHeight 24 
-
 int	esc(int keycode, void *param)
 {
 	if (keycode == 65307 || keycode == 53)

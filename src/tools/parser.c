@@ -6,7 +6,7 @@
 /*   By: preed <preed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:49 by preed             #+#    #+#             */
-/*   Updated: 2022/09/01 21:18:33 by preed            ###   ########.fr       */
+/*   Updated: 2022/09/02 20:54:52 by preed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,16 @@ int	check_map(char *string, t_data *data)
 		if (string[i] == '\n')
 		{
 			newline_count++;
-			// if (newline_count == 5)
-			// 	err = save_floor_color(string, i + 1, data);
+			if (newline_count == 5)
+				err = save_color(string, i + 1, data, 'f');
 			if (newline_count == 6)
-				err = save_ceiling_color(string, i + 1, data);
-			// if (newline_count == 8)
-			// 	err = save_map(string, i + 1, data);
+				err = save_color(string, i + 1, data, 'c');
+			if (newline_count == 8)
+			{
+				err = save_map(string, i + 1, data);
+				free(string);
+				break ;
+			}
 		}
 		if (err)
 			return (1);

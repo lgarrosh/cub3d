@@ -30,14 +30,14 @@ int	render(void *param)
 	{
 		while (x < WIDTH_WINDOW)
 		{
-			my_mlx_pixel_put(data->img, x, y, data->other.color);
+			my_mlx_pixel_put(data->bg, x, y, data->other.color);
 			x++;
 		}
 		x = 0;
 		data->other.color += 0.5;
 		y++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->img->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
 	mlx_string_put(data->mlx, data->win, 100, 100, 0x00FFFFFF, ft_itoa(data->other.mouse_x));
 	mlx_string_put(data->mlx, data->win, 150, 100, 0x00FFFFFF, ft_itoa(data->other.mouse_y));
 	return (0);
