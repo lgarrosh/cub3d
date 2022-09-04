@@ -91,6 +91,25 @@ void	draw_map_player(t_data *data)
 	}
 }
 
+void	draw_map_grid(t_data *data)
+{
+	int	i;
+	int	ver_lines[7];
+	// int	x;
+	int	y;
+
+	i = 0;
+	y = 0;
+	while (i < 2)
+	{
+		ver_lines[i] = i * MAP_TILE_SIZE;
+		while (y < data->minimap.img->height)
+			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0xA0000000);
+		i++;
+		y = 0;
+	}
+}
+
 void	mini_map(t_data *data, char **map)
 {
 	int		i;
@@ -116,7 +135,12 @@ void	mini_map(t_data *data, char **map)
 		j++;
 		i = 0;
 	}
+	draw_map_grid(data);
 	draw_map_player(data);
+	mlx_string_put(data->mlx, data->win, 20,
+		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.x_bitmap));
+	mlx_string_put(data->mlx, data->win, 40,
+		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.y_bitmap));
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
 }
 

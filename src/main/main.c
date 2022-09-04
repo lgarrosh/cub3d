@@ -7,6 +7,7 @@ int	check_collision(float x, float y, t_data *data)
 
 	i = x / MAP_TILE_SIZE;
 	j = y / MAP_TILE_SIZE;
+	
 	if (data->other.map[j][i] == '1')
 		return (0);
 	return (1);

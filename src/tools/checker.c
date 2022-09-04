@@ -6,7 +6,7 @@
 /*   By: preed <preed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 20:32:56 by preed             #+#    #+#             */
-/*   Updated: 2022/09/04 15:10:42 by preed            ###   ########.fr       */
+/*   Updated: 2022/09/04 19:43:36 by preed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ void	find_player_cooridnates(t_data *data)
 		{
 			if (data->other.map[i][j] == 'N')
 			{
+				data->minimap.x_bitmap = j;
+				data->minimap.y_bitmap = i;
 				data->minimap.player.x = j * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
 				data->minimap.player.y = i * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
 			}
