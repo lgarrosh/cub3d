@@ -29,12 +29,10 @@ void	floor_ceiling(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
 }
 
-void	mini_map(t_data *data, char *map)
+void	draw_map_bg(t_data *data)
 {
 	int	x;
 	int	y;
-	// int	i;
-	(void)map;
 
 	x = 0;
 	y = 0;
@@ -45,6 +43,80 @@ void	mini_map(t_data *data, char *map)
 		x = 0;
 		y++;
 	}
+}
+
+void	draw_map_wall(float x, float y, t_data *data)
+{
+	float	offset_x;
+	float	offset_y;
+	int		paint_x;
+	int		paint_y;
+
+	paint_x = 0;
+	paint_y = 0;
+	offset_x = data->minimap.img->width / 2 - data->minimap.player.x;
+	offset_y = data->minimap.img->height / 2 - data->minimap.player.y;
+	while (paint_y < MAP_TILE_SIZE)
+	{
+		if ((y + paint_y + offset_y) < data->minimap.img->height
+			&& (y + paint_y + offset_y) >= 0)
+		{
+			while (paint_x < MAP_TILE_SIZE)
+			{
+				if ((x + offset_x + paint_x) < data->minimap.img->width
+					&& (x + offset_x + paint_x) >= 0)
+					my_mlx_pixel_put(data->minimap.img, x + offset_x + paint_x,
+						y + paint_y + offset_y, 0xA00FF04F);
+				paint_x++;
+			}		
+		}
+		paint_y++;
+		paint_x = 0;
+	}
+}
+
+void	draw_map_player(t_data *data)
+{
+	float	x;
+	float	y;
+
+	x = data->minimap.img->width / 2 - 5;
+	y = data->minimap.img->height / 2 - 5;
+	while (y < data->minimap.img->height / 2 + 5)
+	{
+		while (x < data->minimap.img->width / 2 + 5)
+			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0000000);
+		x = data->minimap.img->width / 2 - 5;
+		y++;
+	}
+}
+
+void	mini_map(t_data *data, char **map)
+{
+	int		i;
+	int		j;
+	float	x;
+	float	y;
+
+	i = 0;
+	j = 0;
+	x = 0;
+	y = 0;
+	draw_map_bg(data);
+	while (map[j] != NULL)
+	{
+		while (map[j][i] != '\0')
+		{
+			x = i * MAP_TILE_SIZE;
+			y = j * MAP_TILE_SIZE;
+			if (map[j][i] == '1')
+				draw_map_wall(x, y, data);
+			i++;
+		}
+		j++;
+		i = 0;
+	}
+	draw_map_player(data);
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
 }
 

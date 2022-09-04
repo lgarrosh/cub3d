@@ -4,6 +4,13 @@
 # define HEIGTH_WINDOW 1020
 # define WIDTH_WINDOW 1720
 
+# define MAP_TILE_SIZE 30
+
+# define W_KEY 13
+# define D_KEY 2
+# define S_KEY 1
+# define A_KEY 0
+
 
 typedef struct	s_vector
 {

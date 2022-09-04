@@ -6,7 +6,7 @@
 /*   By: preed <preed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 20:32:56 by preed             #+#    #+#             */
-/*   Updated: 2022/09/03 21:23:16 by preed            ###   ########.fr       */
+/*   Updated: 2022/09/04 15:10:42 by preed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,30 @@ void	empty_to_dash(t_data *data)
 		printf("%s\n", data->other.map[i++]);
 }
 
+void	find_player_cooridnates(t_data *data)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (data->other.map[i] != NULL)
+	{
+		while(data->other.map[i][j] != '\0')
+		{
+			if (data->other.map[i][j] == 'N')
+			{
+				data->minimap.player.x = j * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
+				data->minimap.player.y = i * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	printf("x = %f;y = %f\n", data->minimap.player.x, data->minimap.player.y);
+}
+
 int	save_map(char *string, int i, t_data *data)
 {
 	char	*map_string;
@@ -118,6 +142,7 @@ int	save_map(char *string, int i, t_data *data)
 	find_bitmap_dimensions(map_string, data);
 	string_to_array_of_strings(map_string, data);
 	empty_to_dash(data);
+	find_player_cooridnates(data);
 	return (0);
 }
 
