@@ -23,17 +23,17 @@ int	keypress(int keycode, void *param)
 	data = (t_data *)param;
 	if (keycode == 65307 || keycode == 53)
 		close_window(param);
-	// printf("%d\n", keycode);
-	if (keycode == W_KEY
+	printf("%d\n", keycode);
+	if ((keycode == W_KEY || keycode == 119)
 		&& check_collision(data->minimap.player.x, data->minimap.player.y - speed, data))
 		data->minimap.player.y -= speed;
-	if (keycode == D_KEY
+	if ((keycode == D_KEY || keycode == 100)
 		&& check_collision(data->minimap.player.x + speed, data->minimap.player.y, data))
 		data->minimap.player.x += speed;
-	if (keycode == S_KEY
+	if ((keycode == S_KEY || keycode == 115)
 		&& check_collision(data->minimap.player.x, data->minimap.player.y + speed, data))
 		data->minimap.player.y += speed;
-	if (keycode == A_KEY
+	if ((keycode == A_KEY || keycode == 97)
 		&& check_collision(data->minimap.player.x - speed, data->minimap.player.y, data))
 		data->minimap.player.x -= speed;
 	return (0);
@@ -49,7 +49,7 @@ int	main(int argc, char *argv[])
 	init_data(&data);
 	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_hook(data.win, 2, 1L<<0, keypress, &data);
-	mlx_hook(data.win, 6, 0, mouse_action, &data);
+	mlx_hook(data.win, 6, 1L<<6, mouse_action, &data);
 	mlx_loop_hook(data.mlx, raycast_loop, &data);
 	mlx_loop(data.mlx);
 	return (0);

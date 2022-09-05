@@ -1,8 +1,8 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define HEIGTH_WINDOW 1020
-# define WIDTH_WINDOW 1720
+# define HEIGTH_WINDOW 700
+# define WIDTH_WINDOW 1000
 
 # define MAP_TILE_SIZE 30
 
