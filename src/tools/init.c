@@ -37,7 +37,7 @@ void	init_data(t_data *data)
 	data->other.color = 0x00000000;
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
 	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
-	init_img(data, &data->minimap.img, 200, 200);
+	init_img(data, &data->minimap.img, MAP_TILE_SIZE * 7, MAP_TILE_SIZE * 7);
 }
 
 void	init_player(t_player *play)

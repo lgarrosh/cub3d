@@ -4,11 +4,10 @@ int	check_collision(float x, float y, t_data *data)
 {
 	int	i;
 	int j;
-
 	i = x / MAP_TILE_SIZE;
 	j = y / MAP_TILE_SIZE;
 	
-	if (data->other.map[j][i] == '1')
+	if (i >= 0 && j >= 0 && data->other.map[j][i] == '1')
 		return (0);
 	return (1);
 }

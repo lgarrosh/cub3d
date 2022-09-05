@@ -95,18 +95,33 @@ void	draw_map_grid(t_data *data)
 {
 	int	i;
 	int	ver_lines[7];
-	// int	x;
+	int	hor_lines[7];
+	int	x;
 	int	y;
 
 	i = 0;
 	y = 0;
-	while (i < 2)
+	x = 0;
+	while (i < 7)
 	{
-		ver_lines[i] = i * MAP_TILE_SIZE;
+		hor_lines[i] = i * MAP_TILE_SIZE - data->minimap.player.y + MAP_TILE_SIZE / 2;
+		while (hor_lines[i] < 0)
+			hor_lines[i] = data->minimap.img->height + hor_lines[i];
+		while (hor_lines[i] > data->minimap.img->height)
+			hor_lines[i] = data->minimap.img->height - hor_lines[i];
+		ver_lines[i] = i * MAP_TILE_SIZE - data->minimap.player.x + MAP_TILE_SIZE / 2;
+		while (ver_lines[i] < 0)
+			ver_lines[i] = data->minimap.img->width + ver_lines[i];
+		while (ver_lines[i] > data->minimap.img->width)
+			ver_lines[i] = data->minimap.img->width - ver_lines[i];
 		while (y < data->minimap.img->height)
-			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0xA0000000);
+			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0x60FFFFFF);
+		while (x < data->minimap.img->width)
+			my_mlx_pixel_put(data->minimap.img, x++, hor_lines[i], 0x60FFFFFF);
 		i++;
 		y = 0;
+		x = 0;
+		// printf("%d\n", i);
 	}
 }
 
@@ -141,6 +156,10 @@ void	mini_map(t_data *data, char **map)
 		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.x_bitmap));
 	mlx_string_put(data->mlx, data->win, 40,
 		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.y_bitmap));
+	mlx_string_put(data->mlx, data->win, 20,
+		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
+	mlx_string_put(data->mlx, data->win, 60,
+		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
 }
 
