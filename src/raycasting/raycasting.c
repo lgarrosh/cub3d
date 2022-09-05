@@ -11,14 +11,7 @@ void	floor_ceiling(t_data *data)
 	int	y;
 
 	x = 0;
-	y = 0;
-	while (y < HEIGTH_WINDOW / 2)
-	{
-		while (x < WIDTH_WINDOW)
-			my_mlx_pixel_put(data->bg, x++, y, data->other.c_color);
-		x = 0;
-		y++;
-	}
+	y =  HEIGTH_WINDOW / 2 - 1;
 	while (y < HEIGTH_WINDOW)
 	{
 		while (x < WIDTH_WINDOW)
@@ -27,6 +20,11 @@ void	floor_ceiling(t_data *data)
 		y++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
+	if (data->sky_offset > 0)
+		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
+	else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
+		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
 }
 
 void	draw_map_bg(t_data *data)
@@ -115,9 +113,9 @@ void	draw_map_grid(t_data *data)
 		while (ver_lines[i] > data->minimap.img->width)
 			ver_lines[i] = data->minimap.img->width - ver_lines[i];
 		while (y < data->minimap.img->height)
-			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0x60FFFFFF);
+			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0x60000000);
 		while (x < data->minimap.img->width)
-			my_mlx_pixel_put(data->minimap.img, x++, hor_lines[i], 0x60FFFFFF);
+			my_mlx_pixel_put(data->minimap.img, x++, hor_lines[i], 0x60000000);
 		i++;
 		y = 0;
 		x = 0;

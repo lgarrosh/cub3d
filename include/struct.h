@@ -36,16 +36,24 @@ typedef struct	s_data_img
 	int		height;
 }				t_data_img;
 
+typedef struct s_sprite
+{
+	void	*img;
+	int		width;
+	int		height;
+	char	*path;
+} 				t_sprite;
+
 typedef struct s_struct
 {
-	int		color;
-	int		f_color;
-	int		c_color;
-	char	**map;
-	int		bitmap_width;
-	int		bitmap_height;
-	int		mouse_x;
-	int		mouse_y;
+	int			color;
+	int			f_color;
+	int			c_color;
+	char		**map;
+	int			bitmap_width;
+	int			bitmap_height;
+	int			mouse_x;
+	int			mouse_y;
 } 				t_struct;
 
 typedef struct s_minimap
@@ -65,6 +73,8 @@ typedef struct s_data
 	t_minimap	minimap;
 	t_player	play;
 	int			fps;
+	t_sprite	skybox;
+	int			sky_offset;
 }				t_data;
 
 #endif

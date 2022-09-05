@@ -37,6 +37,8 @@ void	init_data(t_data *data)
 	data->other.color = 0x00000000;
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
 	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
+	data->skybox.img = mlx_xpm_file_to_image(data->mlx, "images/skybox.xpm",
+		&data->skybox.width, &data->skybox.height);
 	init_img(data, &data->minimap.img, MAP_TILE_SIZE * 7, MAP_TILE_SIZE * 7);
 }
 

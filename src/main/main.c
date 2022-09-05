@@ -3,10 +3,12 @@
 int	check_collision(float x, float y, t_data *data)
 {
 	int	i;
-	int j;
+	int	j;
+	
 	i = x / MAP_TILE_SIZE;
 	j = y / MAP_TILE_SIZE;
-	
+	data->minimap.x_bitmap = i;
+	data->minimap.y_bitmap = j;
 	if (i >= 0 && j >= 0 && data->other.map[j][i] == '1')
 		return (0);
 	return (1);
@@ -48,7 +50,6 @@ int	main(int argc, char *argv[])
 	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_hook(data.win, 2, 1L<<0, keypress, &data);
 	mlx_hook(data.win, 6, 0, mouse_action, &data);
-	// mlx_loop_hook(data.mlx, render, &data);
 	mlx_loop_hook(data.mlx, raycast_loop, &data);
 	mlx_loop(data.mlx);
 	return (0);
