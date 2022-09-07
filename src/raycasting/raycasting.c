@@ -12,152 +12,6 @@
 
 #include "cube.h"
 
-#define screenWidth 640
-#define screenHeight 480
-#define mapWidth 24
-#define mapHeight 24
-
-
-void	put_frime(t_data *data, int *time)
-{
-	mlx_put_image_to_window(data->mlx, data->win, data->raycast->img, 0, 0);
-	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 30,
-		HEIGTH_WINDOW - 18, 0x00FFFFFF, ft_itoa(1000 / (time[1] - time[0])));
-}
-
-void	verLine(t_data *data, int x, int start, int end, int color)
-{
-	for (int y = start; y < end; y++)
-	{
-		my_mlx_pixel_put(data->raycast, x, y, color);
-	}
-	printf("%d %d %d %d\n", x, start, end, color);
-}
-
-void	raycasting(t_data *data)
-{
-	int worldMap[24][24]=
-	{
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-	};
-	double		camera_x;
-	int			x;
-	int mapx;
-	int mapy;
-
-	x = 0;
-	while (x <= WIDTH_WINDOW)
-	{
-		t_vector rayDir;
-		camera_x = 2 * x / WIDTH_WINDOW - 1;
-		rayDir.x = data->play.dir.x + data->play.plane.x * camera_x;
-		rayDir.y = data->play.dir.y + data->play.plane.y * camera_x;
-
-		mapx = round(data->play.pos.x);
-		mapy = round(data->play.pos.y);
-
-		t_vector sidedist;
-		t_vector deltadist;
-
-		deltadist.x = (rayDir.x == 0) ? 1e30 : fabs(1 / rayDir.x);
-		deltadist.y = (rayDir.y == 0) ? 1e30 : fabs(1 / rayDir.y);
-
-		double perpwalldist;
-
-		int stepX;
-		int stepY;
-
-		int hit = 0;
-		int side;
-		if (rayDir.x < 0)
-		{
-			stepX = -1;
-			sidedist.x = (data->play.pos.x - mapx) * deltadist.x;
-		}
-		else
-		{
-			stepX = 1;
-			sidedist.x = (mapx + 1.0 - data->play.pos.x) * deltadist.x;
-		}
-		if (rayDir.y < 0)
-		{
-			stepY = -1;
-			sidedist.y = (data->play.pos.y - mapy) * deltadist.y;
-		}
-		else
-		{
-			stepY = 1;
-			sidedist.y = (mapy + 1.0 - data->play.pos.y) * deltadist.y;
-		}
-		while (hit == 0)
-		{
-			if(sidedist.x < sidedist.y)
-			{
-				sidedist.x += deltadist.x;
-				mapx += stepX;
-				side = 0;
-			}
-			else
-			{
-				sidedist.y += deltadist.y;
-				mapy += stepY;
-				side = 1;
-			}
-			if (worldMap[mapx][mapy] > 0) 
-				hit = 1;
-		}
-		if (side == 0)
-			perpwalldist = sidedist.x - deltadist.x;
-		else
-			perpwalldist = sidedist.y - deltadist.y;
-		int lineHeight;
-		lineHeight = round(HEIGTH_WINDOW / perpwalldist);
-		int drawStart;
-		drawStart = -lineHeight / 2 + HEIGTH_WINDOW / 2;
-		if(drawStart < 0) 
-			drawStart = 0;
-		int drawEnd;
-		drawEnd = lineHeight / 2 + HEIGTH_WINDOW / 2;
-		if(drawEnd >= HEIGTH_WINDOW) 
-			drawEnd = HEIGTH_WINDOW - 1;
-		int color;
-		switch(worldMap[mapx][mapy])
-		{
-			case 1:  color = create_trgb(0, 255, 0, 0);    break; //red
-			case 2:  color = create_trgb(0, 0, 255, 0);  break; //green
-			case 3:  color = create_trgb(0, 0, 0, 255);   break; //blue
-			case 4:  color = create_trgb(0, 255, 255, 0);  break; //white
-			default: color = create_trgb(0, 255, 0, 255); break; //yellow
-		}
-		if (side == 1) 
-			color /= 2;
-		verLine(data, x, drawStart, drawEnd, color);
-		x++;
-	}
-}
 
 void	floor_ceiling(t_data *data)
 {
@@ -165,14 +19,7 @@ void	floor_ceiling(t_data *data)
 	int	y;
 
 	x = 0;
-	y = 0;
-	while (y < HEIGTH_WINDOW / 2)
-	{
-		while (x < WIDTH_WINDOW)
-			my_mlx_pixel_put(data->bg, x++, y, data->other.c_color);
-		x = 0;
-		y++;
-	}
+	y =  HEIGTH_WINDOW / 2 - 1;
 	while (y < HEIGTH_WINDOW)
 	{
 		while (x < WIDTH_WINDOW)
@@ -181,14 +28,17 @@ void	floor_ceiling(t_data *data)
 		y++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
+	if (data->sky_offset > 0)
+		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
+	else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
+		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
 }
 
-void	mini_map(t_data *data, char *map)
+void	draw_map_bg(t_data *data)
 {
 	int	x;
 	int	y;
-	// int	i;
-	(void)map;
 
 	x = 0;
 	y = 0;
@@ -199,15 +49,161 @@ void	mini_map(t_data *data, char *map)
 		x = 0;
 		y++;
 	}
+}
+
+void	draw_map_wall(float x, float y, t_data *data)
+{
+	float	offset_x;
+	float	offset_y;
+	int		paint_x;
+	int		paint_y;
+
+	paint_x = 0;
+	paint_y = 0;
+	offset_x = data->minimap.img->width / 2 - data->minimap.player.x;
+	offset_y = data->minimap.img->height / 2 - data->minimap.player.y;
+	while (paint_y < MAP_TILE_SIZE)
+	{
+		if ((y + paint_y + offset_y) < data->minimap.img->height
+			&& (y + paint_y + offset_y) >= 0)
+		{
+			while (paint_x < MAP_TILE_SIZE)
+			{
+				if ((x + offset_x + paint_x) < data->minimap.img->width
+					&& (x + offset_x + paint_x) >= 0)
+					my_mlx_pixel_put(data->minimap.img, x + offset_x + paint_x,
+						y + paint_y + offset_y, 0xA00FF04F);
+				paint_x++;
+			}		
+		}
+		paint_y++;
+		paint_x = 0;
+	}
+}
+
+void	draw_map_player(t_data *data)
+{
+	float	x;
+	float	y;
+
+	x = data->minimap.img->width / 2 - 5;
+	y = data->minimap.img->height / 2 - 5;
+	while (y < data->minimap.img->height / 2 + 5)
+	{
+		while (x < data->minimap.img->width / 2 + 5)
+			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0000000);
+		x = data->minimap.img->width / 2 - 5;
+		y++;
+	}
+}
+
+void	draw_map_grid(t_data *data)
+{
+	int	i;
+	int	ver_lines[NUMBER_OF_CELLS];
+	int	hor_lines[NUMBER_OF_CELLS];
+	int	x;
+	int	y;
+
+	i = 0;
+	y = 0;
+	x = 0;
+	while (i < NUMBER_OF_CELLS)
+	{
+		hor_lines[i] = i * MAP_TILE_SIZE - data->minimap.player.y + MAP_TILE_SIZE / 2;
+		while (hor_lines[i] < 0)
+			hor_lines[i] = data->minimap.img->height + hor_lines[i];
+		while (hor_lines[i] > data->minimap.img->height)
+			hor_lines[i] = data->minimap.img->height - hor_lines[i];
+		ver_lines[i] = i * MAP_TILE_SIZE - data->minimap.player.x + MAP_TILE_SIZE / 2;
+		while (ver_lines[i] < 0)
+			ver_lines[i] = data->minimap.img->width + ver_lines[i];
+		while (ver_lines[i] > data->minimap.img->width)
+			ver_lines[i] = data->minimap.img->width - ver_lines[i];
+		while (y < data->minimap.img->height)
+			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0x60000000);
+		while (x < data->minimap.img->width)
+			my_mlx_pixel_put(data->minimap.img, x++, hor_lines[i], 0x60000000);
+		i++;
+		y = 0;
+		x = 0;
+		// printf("%d\n", i);
+	}
+}
+
+void	draw_map_dir(t_data *data)
+{
+	t_vector	pos_player;
+	t_vector	dir;
+	t_vector	*pos_dir;
+
+	dir = data->minimap.dir;
+	pos_player.x = data->minimap.img->width / 2;
+	pos_player.y = data->minimap.img->height / 2;
+	pos_dir = sum_vector(dir, pos_player);
+	line_dda(data->minimap.img, pos_player.x, pos_player.y, pos_dir->x, pos_dir->y);
+}
+
+void	mini_map(t_data *data, char **map)
+{
+	int		i;
+	int		j;
+	float	x;
+	float	y;
+
+	x = 0;
+	y = 0;
+	i = data->minimap.x_bitmap - NUMBER_OF_CELLS / 2 - 1;
+	j = data->minimap.y_bitmap - NUMBER_OF_CELLS / 2 - 1;
+	if (i < 0)
+		i = 0;
+	if (j < 0)
+		j = 0;
+	draw_map_bg(data);
+	while (j != data->minimap.y_bitmap + NUMBER_OF_CELLS / 2 + 2
+		&& map[j] != NULL)
+	{
+		while (i != data->minimap.x_bitmap + NUMBER_OF_CELLS / 2 + 2
+			&& map[j][i] != '\0')
+		{
+			x = i * MAP_TILE_SIZE;
+			y = j * MAP_TILE_SIZE;
+			if (map[j][i] == '1')
+				draw_map_wall(x, y, data);
+			i++;
+		}
+		j++;
+		i = 0;
+	}
+	draw_map_grid(data);
+	draw_map_player(data);
+	draw_map_dir(data);
+}
+
+void	put_frime(t_data *data, int *time)
+{
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
+	mlx_string_put(data->mlx, data->win, 20,
+		data->minimap.img->height + 20, 0x00777777, ft_itoa(data->minimap.x_bitmap));
+	mlx_string_put(data->mlx, data->win, 40,
+		data->minimap.img->height + 20, 0x00777777, ft_itoa(data->minimap.y_bitmap));
+	mlx_string_put(data->mlx, data->win, 20,
+		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
+	mlx_string_put(data->mlx, data->win, 60,
+		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
+	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
+		HEIGTH_WINDOW - 18, 0x00FFFFFF, ft_itoa(1000 / (time[1] - time[0])));
 }
 
 int	raycast_loop(t_data	*data)
 {
-	int time[2] = {100000, 122330};
-	// floor_ceiling(data);
-	// mini_map(data, data->other.map);
-	raycasting(data);
+	int	time[2];
+
+	time[0] = find_time();
+	floor_ceiling(data);
+	mini_map(data, data->other.map);
+	time[1] = find_time();
+	cufoff_frime(time, data->fps);
 	put_frime(data, time);
 	return (0);
 }

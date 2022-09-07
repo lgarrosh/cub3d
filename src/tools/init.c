@@ -43,22 +43,20 @@ void	init_data(t_data *data)
 	t_player	play;
 
 	init_player(&play);
-	play.pos.x = 22;
-	play.pos.y = 12;
-	play.dir.x = -1;
-	play.dir.y = 0;
-	play.plane.x = 0;
-	play.plane.y = 0.66;
 	data->other.mouse_x = 0;
 	data->other.mouse_y = 0;
 	data->play = play;
 	data->mlx = mlx_init();
-	data->fps = 30;
+	data->fps = 60;
 	data->other.color = 0x00000000;
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
+	data->minimap.dir.x = 0;
+	data->minimap.dir.y = -50;
 	init_img(data, &data->raycast, WIDTH_WINDOW, HEIGTH_WINDOW);
 	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
-	init_img(data, &data->minimap.img, 200, 200);
+	data->skybox.img = mlx_xpm_file_to_image(data->mlx, "images/skybox.xpm",
+		&data->skybox.width, &data->skybox.height);
+	init_img(data, &data->minimap.img, MAP_TILE_SIZE * NUMBER_OF_CELLS, MAP_TILE_SIZE * NUMBER_OF_CELLS);
 }
 
 void	init_player(t_player *play)

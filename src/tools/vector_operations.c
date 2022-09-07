@@ -12,6 +12,12 @@
 
 #include "cube.h"
 
+void	rev_vector(t_vector *dir, double radians)
+{
+	dir->x = dir->x * cos(radians) - dir->y * sin(radians);
+	dir->y = dir->x * sin(radians) + dir->y * cos(radians);
+}
+
 double	mod_vectir(t_vector	vec)
 {
 	double	mod;

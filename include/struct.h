@@ -13,8 +13,16 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define HEIGTH_WINDOW 600
-# define WIDTH_WINDOW 800
+# define HEIGTH_WINDOW 700
+# define WIDTH_WINDOW 1000
+
+# define MAP_TILE_SIZE 30
+# define NUMBER_OF_CELLS 7
+
+# define W_KEY 13
+# define D_KEY 2
+# define S_KEY 1
+# define A_KEY 0
 
 typedef struct s_vector
 {
@@ -40,19 +48,33 @@ typedef struct s_data_img
 	int		height;
 }				t_data_img;
 
+typedef struct s_sprite
+{
+	void	*img;
+	int		width;
+	int		height;
+	char	*path;
+} 				t_sprite;
+
 typedef struct s_struct
 {
-	int		color;
-	int		f_color;
-	int		c_color;
-	char	*map;
-	int		mouse_x;
-	int		mouse_y;
+	int			color;
+	int			f_color;
+	int			c_color;
+	char		**map;
+	int			bitmap_width;
+	int			bitmap_height;
+	int			mouse_x;
+	int			mouse_y;
 } 				t_struct;
+
 
 typedef struct s_minimap
 {
 	t_vector	player;
+	t_vector	dir;
+	int			x_bitmap;
+	int			y_bitmap;
 	t_data_img	*img;
 } 				t_minimap;
 
@@ -66,6 +88,8 @@ typedef struct s_data
 	t_minimap	minimap;
 	t_player	play;
 	int			fps;
+	t_sprite	skybox;
+	int			sky_offset;
 }				t_data;
 
 #endif

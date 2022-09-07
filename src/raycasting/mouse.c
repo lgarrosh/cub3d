@@ -14,49 +14,22 @@
 
 int	mouse_action(int x, int y, void *param)
 {
-	t_data	*data;
+	t_data		*data;
+	static int	x_old;
 
+	if (x >= WIDTH_WINDOW || x < 0)
+		return (0);
+	if ( y >= HEIGTH_WINDOW || y < 0)
+		return (0);
 	data = (t_data *)param;
-	if (x > WIDTH_WINDOW)
-		x = WIDTH_WINDOW;
-	else if (x < 0)
-		x = 0;
-	if (y > HEIGTH_WINDOW)
-		y = HEIGTH_WINDOW;
-	else if (y < 0)
-		y = 0;
-	data->other.mouse_x = x;
-	data->other.mouse_y = y;
-	return (0);
-}
-
-int	render(void *param)
-{
-	t_data	*data;
-	int		x;
-	int		y;
-	int		time[2];
-
-	x = 0;
-	y = 0;
-	data = (t_data *)param;
-	time[0] = find_time();
-	while (y < HEIGTH_WINDOW)
-	{
-		while (x < WIDTH_WINDOW)
-		{
-			my_mlx_pixel_put(data->bg, x, y, 0x00000000);
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-	line_dda(data, 0.0, 0.0, data->other.mouse_x,data->other.mouse_y);
-	put_cell(data);
-	time[1] = find_time();
-	cufoff_frime(time, data->fps);
-	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
-	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 30,	HEIGTH_WINDOW - 18, 0x00FFFFFF,
-		ft_itoa(1000 / (time[1] - time[0])));
+	if (x_old < x && x_old != 0)
+		data->sky_offset -= (x - x_old) * 2;
+	else if (x_old > x && x_old != 0)
+		data->sky_offset += (x_old - x) * 2;
+	x_old = x;
+	if (data->sky_offset > data->skybox.width)
+		data->sky_offset -= data->skybox.width;
+	else if (data->sky_offset < -data->skybox.width)
+		data->sky_offset += data->skybox.width;
 	return (0);
 }

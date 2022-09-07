@@ -1,6 +1,6 @@
 #include "cube.h"
 
-void line_dda(t_data *data, double x1, double y1, double x2, double y2)
+void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
 {
 	// Целочисленные значения координат начала и конца отрезка,
 	// округленные до ближайшего целого
@@ -20,7 +20,7 @@ void line_dda(t_data *data, double x1, double y1, double x2, double y2)
 	// особый случай, на экране закрашивается ровно один пиксел
 	if (length == 0)
 	{
-		my_mlx_pixel_put(data->bg, iX1, iY1, 0x00FFFFFF);
+		my_mlx_pixel_put(data, iX1, iY1, 0x00000000);
 		return;
 	}
 	// Вычисляем приращения на каждом шаге по осям абсцисс и ординат
@@ -35,20 +35,6 @@ void line_dda(t_data *data, double x1, double y1, double x2, double y2)
 	{
 		x += dX;
 		y += dY;
-		my_mlx_pixel_put(data->bg, roundf(x), roundf(y), 0x00FFFFFF);
-	}
-}
-
-void    put_cell(t_data *data)
-{
-	int step = 50;
-
-	for (int x = step; x <= WIDTH_WINDOW; x += step)
-	{
-		line_dda(data, x, 0, x, HEIGTH_WINDOW);
-	}
-	for (int y = step; y <= HEIGTH_WINDOW; y += step)
-	{
-		line_dda(data, 0, y, WIDTH_WINDOW, y);
+		my_mlx_pixel_put(data, roundf(x), roundf(y), 0x00000000);
 	}
 }
