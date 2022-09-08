@@ -6,18 +6,20 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:26 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/01 21:30:58 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:47:38 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define HEIGTH_WINDOW 700
-# define WIDTH_WINDOW 1000
+# define HEIGTH_WINDOW 1200
+# define WIDTH_WINDOW 1200
 
 # define MAP_TILE_SIZE 30
 # define NUMBER_OF_CELLS 7
+
+# define NUMBER_GRID 8
 
 # define W_KEY 13
 # define D_KEY 2

@@ -6,17 +6,11 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:56 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/01 17:02:57 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:21:44 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
-
-void	rev_vector(t_vector *dir, double radians)
-{
-	dir->x = dir->x * cos(radians) - dir->y * sin(radians);
-	dir->y = dir->x * sin(radians) + dir->y * cos(radians);
-}
 
 double	mod_vectir(t_vector	vec)
 {

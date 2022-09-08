@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:07 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/02 14:08:25 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:18:54 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	mouse_action(int x, int y, void *param)
 
 	if (x >= WIDTH_WINDOW || x < 0)
 		return (0);
-	if ( y >= HEIGTH_WINDOW || y < 0)
+	if (y >= HEIGTH_WINDOW || y < 0)
 		return (0);
 	data = (t_data *)param;
 	if (x_old < x && x_old != 0)

@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:12 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/02 13:18:34 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 15:20:12 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,13 @@ int	keypress(int keycode, void *param)
 	if (keycode == 65307 || keycode == 53)
 		close_window(param);
 	// printf("%d\n", keycode);
-	if ((keycode == W_KEY || keycode == 119)
-		&& check_collision(data->minimap.player.x, data->minimap.player.y - speed, data))
+	if (keycode == W_KEY || keycode == 119)
 		data->minimap.player.y -= speed;
-	if ((keycode == D_KEY || keycode == 100)
-		&& check_collision(data->minimap.player.x + speed, data->minimap.player.y, data))
-		rev_vector(&data->minimap.dir, 0.1);
-	if ((keycode == S_KEY || keycode == 115)
-		&& check_collision(data->minimap.player.x, data->minimap.player.y + speed, data))
+	if (keycode == D_KEY || keycode == 100)
+		data->minimap.player.x += speed;
+	if (keycode == S_KEY || keycode == 115)
 		data->minimap.player.y += speed;
-	if ((keycode == A_KEY || keycode == 97)
-		&& check_collision(data->minimap.player.x - speed, data->minimap.player.y, data))
+	if (keycode == A_KEY || keycode == 97)
 		data->minimap.player.x -= speed;
 	return (0);
 }

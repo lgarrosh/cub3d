@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:03 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/02 13:49:08 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 14:25:20 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,19 +131,6 @@ void	draw_map_grid(t_data *data)
 	}
 }
 
-void	draw_map_dir(t_data *data)
-{
-	t_vector	pos_player;
-	t_vector	dir;
-	t_vector	*pos_dir;
-
-	dir = data->minimap.dir;
-	pos_player.x = data->minimap.img->width / 2;
-	pos_player.y = data->minimap.img->height / 2;
-	pos_dir = sum_vector(dir, pos_player);
-	line_dda(data->minimap.img, pos_player.x, pos_player.y, pos_dir->x, pos_dir->y);
-}
-
 void	mini_map(t_data *data, char **map)
 {
 	int		i;
@@ -177,20 +164,15 @@ void	mini_map(t_data *data, char **map)
 	}
 	draw_map_grid(data);
 	draw_map_player(data);
-	draw_map_dir(data);
 }
 
 void	put_frime(t_data *data, int *time)
 {
-	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
-	mlx_string_put(data->mlx, data->win, 20,
-		data->minimap.img->height + 20, 0x00777777, ft_itoa(data->minimap.x_bitmap));
-	mlx_string_put(data->mlx, data->win, 40,
-		data->minimap.img->height + 20, 0x00777777, ft_itoa(data->minimap.y_bitmap));
-	mlx_string_put(data->mlx, data->win, 20,
-		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
-	mlx_string_put(data->mlx, data->win, 60,
-		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
+	mlx_put_image_to_window(data->mlx, data->win, data->raycast->img, 0, 0);
+	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 100,
+		18, 0x00FFFFFF, ft_itoa(data->play.pos.x));
+	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
+		18, 0x00FFFFFF, ft_itoa(data->play.pos.y));
 	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
 		HEIGTH_WINDOW - 18, 0x00FFFFFF, ft_itoa(1000 / (time[1] - time[0])));
 }
@@ -200,8 +182,7 @@ int	raycast_loop(t_data	*data)
 	int	time[2];
 
 	time[0] = find_time();
-	floor_ceiling(data);
-	mini_map(data, data->other.map);
+	raycasting(data);
 	time[1] = find_time();
 	cufoff_frime(time, data->fps);
 	put_frime(data, time);
