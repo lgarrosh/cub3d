@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:02:38 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 15:18:56 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:44:02 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ void	init_player(t_player *play)
 	t_vector	dir;
 	t_vector	plane;
 
-	pos.x = 3.5;
-	pos.y = 4;
-	dir.x = 0;
-	dir.y = -1;
+	pos.x = 22;
+	pos.y = 1.5;
+	dir.x = -1;
+	dir.y = 0;
 	plane.x = 0;
-	plane.y = 0;
+	plane.y = 0.66;
 	play->pos = pos;
 	play->dir = dir;
 	play->plane = plane;

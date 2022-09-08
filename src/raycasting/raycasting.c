@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:03 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 14:25:20 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 17:34:59 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,21 +168,25 @@ void	mini_map(t_data *data, char **map)
 
 void	put_frime(t_data *data, int *time)
 {
+	(void)time;
 	mlx_put_image_to_window(data->mlx, data->win, data->raycast->img, 0, 0);
-	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 100,
-		18, 0x00FFFFFF, ft_itoa(data->play.pos.x));
-	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
-		18, 0x00FFFFFF, ft_itoa(data->play.pos.y));
-	mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
-		HEIGTH_WINDOW - 18, 0x00FFFFFF, ft_itoa(1000 / (time[1] - time[0])));
+	// mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 100,
+	// 	18, 0x00FFFFFF, ft_itoa(data->play.pos.x));
+	// mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
+	// 	18, 0x00FFFFFF, ft_itoa(data->play.pos.y));
+	// mlx_string_put(data->mlx, data->win, WIDTH_WINDOW - 50,
+	// 	HEIGTH_WINDOW - 18, 0x00FFFFFF, ft_itoa(1000 / (time[1] - time[0])));
 }
 
 int	raycast_loop(t_data	*data)
 {
+	t_cub cub;
 	int	time[2];
-
 	time[0] = find_time();
-	raycasting(data);
+	raycasting(data, &cub);
+	for (int x = 0; x < screenWidth; x++)
+		for (int y = 0; y < screenHeight; y++)
+			my_mlx_pixel_put(data->raycast, x, y, cub.buffer[y][x]);
 	time[1] = find_time();
 	cufoff_frime(time, data->fps);
 	put_frime(data, time);

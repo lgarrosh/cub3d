@@ -6,20 +6,25 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:26 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 14:47:38 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 18:02:08 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define HEIGTH_WINDOW 1200
-# define WIDTH_WINDOW 1200
+# define HEIGTH_WINDOW 480
+# define WIDTH_WINDOW 640
+
+# define screenWidth 640
+# define screenHeight 480
+# define texWidth 64
+# define texHeight 64
+# define mapWidth 24
+# define mapHeight 24
 
 # define MAP_TILE_SIZE 30
 # define NUMBER_OF_CELLS 7
-
-# define NUMBER_GRID 8
 
 # define W_KEY 13
 # define D_KEY 2
@@ -42,7 +47,7 @@ typedef struct s_player
 typedef struct s_data_img
 {
 	void	*img;
-	char	*addr;
+	int		*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -56,7 +61,7 @@ typedef struct s_sprite
 	int		width;
 	int		height;
 	char	*path;
-} 				t_sprite;
+}			t_sprite;
 
 typedef struct s_struct
 {
@@ -68,8 +73,7 @@ typedef struct s_struct
 	int			bitmap_height;
 	int			mouse_x;
 	int			mouse_y;
-} 				t_struct;
-
+}			t_struct;
 
 typedef struct s_minimap
 {
@@ -78,7 +82,7 @@ typedef struct s_minimap
 	int			x_bitmap;
 	int			y_bitmap;
 	t_data_img	*img;
-} 				t_minimap;
+}			t_minimap;
 
 typedef struct s_data
 {
@@ -93,5 +97,35 @@ typedef struct s_data
 	t_sprite	skybox;
 	int			sky_offset;
 }				t_data;
+
+typedef struct s_algoritm
+{
+	unsigned int	buffer[screenHeight][screenWidth];
+	unsigned int	textur[8][texHeight * texWidth];
+	unsigned int	color;
+	t_vector		ray_dir;
+	t_vector		side_d; //length of ray from current position to next x or y-side
+	t_vector		delta_d; //length of ray from one x or y-side to next x or y-side
+	double			tex_pos;
+	double			camera_x;
+	double			perpwd;
+	double			wall_x; //where exactly the wall was hit
+	double			step;
+	int				line_hight;
+	int				draw_start;
+	int				draw_end;
+	int				tex_num;
+	int				pitch;
+	int				map_x;//which box of the map we're in
+	int				map_y;
+	int				step_x; //what direction to step in x or y-direction (either +1 or -1)
+	int				step_y;
+	int				tex_x;
+	int				tex_y;
+	int				hit; //was there a wall hit?
+	int				side; //was a NS or a EW wall hit?
+	int				x;
+	int				y;
+}				t_cub;
 
 #endif

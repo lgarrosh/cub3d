@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:22 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 14:23:45 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/08 16:46:47 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_vector		*init_vector(double x, double y);
 void			init_player(t_player *play);
 // raycasting
 int				raycast_loop(t_data	*data);
-void			raycasting(t_data *data);
+void			raycasting(t_data *data, t_cub *cub);
 int				mouse_action(int x, int y, void *param);
 int				render(void *param);
 void			line_dda(t_data_img *data, t_vector fir, t_vector sec);
