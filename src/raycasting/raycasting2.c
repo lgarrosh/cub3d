@@ -9,28 +9,28 @@ t_vector	creat_vec(double x, double y)
 	return (vec);
 }
 
-void	load_img(t_data *data, unsigned int *texture, char *path)
-{
-	t_data_img	img;
-	int			x;
-	int			y;
+// void	load_img(t_data *data, unsigned int *texture, char *path)
+// {
+// 	t_data_img	img;
+// 	int			x;
+// 	int			y;
 
-	y = 0;
-	img.img = mlx_xpm_file_to_image(data->mlx, path, &img.width, &img.height);
-	img.addr = (int *)mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	printf("asda\n");
-	while (y < img.height)
-	{
-		x = 0;
-		while (x < img.width)
-		{
-			texture[img.width * y + x] = img.addr[img.width * y + x];
-			x++;
-		}
-		y++;
-	}
-	mlx_destroy_image(data->mlx, img.img);
-}
+// 	y = 0;
+// 	img.img = mlx_xpm_file_to_image(data->mlx, path, &img.width, &img.height);
+// 	img.addr = (int *)mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
+// 	printf("asda\n");
+// 	while (y < img.height)
+// 	{
+// 		x = 0;
+// 		while (x < img.width)
+// 		{
+// 			texture[img.width * y + x] = img.addr[img.width * y + x];
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// 	mlx_destroy_image(data->mlx, img.img);
+// }
 
 // void	algoritm(t_data *data)
 // {
@@ -67,19 +67,27 @@ int worldMap[mapWidth][mapHeight]=
 
 void	raycasting(t_data *data, t_cub *cub)
 {
-	cub->x = 0;
+	cub->x = -1;
 
-	load_img(data, cub->textur[0], "assets/2.xpm");
-	load_img(data, cub->textur[1], "assets/2.xpm");
-	load_img(data, cub->textur[2], "assets/2.xpm");
-	load_img(data, cub->textur[3], "pics/greystone.png");
-	load_img(data, cub->textur[4], "pics/bluestone.png");
-	load_img(data, cub->textur[5], "pics/mossy.png");
-	load_img(data, cub->textur[6], "pics/wood.png");
-	load_img(data, cub->textur[7], "pics/colorstone.png");
-
-
-	while (cub->x++ < WIDTH_WINDOW)
+	for(int x = 0; x < texWidth; x++)
+	{
+		for(int y = 0; y < texHeight; y++)
+		{
+			int xorcolor = (x * 256 / texWidth) ^ (y * 256 / texHeight);
+			//int xcolor = x * 256 / texWidth;
+			int ycolor = y * 256 / texHeight;
+			int xycolor = y * 128 / texHeight + x * 128 / texWidth;
+			cub->textur[0][texWidth * y + x] = 65536 * 254 * (x != y && x != texWidth - y); //flat red texture with black cross
+			cub->textur[1][texWidth * y + x] = xycolor + 256 * xycolor + 65536 * xycolor; //sloped greyscale
+			cub->textur[2][texWidth * y + x] = 256 * xycolor + 65536 * xycolor; //sloped yellow gradient
+			cub->textur[3][texWidth * y + x] = xorcolor + 256 * xorcolor + 65536 * xorcolor; //xor greyscale
+			cub->textur[4][texWidth * y + x] = 256 * xorcolor; //xor green
+			cub->textur[5][texWidth * y + x] = 65536 * 192 * (x % 16 && y % 16); //red bricks
+			cub->textur[6][texWidth * y + x] = 65536 * ycolor; //red gradient
+			cub->textur[7][texWidth * y + x] = 128 + 256 * 128 + 65536 * 128; //flat grey texture
+		}
+	}
+	while (++cub->x < WIDTH_WINDOW)
 	{
 		cub->camera_x = 2 * cub->x / (double)WIDTH_WINDOW - 1;
 		cub->ray_dir.x = data->play.dir.x + data->play.plane.x * cub->camera_x;
@@ -127,13 +135,14 @@ void	raycasting(t_data *data, t_cub *cub)
 				cub->side = 1;
 			}
 			//Check if ray has hit a wall
-			if(worldMap[cub->map_x][cub->map_y] > 0) cub->hit = 1;
+			if(worldMap[cub->map_x][cub->map_y] > 0)
+				cub->hit = 1;
 		}
 		//Calculate distance of perpendicular ray (Euclidean distance would give fisheye effect!)
 		if (cub->side == 0)
 			cub->perpwd = (cub->side_d.x - cub->delta_d.x);
 		else
-			cub->perpwd = (cub->side_d.y - cub->delta_d.x);
+			cub->perpwd = (cub->side_d.y - cub->delta_d.y);
 
 		//Calculate height of line to draw on screen
 		cub->line_hight = (int)(HEIGTH_WINDOW / cub->perpwd);
@@ -154,7 +163,7 @@ void	raycasting(t_data *data, t_cub *cub)
 			cub->wall_x = data->play.pos.x + cub->perpwd * cub->ray_dir.x;
 		cub->wall_x -= floor(cub->wall_x);
 		//x coordinate on the texture
-		cub->tex_x = round(cub->wall_x * (double)texWidth);
+		cub->tex_x = (int)roundf(cub->wall_x * (double)texWidth);
 		if (cub->side == 0 && cub->ray_dir.x > 0)
 			cub->tex_x = texWidth - cub->tex_x - 1;
 		if (cub->side == 1 && cub->ray_dir.y < 0)

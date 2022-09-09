@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:22 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 16:46:47 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:13:31 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "mlx.h"
 # include "struct.h"
 # include "libft.h"
+
 
 //tools
 void			my_mlx_pixel_put(t_data_img *data, int x, int y, int color);

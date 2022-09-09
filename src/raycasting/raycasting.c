@@ -6,7 +6,7 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:03 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 17:34:59 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:25:38 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,15 +180,16 @@ void	put_frime(t_data *data, int *time)
 
 int	raycast_loop(t_data	*data)
 {
-	t_cub cub;
 	int	time[2];
 	time[0] = find_time();
-	raycasting(data, &cub);
+	raycasting(data, &data->cub);
 	for (int x = 0; x < screenWidth; x++)
 		for (int y = 0; y < screenHeight; y++)
-			my_mlx_pixel_put(data->raycast, x, y, cub.buffer[y][x]);
+			my_mlx_pixel_put(data->raycast, x, y, data->cub.buffer[y][x]);
 	time[1] = find_time();
-	cufoff_frime(time, data->fps);
+	data->cub.frame_time = time[1] - time[0] / 10000.0;
+	data->cub.move_speed = data->cub.frame_time * 5.0;
+	data->cub.rot_speed = data->cub.frame_time * 3.0;
 	put_frime(data, time);
 	return (0);
 }

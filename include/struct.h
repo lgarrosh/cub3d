@@ -6,15 +6,15 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:26 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 18:02:08 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:12:57 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define HEIGTH_WINDOW 480
 # define WIDTH_WINDOW 640
+# define HEIGTH_WINDOW 480
 
 # define screenWidth 640
 # define screenHeight 480
@@ -47,7 +47,7 @@ typedef struct s_player
 typedef struct s_data_img
 {
 	void	*img;
-	int		*addr;
+	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -84,6 +84,39 @@ typedef struct s_minimap
 	t_data_img	*img;
 }			t_minimap;
 
+typedef struct s_algoritm
+{
+	unsigned int	buffer[screenHeight][screenWidth];
+	unsigned int	textur[8][texHeight * texWidth];
+	unsigned int	color;
+	t_vector		delta_d; //length of ray from one x or y-side to next x or y-side
+	t_vector		ray_dir;
+	t_vector		side_d; //length of ray from current position to next x or y-side
+	double			move_speed;
+	double			frame_time;
+	double 			rot_speed;
+	double			camera_x;
+	double			tex_pos;
+	double			perpwd;
+	double			wall_x; //where exactly the wall was hit
+	double			step;
+	int				line_hight;
+	int				draw_start;
+	int				draw_end;
+	int				tex_num;
+	int				step_x; //what direction to step in x or y-direction (either +1 or -1)
+	int				step_y;
+	int				map_x;//which box of the map we're in
+	int				map_y;
+	int				tex_x;
+	int				tex_y;
+	int				pitch;
+	int				side; //was a NS or a EW wall hit?
+	int				hit; //was there a wall hit?
+	int				x;
+	int				y;
+}				t_cub;
+
 typedef struct s_data
 {
 	void		*mlx;
@@ -93,39 +126,12 @@ typedef struct s_data
 	t_data_img	*raycast;
 	t_minimap	minimap;
 	t_player	play;
+	t_cub		cub;
 	int			fps;
 	t_sprite	skybox;
 	int			sky_offset;
+	double		time;
+	double		oldtime;
 }				t_data;
-
-typedef struct s_algoritm
-{
-	unsigned int	buffer[screenHeight][screenWidth];
-	unsigned int	textur[8][texHeight * texWidth];
-	unsigned int	color;
-	t_vector		ray_dir;
-	t_vector		side_d; //length of ray from current position to next x or y-side
-	t_vector		delta_d; //length of ray from one x or y-side to next x or y-side
-	double			tex_pos;
-	double			camera_x;
-	double			perpwd;
-	double			wall_x; //where exactly the wall was hit
-	double			step;
-	int				line_hight;
-	int				draw_start;
-	int				draw_end;
-	int				tex_num;
-	int				pitch;
-	int				map_x;//which box of the map we're in
-	int				map_y;
-	int				step_x; //what direction to step in x or y-direction (either +1 or -1)
-	int				step_y;
-	int				tex_x;
-	int				tex_y;
-	int				hit; //was there a wall hit?
-	int				side; //was a NS or a EW wall hit?
-	int				x;
-	int				y;
-}				t_cub;
 
 #endif

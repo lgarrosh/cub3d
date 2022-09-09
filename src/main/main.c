@@ -6,11 +6,13 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:12 by lgarrosh          #+#    #+#             */
-/*   Updated: 2022/09/08 15:20:12 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/09/09 11:15:44 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+int worldMap[mapWidth][mapHeight];
 
 int	check_collision(float x, float y, t_data *data)
 {
@@ -37,7 +39,12 @@ int	keypress(int keycode, void *param)
 		close_window(param);
 	// printf("%d\n", keycode);
 	if (keycode == W_KEY || keycode == 119)
-		data->minimap.player.y -= speed;
+	{
+		if(worldMap[(int)roundf(data->play.pos.x + data->play.dir.x * data->cub.move_speed)][(int)roundf(data->play.pos.y)] == 0)
+			data->play.pos.x += data->play.dir.x * data->cub.move_speed;
+		if(worldMap[(int)roundf(data->play.pos.x)][(int)roundf(data->play.pos.y + data->play.dir.y * data->cub.move_speed)] == 0)
+			data->play.pos.y += data->play.dir.y * data->cub.move_speed;
+	}
 	if (keycode == D_KEY || keycode == 100)
 		data->minimap.player.x += speed;
 	if (keycode == S_KEY || keycode == 115)
