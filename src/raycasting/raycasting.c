@@ -77,6 +77,8 @@ void	draw_map_player(t_data *data)
 {
 	float	x;
 	float	y;
+	float	hip;
+	int		f;
 
 	x = data->minimap.img->width / 2 - 5;
 	y = data->minimap.img->height / 2 - 5;
@@ -86,6 +88,33 @@ void	draw_map_player(t_data *data)
 			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0000000);
 		x = data->minimap.img->width / 2 - 5;
 		y++;
+	}
+	x = 0;
+	y = 0;
+	f = -2;
+	hip = 30;
+	if (cos(data->rad) < 0)
+	{
+		while (x > cos(data->rad) * hip)
+	{
+		y = tan(data->rad) * x;
+		while (f < 2)
+			my_mlx_pixel_put(data->minimap.img, x + data->minimap.img->width / 2,
+			y + data->minimap.img->height / 2 + f++, 0xA0000000);
+		x--;
+		f = -2;
+	}
+	}
+	else {
+			while (x < cos(data->rad) * hip)
+	{
+		y = tan(data->rad) * x;
+		while (f < 2)
+			my_mlx_pixel_put(data->minimap.img, x + data->minimap.img->width / 2,
+			y + data->minimap.img->height / 2 + f++, 0xA0000000);
+		x++;
+		f = -2;
+	}
 	}
 }
 
@@ -137,13 +166,21 @@ void	mini_map(t_data *data, char **map)
 	draw_map_bg(data);
 	while (map[j] != NULL)
 	{
-		while (map[j][i] != '\0')
+		if (j >= data->minimap.y_bitmap - 4
+			&& j <= data->minimap.y_bitmap + 4)
 		{
-			x = i * MAP_TILE_SIZE;
-			y = j * MAP_TILE_SIZE;
-			if (map[j][i] == '1')
-				draw_map_wall(x, y, data);
-			i++;
+			while (map[j][i] != '\0')
+			{
+				if (i >= data->minimap.x_bitmap - 4
+					&& i <= data->minimap.x_bitmap + 4)
+				{
+					x = i * MAP_TILE_SIZE;
+					y = j * MAP_TILE_SIZE;
+					if (map[j][i] == '1')
+						draw_map_wall(x, y, data);
+				}
+				i++;
+			}
 		}
 		j++;
 		i = 0;
@@ -159,6 +196,8 @@ void	mini_map(t_data *data, char **map)
 	mlx_string_put(data->mlx, data->win, 60,
 		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
+	mlx_string_put(data->mlx, data->win, 60,
+		data->minimap.img->height + 80, 0x00FFFFFF, ft_itoa(-to_degrees(data->rad)));
 }
 
 int	raycast_loop(t_data	*data)

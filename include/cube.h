@@ -18,6 +18,8 @@ void		my_mlx_pixel_put(t_data_img	*data, int	x, int	y, int	color);
 int			create_trgb(int	t, int	r, int	g, int	b);
 int			close_window(t_data *data);
 int			ft_error(int fd, char *error, int ret);
+double		to_radiants(double degrees);
+double		to_degrees(double radiants);
 //parser
 int			parser(int argc, char *argv[], t_data *data);
 //checker

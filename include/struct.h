@@ -1,8 +1,8 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define HEIGTH_WINDOW 700
-# define WIDTH_WINDOW 1000
+# define HEIGTH_WINDOW 1020
+ # define WIDTH_WINDOW 1720
 
 # define MAP_TILE_SIZE 30
 
@@ -75,6 +75,7 @@ typedef struct s_data
 	int			fps;
 	t_sprite	skybox;
 	int			sky_offset;
+	double		rad;
 }				t_data;
 
 #endif
