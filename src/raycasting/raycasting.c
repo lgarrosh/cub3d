@@ -45,8 +45,8 @@ void	draw_map_bg(t_data *data)
 
 void	draw_map_wall(float x, float y, t_data *data)
 {
-	float	offset_x;
-	float	offset_y;
+	double	offset_x;
+	double	offset_y;
 	int		paint_x;
 	int		paint_y;
 
@@ -75,9 +75,9 @@ void	draw_map_wall(float x, float y, t_data *data)
 
 void	draw_map_player(t_data *data)
 {
-	float	x;
-	float	y;
-	float	hip;
+	double	x;
+	double	y;
+	double	hip;
 	int		f;
 
 	x = data->minimap.img->width / 2 - 5;
@@ -156,8 +156,8 @@ void	mini_map(t_data *data, char **map)
 {
 	int		i;
 	int		j;
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 
 	i = 0;
 	j = 0;
