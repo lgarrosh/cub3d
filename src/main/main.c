@@ -23,34 +23,33 @@ int	keypress(int keycode, void *param)
 	data = (t_data *)param;
 	if (keycode == 65307 || keycode == 53)
 		close_window(param);
-	printf("%d\n", keycode);
 	if ((keycode == W_KEY || keycode == 119)
-		&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad), data)
+		&& check_collision(data->minimap.player.x, data->minimap.player.y - speed * sin(data->rad), data)
 		&& check_collision(data->minimap.player.x + speed * cos(data->rad), data->minimap.player.y, data))
 		{
-			data->minimap.player.y += speed * sin(data->rad);
+			data->minimap.player.y -= speed * sin(data->rad);
 			data->minimap.player.x += speed * cos(data->rad);
 		}
 	if ((keycode == D_KEY || keycode == 100)
-		&& check_collision(data->minimap.player.x + speed * cos(data->rad + M_PI / 2), data->minimap.player.y, data)
+		&& check_collision(data->minimap.player.x - speed * cos(data->rad + M_PI / 2), data->minimap.player.y, data)
 		&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad + M_PI / 2), data))
 		{
 			data->minimap.player.y += speed * sin(data->rad + M_PI / 2);
-			data->minimap.player.x += speed * cos(data->rad + M_PI / 2);
+			data->minimap.player.x -= speed * cos(data->rad + M_PI / 2);
 		}
 	if ((keycode == S_KEY || keycode == 115)
-		&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad + M_PI), data)
+		&& check_collision(data->minimap.player.x, data->minimap.player.y - speed * sin(data->rad + M_PI), data)
 		&& check_collision(data->minimap.player.x + speed * cos(data->rad + M_PI), data->minimap.player.y, data))
 		{
-			data->minimap.player.y += speed * sin(data->rad + M_PI);
+			data->minimap.player.y -= speed * sin(data->rad + M_PI);
 			data->minimap.player.x += speed * cos(data->rad + M_PI);
 		}
 	if ((keycode == A_KEY || keycode == 97)
-		&& check_collision(data->minimap.player.x + speed * cos(data->rad - M_PI / 2), data->minimap.player.y, data)
+		&& check_collision(data->minimap.player.x - speed * cos(data->rad - M_PI / 2), data->minimap.player.y, data)
 		&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad - M_PI / 2), data))
 		{
 			data->minimap.player.y += speed * sin(data->rad - M_PI / 2);
-			data->minimap.player.x += speed * cos(data->rad - M_PI / 2);
+			data->minimap.player.x -= speed * cos(data->rad - M_PI / 2);
 		}
 	return (0);
 }

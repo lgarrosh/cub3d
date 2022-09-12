@@ -76,6 +76,7 @@ typedef struct s_data
 	t_sprite	skybox;
 	int			sky_offset;
 	double		rad;
+	double		ray;
 }				t_data;
 
 #endif

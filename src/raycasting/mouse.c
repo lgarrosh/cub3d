@@ -19,6 +19,10 @@ int	mouse_action(int x, int y, void *param)
 		data->sky_offset -= data->skybox.width;
 	else if (data->sky_offset < -data->skybox.width)
 		data->sky_offset += data->skybox.width;
-	data->rad = to_radiants(-data->sky_offset / 1 );
+	data->rad = to_radiants(data->sky_offset / 1 );
+	while (data->rad >= 2 * M_PI)
+		data->rad -= 2 * M_PI;
+	while (data->rad < 0)
+		data->rad += 2 * M_PI;
 	return (0);
 }

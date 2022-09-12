@@ -32,6 +32,7 @@ void	init_data(t_data *data)
 
 	init_player(&play);
 	data->play = play;
+	data->ray = 30;
 	data->rad = 0;
 	data->mlx = mlx_init();
 	data->fps = 30;
