@@ -73,33 +73,58 @@ void	calculate_offset(t_data *data)
 		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(yy));
 }
 
-void	raycasting(t_data *data)
+void	calculate_ray(int x, int y, t_data *data)
 {
+	int	x_coord;
+	int	y_coord;
 	int	ray_x;
 	int	ray_y;
 
-	calculate_offset(data);
-	if (cos(data->rad) == 0 || sin(data->rad) == 0)
-		return ;
-	ray_x = data->minimap.x_off / cos(data->rad);
-	ray_y = data->minimap.y_off / sin(data->rad);
+	ray_x = x / cos(data->rad);
+	ray_y = y / sin(data->rad);
 	if (data->rad == M_PI)
 	{
-		ray_x = data->minimap.x_off;
-		ray_y = data->minimap.y_off;
+		ray_x = x;
+		ray_y = y;
 	}
 	if (data->rad == M_PI / 2 || data->rad == 3 * M_PI / 2)
-		ray_x = data->minimap.x_off;
+		ray_x = x;
 	if (ray_x < 0)
 		ray_x = -ray_x;
 	if (ray_y < 0)
 		ray_y = -ray_y;
 	if (ray_x < ray_y)
+	{	
 		data->ray = ray_x;
+		x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
+		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
+		if (data->other.map[y_coord / MAP_TILE_SIZE][x_coord / MAP_TILE_SIZE] != '1')
+		{
+			data->minimap.x_intsct = x_coord;
+			data->minimap.y_intsct = y_coord;
+			calculate_ray(x + MAP_TILE_SIZE, y, data);
+		}
+	}
 	else
+	{
 		data->ray = ray_y;
-	data->minimap.x_intsct = data->minimap.player.x + cos(data->rad) * data->ray;
-	data->minimap.y_intsct = data->minimap.player.y - sin(data->rad) * data->ray;
+		x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
+		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
+		if (data->other.map[y_coord / MAP_TILE_SIZE][x_coord / MAP_TILE_SIZE] != '1')
+		{
+			data->minimap.x_intsct = x_coord;
+			data->minimap.y_intsct = y_coord;
+			calculate_ray(x, y + MAP_TILE_SIZE, data);
+		}
+	}
+}
+
+void	raycasting(t_data *data)
+{
+	calculate_offset(data);
+	if (cos(data->rad) == 0 || sin(data->rad) == 0)
+		return ;
+	calculate_ray(data->minimap.x_off, data->minimap.y_off, data);
 }
 
 void	floor_ceiling(t_data *data)
