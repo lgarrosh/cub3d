@@ -61,6 +61,10 @@ typedef struct s_minimap
 	t_vector	player;
 	int			x_bitmap;
 	int			y_bitmap;
+	int			x_off;
+	int			y_off;
+	int			x_intsct;
+	int			y_intsct;
 	t_data_img	*img;
 } 				t_minimap;
 

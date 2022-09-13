@@ -1,6 +1,6 @@
 #include "cube.h"
 
-void	raycasting(t_data *data)
+void	calculate_offset(t_data *data)
 {
 	int	xx;
 	int	yy;
@@ -25,10 +25,41 @@ void	raycasting(t_data *data)
 		xx = MAP_TILE_SIZE - (int)data->minimap.player.x % MAP_TILE_SIZE;
 		yy = MAP_TILE_SIZE - (int)data->minimap.player.y % MAP_TILE_SIZE;
 	}
+	data->minimap.x_off = xx;
+	data->minimap.y_off = yy;
 	mlx_string_put(data->mlx, data->win, 20,
 		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(xx));
 	mlx_string_put(data->mlx, data->win, 40,
 		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(yy));
+}
+
+void	raycasting(t_data *data)
+{
+	int	ray_x;
+	int	ray_y;
+
+	calculate_offset(data);
+	if (cos(data->rad) == 0 || sin(data->rad) == 0)
+		return ;
+	ray_x = data->minimap.x_off / cos(data->rad);
+	ray_y = data->minimap.y_off / sin(data->rad);
+	if (data->rad == M_PI)
+	{
+		ray_x = data->minimap.x_off;
+		ray_y = data->minimap.y_off;
+	}
+	if (data->rad == M_PI / 2 || data->rad == 3 * M_PI / 2)
+		ray_x = data->minimap.x_off;
+	if (ray_x < 0)
+		ray_x = -ray_x;
+	if (ray_y < 0)
+		ray_y = -ray_y;
+	if (ray_x < ray_y)
+		data->ray = ray_x;
+	else
+		data->ray = ray_y;
+	data->minimap.x_intsct = data->minimap.player.x + cos(data->rad) * data->ray;
+	data->minimap.y_intsct = data->minimap.player.y - sin(data->rad) * data->ray;
 }
 
 void	floor_ceiling(t_data *data)
@@ -117,29 +148,29 @@ void	draw_map_player(t_data *data)
 	}
 	x = 0;
 	y = 0;
-	f = -2;
+	f = -3;
 	hip = data->ray;
 	if (cos(data->rad) < 0)
 	{
 		while (x > cos(data->rad) * hip)
 	{
 		y = -tan(data->rad) * x;
-		while (f < 2)
+		while (++f < 2)
 			my_mlx_pixel_put(data->minimap.img, x + data->minimap.img->width / 2,
-			y + data->minimap.img->height / 2 + f++, 0xA0000000);
+			y + data->minimap.img->height / 2 + f, 0xA0000000);
 		x--;
-		f = -2;
+		f = -3;
 	}
 	}
 	else {
 			while (x < cos(data->rad) * hip)
 	{
 		y = -tan(data->rad) * x;
-		while (f < 2)
+		while (++f < 2)
 			my_mlx_pixel_put(data->minimap.img, x + data->minimap.img->width / 2,
-			y + data->minimap.img->height / 2 + f++, 0xA0000000);
+			y + data->minimap.img->height / 2 + f, 0xA0000000);
 		x++;
-		f = -2;
+		f = -3;
 	}
 	}
 }
@@ -226,6 +257,10 @@ void	mini_map(t_data *data, char **map)
 		data->minimap.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->rad)));
 	mlx_string_put(data->mlx, data->win, 90,
 		data->minimap.img->height + 80, 0x00FFFF00, ft_itoa((data->rad)));
+	mlx_string_put(data->mlx, data->win, 20,
+		data->minimap.img->height + 100, 0x00FFFF00, ft_itoa((data->minimap.x_intsct)));
+	mlx_string_put(data->mlx, data->win, 50,
+		data->minimap.img->height + 100, 0x00FFFF00, ft_itoa((data->minimap.y_intsct)));
 }
 
 int	raycast_loop(t_data	*data)

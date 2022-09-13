@@ -11,9 +11,9 @@ int	mouse_action(int x, int y, void *param)
 		return (0);
 	data = (t_data *)param;
 	if (x_old < x && x_old != 0)
-		data->sky_offset -= (x - x_old) * 0.5;
+		data->sky_offset -= (x - x_old) * 0.3;
 	else if (x_old > x && x_old != 0)
-		data->sky_offset += (x_old - x) * 0.5;
+		data->sky_offset += (x_old - x) * 0.3;
 	x_old = x;
 	if (data->sky_offset > data->skybox.width)
 		data->sky_offset -= data->skybox.width;
