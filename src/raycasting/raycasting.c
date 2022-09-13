@@ -1,5 +1,45 @@
 #include "cube.h"
 
+void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
+{
+	// Целочисленные значения координат начала и конца отрезка,
+	// округленные до ближайшего целого
+	int iX1 = roundf(x1);
+	int iY1 = roundf(y1);
+	int iX2 = roundf(x2);
+	int iY2 = roundf(y2);
+	// Длина и высота линии
+	int deltaX = abs(iX1 - iX2);
+	int deltaY = abs(iY1 - iY2);
+	// Считаем минимальное количество итераций, необходимое
+	// для отрисовки отрезка. Выбирая максимум из длины и высоты
+	// линии, обеспечиваем связность линии
+	int length = deltaX;
+	if (deltaX < deltaY)
+		length = deltaY;
+	// особый случай, на экране закрашивается ровно один пиксел
+	if (length == 0)
+	{
+		my_mlx_pixel_put(data, iX1, iY1, 0x00000000);
+		return;
+	}
+	// Вычисляем приращения на каждом шаге по осям абсцисс и ординат
+	double dX = (x2 - x1) / length;
+	double dY = (y2 - y1) / length;
+	// Начальные значения
+	double x = x1;
+	double y = y1;
+	// Основной цикл
+	length++;
+	while (length--)
+	{
+		x += dX;
+		y += dY;
+		my_mlx_pixel_put(data, roundf(x), roundf(y), 0x00000000);
+	}
+}
+
+
 void	calculate_offset(t_data *data)
 {
 	int	xx;
@@ -134,45 +174,18 @@ void	draw_map_player(t_data *data)
 {
 	double	x;
 	double	y;
-	double	hip;
-	int		f;
 
-	x = data->minimap.img->width / 2 - 5;
-	y = data->minimap.img->height / 2 - 5;
-	while (y < data->minimap.img->height / 2 + 5)
+	x = data->minimap.img->width / 2 - 3;
+	y = data->minimap.img->height / 2 - 3;
+	while (y < data->minimap.img->height / 2 + 3)
 	{
-		while (x < data->minimap.img->width / 2 + 5)
+		while (x < data->minimap.img->width / 2 + 3)
 			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0000000);
-		x = data->minimap.img->width / 2 - 5;
+		x = data->minimap.img->width / 2 - 3;
 		y++;
 	}
 	x = 0;
 	y = 0;
-	f = -3;
-	hip = data->ray;
-	if (cos(data->rad) < 0)
-	{
-		while (x > cos(data->rad) * hip)
-	{
-		y = -tan(data->rad) * x;
-		while (++f < 2)
-			my_mlx_pixel_put(data->minimap.img, x + data->minimap.img->width / 2,
-			y + data->minimap.img->height / 2 + f, 0xA0000000);
-		x--;
-		f = -3;
-	}
-	}
-	else {
-			while (x < cos(data->rad) * hip)
-	{
-		y = -tan(data->rad) * x;
-		while (++f < 2)
-			my_mlx_pixel_put(data->minimap.img, x + data->minimap.img->width / 2,
-			y + data->minimap.img->height / 2 + f, 0xA0000000);
-		x++;
-		f = -3;
-	}
-	}
 }
 
 void	draw_map_grid(t_data *data)
@@ -252,6 +265,9 @@ void	mini_map(t_data *data, char **map)
 		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
 	mlx_string_put(data->mlx, data->win, 60,
 		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
+	line_dda(data->minimap.img, data->minimap.img->width / 2, data->minimap.img->height / 2,
+		data->minimap.img->width / 2 + data->minimap.x_intsct - data->minimap.player.x,
+		data->minimap.img->height / 2 + data->minimap.y_intsct - data->minimap.player.y);
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
 		data->minimap.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->rad)));
