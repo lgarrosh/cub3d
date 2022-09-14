@@ -77,22 +77,24 @@ void	calculate_offset(t_data *data)
 
 // считаем конечный луч до столкновения со стеной с помощью рекурсии
 // подавая каждый раз увеличивающиеся значения отступа по x и y 
-void	calculate_ray(int x, int y, t_data *data)
+void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 {
 	int	x_coord;
 	int	y_coord;
 	double	ray_x;
 	double	ray_y;
 	int	j;
+	t_ray *ray;
 
-	ray_x = x / cos(data->rad); // луч пересечения с осью Y
-	ray_y = y / sin(data->rad); // луч пересечения с осью X
-	if (data->rad == M_PI)
+	ray = (t_ray *)lst_rays->content;
+	ray_x = x / cos(ray->rad); // луч пересечения с осью Y
+	ray_y = y / sin(ray->rad); // луч пересечения с осью X
+	if (ray->rad == M_PI)
 	{
 		ray_x = x;
 		ray_y = y;
 	}
-	if (data->rad == M_PI / 2 || data->rad == 3 * M_PI / 2)
+	if (ray->rad == M_PI / 2 || ray->rad == 3 * M_PI / 2)
 		ray_x = x;
 	if (ray_x < 0)
 		ray_x = -ray_x;
@@ -100,50 +102,71 @@ void	calculate_ray(int x, int y, t_data *data)
 		ray_y = -ray_y;
 	if (ray_x < ray_y)
 	{	
-		data->ray = ray_x;
-		x_coord = data->minimap.player.x + cos(data->rad) * data->ray; // координаты точки пересечения
-		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
-		if (data->rad > M_PI / 2 && data->rad <= 3 * M_PI / 2)
+		ray->ray = ray_x;
+		x_coord = data->minimap.player.x + cos(ray->rad) * ray->ray; // координаты точки пересечения
+		y_coord = data->minimap.player.y - sin(ray->rad) * ray->ray;
+		if (ray->rad > M_PI / 2 && ray->rad <= 3 * M_PI / 2)
 			j = x_coord / MAP_TILE_SIZE;
 		else
 			j = x_coord / MAP_TILE_SIZE - 1;
 		if (data->other.map[y_coord / MAP_TILE_SIZE][j] != '1')
 		{
-			data->minimap.x_intsct = x_coord;  // записываем координаты точки пересечения в структуру
-			data->minimap.y_intsct = y_coord;
-			calculate_ray(x + MAP_TILE_SIZE, y, data);
+			ray->x_end = x_coord;  // записываем координаты точки пересечения в структуру
+			ray->y_end = y_coord;
+			calculate_ray(x + MAP_TILE_SIZE, y, data, lst_rays);
 		}
 	}
 	else
 	{
-		data->ray = ray_y;
-		x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
-		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
-		if (data->rad > 0 && data->rad <= M_PI)
+		ray->ray = ray_y;
+		x_coord = data->minimap.player.x + cos(ray->rad) * ray->ray;
+		y_coord = data->minimap.player.y - sin(ray->rad) * ray->ray;
+		if (ray->rad > 0 && ray->rad <= M_PI)
 			j = y_coord / MAP_TILE_SIZE;
 		else
 			j = y_coord / MAP_TILE_SIZE - 1;
 		if (data->other.map[j][x_coord / MAP_TILE_SIZE] != '1')
 		{
-			data->minimap.x_intsct = x_coord;
-			data->minimap.y_intsct = y_coord;
-			calculate_ray(x, y + MAP_TILE_SIZE, data);
+			ray->x_end = x_coord;
+			ray->y_end = y_coord;
+			calculate_ray(x, y + MAP_TILE_SIZE, data, lst_rays);
 		}
 	}
 	// x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
 	// y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
 	// data->minimap.x_intsct = x_coord;  // записываем координаты точки пересечения в структуру
 	// data->minimap.y_intsct = y_coord;
-	mlx_string_put(data->mlx, data->win, 50,
-		data->minimap.img->height + 150, 0x00A000C0, ft_itoa((data->ray)));
+	// mlx_string_put(data->mlx, data->win, 50,
+	// 	data->minimap.img->height + 150, 0x00A000C0, ft_itoa((data->ray)));
 }
 
 void	raycasting(t_data *data)
 {
+	int		i;
+	t_ray	*ray;
+
+	i = 0;
+	ray = ft_calloc(1, sizeof(t_ray));
+	data->rays = ft_lstnew(ray);
+	ray->rad = data->rad;
 	calculate_offset(data);
 	if (cos(data->rad) == 0 || sin(data->rad) == 0)
 		return ;
-	calculate_ray(data->minimap.x_off, data->minimap.y_off, data);
+	while (i++ < 20)
+	{
+		calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
+		ray = ft_calloc(1, sizeof(t_ray));
+		ray->rad = data->rad + to_radiants(i*2);
+		ft_lstadd_front(&data->rays, ft_lstnew(ray));
+	}
+	// i = 0;
+	// while (i++ < 20)
+	// {
+	// 	calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
+	// 	ray = ft_calloc(1, sizeof(t_ray));
+	// 	ray->rad = data->rad - to_radiants(i);
+	// 	ft_lstadd_front(&data->rays, ft_lstnew(ray));
+	// }
 }
 
 void	floor_ceiling(t_data *data)
@@ -272,7 +295,11 @@ void	mini_map(t_data *data, char **map)
 	int		j;
 	double	x;
 	double	y;
+	t_list *copy;
+	t_ray 	*ray;
 
+	ray = (t_ray *)data->rays->content;
+	copy = data->rays;
 	i = 0;
 	j = 0;
 	x = 0;
@@ -309,9 +336,14 @@ void	mini_map(t_data *data, char **map)
 		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
 	mlx_string_put(data->mlx, data->win, 60,
 		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
-	line_dda(data->minimap.img, data->minimap.img->width / 2, data->minimap.img->height / 2,
-		data->minimap.img->width / 2 + data->minimap.x_intsct - data->minimap.player.x,
-		data->minimap.img->height / 2 + data->minimap.y_intsct - data->minimap.player.y);
+	while (copy->next)
+	{
+		line_dda(data->minimap.img, data->minimap.img->width / 2, data->minimap.img->height / 2,
+		data->minimap.img->width / 2 + ray->x_end - data->minimap.player.x,
+		data->minimap.img->height / 2 + ray->y_end - data->minimap.player.y);
+		copy = copy->next;
+		ray = copy->content;
+	}
 	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
 		data->minimap.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->rad)));

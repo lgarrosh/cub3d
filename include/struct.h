@@ -1,6 +1,8 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+#include "libft.h"
+
 # define HEIGTH_WINDOW 1020
  # define WIDTH_WINDOW 1720
 
@@ -65,10 +67,16 @@ typedef struct s_minimap
 	int			y_off;
 	int			x_intsct;
 	int			y_intsct;
-	// int			x_end[WIDTH_WINDOW];
-	// int			y_end[WIDTH_WINDOW];
 	t_data_img	*img;
 } 				t_minimap;
+
+typedef struct	s_ray
+{
+	int		x_end;
+	int		y_end;
+	double	ray;
+	double 	rad;
+}			t_ray;
 
 typedef struct s_data
 {
@@ -83,7 +91,7 @@ typedef struct s_data
 	int			sky_offset;
 	double		rad;
 	double		ray;
-	// double		ray_view[WIDTH_WINDOW];
+	t_list		*rays;
 }				t_data;
 
 #endif
