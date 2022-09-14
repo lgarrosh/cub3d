@@ -39,7 +39,8 @@ void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
 	}
 }
 
-
+// считаем и записываем в структуру изначальные отступы игрока, с помощью которых считаются
+// изначальный луч (гипотенуза) от игрока до ближайшего пересечения до другой клетки
 void	calculate_offset(t_data *data)
 {
 	int	xx;
@@ -67,12 +68,11 @@ void	calculate_offset(t_data *data)
 	}
 	data->minimap.x_off = xx;
 	data->minimap.y_off = yy;
-	mlx_string_put(data->mlx, data->win, 20,
-		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(xx));
-	mlx_string_put(data->mlx, data->win, 40,
-		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(yy));
 }
 
+
+// считаем конечный луч до столкновения со стеной с помощью рекурсии
+// подавая каждый раз увеличивающиеся значения отступа по x и y 
 void	calculate_ray(int x, int y, t_data *data)
 {
 	int	x_coord;
@@ -80,8 +80,8 @@ void	calculate_ray(int x, int y, t_data *data)
 	int	ray_x;
 	int	ray_y;
 
-	ray_x = x / cos(data->rad);
-	ray_y = y / sin(data->rad);
+	ray_x = x / cos(data->rad); // луч пересечения с осью Y
+	ray_y = y / sin(data->rad); // луч пересечения с осью X
 	if (data->rad == M_PI)
 	{
 		ray_x = x;
@@ -96,11 +96,11 @@ void	calculate_ray(int x, int y, t_data *data)
 	if (ray_x < ray_y)
 	{	
 		data->ray = ray_x;
-		x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
+		x_coord = data->minimap.player.x + cos(data->rad) * data->ray; // координаты точки пересечения
 		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
 		if (data->other.map[y_coord / MAP_TILE_SIZE][x_coord / MAP_TILE_SIZE] != '1')
 		{
-			data->minimap.x_intsct = x_coord;
+			data->minimap.x_intsct = x_coord;  // записываем координаты точки пересечения в структуру
 			data->minimap.y_intsct = y_coord;
 			calculate_ray(x + MAP_TILE_SIZE, y, data);
 		}
