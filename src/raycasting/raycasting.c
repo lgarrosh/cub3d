@@ -68,6 +68,10 @@ void	calculate_offset(t_data *data)
 	}
 	data->minimap.x_off = xx;
 	data->minimap.y_off = yy;
+	mlx_string_put(data->mlx, data->win, 20,
+		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(xx));
+	mlx_string_put(data->mlx, data->win, 40,
+		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(yy));
 }
 
 
@@ -77,8 +81,9 @@ void	calculate_ray(int x, int y, t_data *data)
 {
 	int	x_coord;
 	int	y_coord;
-	int	ray_x;
-	int	ray_y;
+	double	ray_x;
+	double	ray_y;
+	int	j;
 
 	ray_x = x / cos(data->rad); // луч пересечения с осью Y
 	ray_y = y / sin(data->rad); // луч пересечения с осью X
@@ -98,7 +103,11 @@ void	calculate_ray(int x, int y, t_data *data)
 		data->ray = ray_x;
 		x_coord = data->minimap.player.x + cos(data->rad) * data->ray; // координаты точки пересечения
 		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
-		if (data->other.map[y_coord / MAP_TILE_SIZE][x_coord / MAP_TILE_SIZE] != '1')
+		if (data->rad > M_PI / 2 && data->rad <= 3 * M_PI / 2)
+			j = x_coord / MAP_TILE_SIZE;
+		else
+			j = x_coord / MAP_TILE_SIZE - 1;
+		if (data->other.map[y_coord / MAP_TILE_SIZE][j] != '1')
 		{
 			data->minimap.x_intsct = x_coord;  // записываем координаты точки пересечения в структуру
 			data->minimap.y_intsct = y_coord;
@@ -110,13 +119,23 @@ void	calculate_ray(int x, int y, t_data *data)
 		data->ray = ray_y;
 		x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
 		y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
-		if (data->other.map[y_coord / MAP_TILE_SIZE][x_coord / MAP_TILE_SIZE] != '1')
+		if (data->rad > 0 && data->rad <= M_PI)
+			j = y_coord / MAP_TILE_SIZE;
+		else
+			j = y_coord / MAP_TILE_SIZE - 1;
+		if (data->other.map[j][x_coord / MAP_TILE_SIZE] != '1')
 		{
 			data->minimap.x_intsct = x_coord;
 			data->minimap.y_intsct = y_coord;
 			calculate_ray(x, y + MAP_TILE_SIZE, data);
 		}
 	}
+	// x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
+	// y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
+	// data->minimap.x_intsct = x_coord;  // записываем координаты точки пересечения в структуру
+	// data->minimap.y_intsct = y_coord;
+	mlx_string_put(data->mlx, data->win, 50,
+		data->minimap.img->height + 150, 0x00A000C0, ft_itoa((data->ray)));
 }
 
 void	raycasting(t_data *data)
@@ -307,8 +326,8 @@ void	mini_map(t_data *data, char **map)
 int	raycast_loop(t_data	*data)
 {
 	floor_ceiling(data);
-	mini_map(data, data->other.map);
 	raycasting(data);
+	mini_map(data, data->other.map);
 	// put frame
 	return (0);
 }

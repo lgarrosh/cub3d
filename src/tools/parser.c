@@ -6,7 +6,7 @@
 /*   By: preed <preed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 17:03:49 by preed             #+#    #+#             */
-/*   Updated: 2022/09/02 20:54:52 by preed            ###   ########.fr       */
+/*   Updated: 2022/09/14 15:53:56 by preed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ int	open_file(char *filename, t_data *data)
 	if (string == NULL)
 		return (printf("ERROR: File reading failed!\n"));
 	close(fd);
-	// printf("%s \n%d\n", string, getpid());
 	if (check_map(string, data))
 		return (printf("ERROR: Map file not valid!\n"));
 	return (0);

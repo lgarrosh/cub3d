@@ -6,7 +6,7 @@
 /*   By: preed <preed@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/01 20:32:56 by preed             #+#    #+#             */
-/*   Updated: 2022/09/04 19:43:36 by preed            ###   ########.fr       */
+/*   Updated: 2022/09/14 15:54:14 by preed            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ void	empty_to_dash(t_data *data)
 		j = 0;
 	}
 	i = 0;
-	while (data->other.map[i] != NULL)
-		printf("%s\n", data->other.map[i++]);
 }
 
 void	find_player_cooridnates(t_data *data)
@@ -133,7 +131,6 @@ void	find_player_cooridnates(t_data *data)
 		j = 0;
 		i++;
 	}
-	printf("x = %f;y = %f\n", data->minimap.player.x, data->minimap.player.y);
 }
 
 int	save_map(char *string, int i, t_data *data)

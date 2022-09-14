@@ -65,6 +65,8 @@ typedef struct s_minimap
 	int			y_off;
 	int			x_intsct;
 	int			y_intsct;
+	// int			x_end[WIDTH_WINDOW];
+	// int			y_end[WIDTH_WINDOW];
 	t_data_img	*img;
 } 				t_minimap;
 
@@ -81,6 +83,7 @@ typedef struct s_data
 	int			sky_offset;
 	double		rad;
 	double		ray;
+	// double		ray_view[WIDTH_WINDOW];
 }				t_data;
 
 #endif
