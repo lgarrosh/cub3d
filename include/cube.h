@@ -5,6 +5,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <unistd.h>
+# include <float.h>
 # include <math.h>
 # include "mlx.h"
 # include "struct.h"

@@ -81,23 +81,25 @@ void	calculate_offset(t_data *data)
 // подавая каждый раз увеличивающиеся значения отступа по x и y 
 void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 {
-	double	x_coord;
-	double	y_coord;
+	int	x_coord;
+	int	y_coord;
 	double	ray_x;
 	double	ray_y;
+	static int i;
 	int	j;
+	int j2;
 	t_ray *ray;
 
 	ray = (t_ray *)lst_rays->content;
-	if (ray->rad == M_PI)
+	if (ray->rad == M_PI || ray->rad == 0)
 	{
 		ray_x = x;
-		ray_y = y;
+		ray_y = DBL_MAX;
 	}
-	if (ray->rad == M_PI / 2 || ray->rad == 3 * M_PI / 2)
+	else if (ray->rad == M_PI / 2 || ray->rad == 3 * M_PI / 2)
 	{
-		ray_x = x;
-		ray_y = y / sin(ray->rad);
+		ray_x = DBL_MAX;
+		ray_y = y;
 	}
 	else 
 	{
@@ -111,16 +113,45 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 	if (ray_x <= ray_y)
 	{	
 		ray->ray = ray_x;
-		x_coord = data->minimap.player.x + cos(ray->rad) * ray->ray; // координаты точки пересечения
-		y_coord = data->minimap.player.y - sin(ray->rad) * ray->ray;
-		if (ray->rad > M_PI / 2 && ray->rad <= 3 * M_PI / 2)
-			j = x_coord / MAP_TILE_SIZE;
+		if (ray->rad > M_PI / 2 && ray->rad <= M_PI * 3 / 2)
+			x_coord = (int)(data->minimap.player.x / MAP_TILE_SIZE) * MAP_TILE_SIZE - MAP_TILE_SIZE * i;
 		else
+			x_coord = (int)(data->minimap.player.x / MAP_TILE_SIZE) * MAP_TILE_SIZE + MAP_TILE_SIZE + MAP_TILE_SIZE * i; // координаты точки пересечения
+		y_coord = data->minimap.player.y - sin(ray->rad) * ray->ray;
+		j2 = y_coord / MAP_TILE_SIZE;
+		if (ray->rad > M_PI / 2 && ray->rad <= 3 * M_PI / 2)
 			j = x_coord / MAP_TILE_SIZE - 1;
-		if (data->other.map[(int)y_coord / MAP_TILE_SIZE][j] != '1')
+		else
+			j = x_coord / MAP_TILE_SIZE;
+		if (!(x_coord % MAP_TILE_SIZE) && !(y_coord % MAP_TILE_SIZE))
 		{
-			ray->x_end = x_coord;  // записываем координаты точки пересечения в структуру
-			ray->y_end = y_coord;
+			if (ray->rad > 0 && ray->rad <= M_PI / 2)
+			{
+				j = x_coord / MAP_TILE_SIZE;
+				j2 = y_coord / MAP_TILE_SIZE - 1;
+			}
+			else if (ray->rad > M_PI / 2 && ray->rad <= M_PI)
+			{
+				j = x_coord / MAP_TILE_SIZE - 1;
+				j2 = y_coord / MAP_TILE_SIZE - 1;
+			}
+			else if (ray->rad > M_PI && ray->rad <= 3 * M_PI / 2)
+			{
+				j = x_coord / MAP_TILE_SIZE - 1;
+				j2 = y_coord / MAP_TILE_SIZE;
+			}
+			else if (ray->rad > 3 * M_PI / 2 && ray->rad <= 2 * M_PI)
+			{
+				j = x_coord / MAP_TILE_SIZE;
+				j2 = y_coord / MAP_TILE_SIZE;
+			}
+		}
+		ray->x_end = x_coord;  // записываем координаты точки пересечения в структуру
+		ray->y_end = y_coord;
+		if (!(x_coord % MAP_TILE_SIZE) && !(y_coord % MAP_TILE_SIZE))
+		if (data->other.map[j2][j] != '1')
+		{	
+			i++;
 			calculate_ray(x + MAP_TILE_SIZE, y, data, lst_rays);
 		}
 	}
@@ -128,18 +159,23 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 	{
 		ray->ray = ray_y;
 		x_coord = data->minimap.player.x + cos(ray->rad) * ray->ray;
-		y_coord = data->minimap.player.y - sin(ray->rad) * ray->ray;
 		if (ray->rad > 0 && ray->rad <= M_PI)
-			j = y_coord / MAP_TILE_SIZE;
+			y_coord = (int)(data->minimap.player.y / MAP_TILE_SIZE) * MAP_TILE_SIZE - MAP_TILE_SIZE * i;
 		else
+			y_coord = (int)(data->minimap.player.y / MAP_TILE_SIZE) * MAP_TILE_SIZE + MAP_TILE_SIZE + MAP_TILE_SIZE * i;
+		if (ray->rad > 0 && ray->rad <= M_PI)
 			j = y_coord / MAP_TILE_SIZE - 1;
-		if (data->other.map[j][(int)(x_coord) / MAP_TILE_SIZE] != '1')
+		else
+			j = y_coord / MAP_TILE_SIZE;
+		ray->x_end = x_coord;  // записываем координаты точки пересечения в структуру
+		ray->y_end = y_coord;
+		if (data->other.map[j][x_coord / MAP_TILE_SIZE] != '1')
 		{
-			ray->x_end = x_coord;
-			ray->y_end = y_coord;
+			i++;
 			calculate_ray(x, y + MAP_TILE_SIZE, data, lst_rays);
 		}
 	}
+	i = 0;
 	// x_coord = data->minimap.player.x + cos(data->rad) * data->ray;
 	// y_coord = data->minimap.player.y - sin(data->rad) * data->ray;
 	// data->minimap.x_intsct = x_coord;  // записываем координаты точки пересечения в структуру
@@ -156,9 +192,11 @@ void	raycasting(t_data *data)
 	i = 0;
 	ray = ft_calloc(1, sizeof(t_ray));
 	data->rays = ft_lstnew(ray);
-	ray->rad = data->rad;
+	ray->rad = to_radiants(45);
 	calculate_offset(data);
-	while (i++ < WIDTH_WINDOW / 2)
+	// if (cos(data->rad) == 0 || sin(data->rad) == 0)
+	// 	return ;
+	while (i++ < 1)
 	{
 		calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
 		ray = ft_calloc(1, sizeof(t_ray));
