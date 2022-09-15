@@ -62,8 +62,8 @@ $(NAME): $(OBJ_F)
 %.o: %.c $(HEADER)
 	cc $(CFLAGS) -c $< -o $@
 
-bonus: $(OBJ_B)
-	ar crs $(NAME) $(OBJ_B)
+bonus: $(OBJ_B) $(OBJ_F)
+	ar crs $(NAME) $(OBJ_B) $(OBJ_F)
 
 clean:
 	rm -rf $(OBJ_F) $(OBJ_B)

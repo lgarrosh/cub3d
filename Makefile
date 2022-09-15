@@ -46,7 +46,7 @@ $(NAME): $(OBJ_D) $(OBJ_F) $(LIBFT) $(INC_DIR)
 	$(CC) $(OBJ_F) $(FLAGS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
-	@make -C $(LIB_DIR) --no-print-directory
+	@make -C $(LIB_DIR) bonus --no-print-directory
 
 clean:
 	@make -C $(LIB_DIR) clean --no-print-directory
@@ -57,3 +57,4 @@ fclean: clean
 	rm -rfv $(NAME)
 
 re: fclean all
+	@make -C $(LIB_DIR) re --no-print-directory
