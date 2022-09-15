@@ -117,7 +117,7 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 			j = x_coord / MAP_TILE_SIZE;
 		else
 			j = x_coord / MAP_TILE_SIZE - 1;
-		if (data->other.map[(int)round(y_coord) / MAP_TILE_SIZE][j] != '1')
+		if (data->other.map[(int)y_coord / MAP_TILE_SIZE][j] != '1')
 		{
 			ray->x_end = x_coord;  // записываем координаты точки пересечения в структуру
 			ray->y_end = y_coord;
@@ -133,7 +133,7 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 			j = y_coord / MAP_TILE_SIZE;
 		else
 			j = y_coord / MAP_TILE_SIZE - 1;
-		if (data->other.map[j][(int)round(x_coord) / MAP_TILE_SIZE] != '1')
+		if (data->other.map[j][(int)(x_coord) / MAP_TILE_SIZE] != '1')
 		{
 			ray->x_end = x_coord;
 			ray->y_end = y_coord;
