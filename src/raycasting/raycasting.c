@@ -35,6 +35,8 @@ void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
 	{
 		x += dX;
 		y += dY;
+		if (x > data->width || y > data->height || x < 0 || y < 0)
+			return ;
 		my_mlx_pixel_put(data, roundf(x), roundf(y), 0x00000000);
 	}
 }
