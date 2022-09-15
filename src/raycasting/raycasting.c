@@ -35,6 +35,8 @@ void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
 	{
 		x += dX;
 		y += dY;
+		if (x > data->width || y > data->height || x < 0 || y < 0)
+			return ;
 		my_mlx_pixel_put(data, roundf(x), roundf(y), 0x00000000);
 	}
 }
@@ -79,28 +81,34 @@ void	calculate_offset(t_data *data)
 // подавая каждый раз увеличивающиеся значения отступа по x и y 
 void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 {
-	int	x_coord;
-	int	y_coord;
+	double	x_coord;
+	double	y_coord;
 	double	ray_x;
 	double	ray_y;
 	int	j;
 	t_ray *ray;
 
 	ray = (t_ray *)lst_rays->content;
-	ray_x = x / cos(ray->rad); // луч пересечения с осью Y
-	ray_y = y / sin(ray->rad); // луч пересечения с осью X
 	if (ray->rad == M_PI)
 	{
 		ray_x = x;
 		ray_y = y;
 	}
 	if (ray->rad == M_PI / 2 || ray->rad == 3 * M_PI / 2)
+	{
 		ray_x = x;
+		ray_y = y / sin(ray->rad);
+	}
+	else 
+	{
+		ray_x = x / cos(ray->rad); // луч пересечения с осью Y
+		ray_y = y / sin(ray->rad); // луч пересечения с осью X
+	}
 	if (ray_x < 0)
 		ray_x = -ray_x;
 	if (ray_y < 0)
 		ray_y = -ray_y;
-	if (ray_x < ray_y)
+	if (ray_x <= ray_y)
 	{	
 		ray->ray = ray_x;
 		x_coord = data->minimap.player.x + cos(ray->rad) * ray->ray; // координаты точки пересечения
@@ -109,7 +117,7 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 			j = x_coord / MAP_TILE_SIZE;
 		else
 			j = x_coord / MAP_TILE_SIZE - 1;
-		if (data->other.map[y_coord / MAP_TILE_SIZE][j] != '1')
+		if (data->other.map[(int)round(y_coord) / MAP_TILE_SIZE][j] != '1')
 		{
 			ray->x_end = x_coord;  // записываем координаты точки пересечения в структуру
 			ray->y_end = y_coord;
@@ -125,7 +133,7 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 			j = y_coord / MAP_TILE_SIZE;
 		else
 			j = y_coord / MAP_TILE_SIZE - 1;
-		if (data->other.map[j][x_coord / MAP_TILE_SIZE] != '1')
+		if (data->other.map[j][(int)round(x_coord) / MAP_TILE_SIZE] != '1')
 		{
 			ray->x_end = x_coord;
 			ray->y_end = y_coord;
@@ -150,22 +158,20 @@ void	raycasting(t_data *data)
 	data->rays = ft_lstnew(ray);
 	ray->rad = data->rad;
 	calculate_offset(data);
-	if (cos(data->rad) == 0 || sin(data->rad) == 0)
-		return ;
-	while (i++ < 20)
+	while (i++ < WIDTH_WINDOW / 2)
 	{
 		calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
 		ray = ft_calloc(1, sizeof(t_ray));
-		ray->rad = data->rad + to_radiants(i*2);
-		ft_lstadd_front(&data->rays, ft_lstnew(ray));
+		ray->rad = data->rad + to_radiants((double)i / 15);
+		ft_lstadd_back(&data->rays, ft_lstnew(ray));
 	}
 	// i = 0;
-	// while (i++ < 20)
+	// while (i++ < WIDTH_WINDOW / 2)
 	// {
 	// 	calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
 	// 	ray = ft_calloc(1, sizeof(t_ray));
-	// 	ray->rad = data->rad - to_radiants(i);
-	// 	ft_lstadd_front(&data->rays, ft_lstnew(ray));
+	// 	ray->rad = data->rad - to_radiants((double)i / 15);
+	// 	ft_lstadd_back(&data->rays, ft_lstnew(ray));
 	// }
 }
 

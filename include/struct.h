@@ -72,8 +72,8 @@ typedef struct s_minimap
 
 typedef struct	s_ray
 {
-	int		x_end;
-	int		y_end;
+	double		x_end;
+	double		y_end;
 	double	ray;
 	double 	rad;
 }			t_ray;

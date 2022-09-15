@@ -54,7 +54,7 @@ CFLAGS = -Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(OBJ_F)
+$(NAME): $(OBJ_F) bonus
 	ar crs $(NAME) $(OBJ_F)
 
 .PHONY	:	all clean fclean re bonus

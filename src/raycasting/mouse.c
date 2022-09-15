@@ -24,5 +24,6 @@ int	mouse_action(int x, int y, void *param)
 		data->rad -= 2 * M_PI;
 	while (data->rad < 0)
 		data->rad += 2 * M_PI;
+	// mlx_mouse_move(data->win, WIDTH_WINDOW / 2, HEIGTH_WINDOW / 2);
 	return (0);
 }
