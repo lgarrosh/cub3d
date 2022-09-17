@@ -437,6 +437,19 @@ void draw_everything(t_data *data)
 		data->minimap.img->height + 100, 0x00FFFF00, ft_itoa((data->minimap.y_intsct)));
 }
 
+// void	make_fog(int *color, float height)
+// {
+	// int r;
+	// int g;
+	// int b;
+
+	// r = (((*color & 0x00FF0000) >> 16) + 350 / (int)height) << 16;
+	// g = (((*color & 0x0000FF00) >> 8) + 350 / (int)height) << 8;
+	// b = (*color & 0x000000FF) + 350 / (int)height;
+	// *color = r + g + b;
+	// *color = *color + 10 * height;
+// }
+
 void	calculate_3d(t_data *data)
 {
 	int x;
@@ -445,12 +458,14 @@ void	calculate_3d(t_data *data)
 	int color;
 	t_list *lst;
 	t_ray *ray;
+	float height;
 
 	i = 0;
 	lst = data->rays;
 	ray = lst->content;
+	height = sqrt(ray->ray);
 	x = 0;
-	y = HEIGTH_WINDOW / 2 - 2000 / sqrt(ray->ray);
+	y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
 	while (x < WIDTH_WINDOW)
 	{
 		if (ray->type == 'W')
@@ -461,16 +476,17 @@ void	calculate_3d(t_data *data)
 			color = 0x005c4242;
 		else if (ray->type == 'S')
 			color = 0x00825f5f;
-		while (y < HEIGTH_WINDOW / 2 + 2000 / sqrt(ray->ray))
+		// make_fog(&color, height);
+		while (y < HEIGTH_WINDOW / 2 + HEIGTH_WINDOW / height)
 		{
 			if (y < HEIGTH_WINDOW && y > 0)
 				my_mlx_pixel_put(data->bg, x, y, color);
 			y++;
 		}
-		printf("%d\n", i++);
 		lst = lst->next;
 		ray = lst->content;
-		y = HEIGTH_WINDOW / 2 - 2000 / sqrt(ray->ray);
+		height = sqrt(ray->ray);
+		y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
 		x++;
 	}
 }
