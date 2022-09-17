@@ -158,9 +158,15 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 	{	
 		ray->ray = ray_x;
 		if (ray->rad > M_PI / 2 && ray->rad <= M_PI * 3 / 2)
+		{
 			x_coord = (int)(data->minimap.player.x / MAP_TILE_SIZE) * MAP_TILE_SIZE - MAP_TILE_SIZE * i;
+			ray->type = 'W';
+		}
 		else
+		{
 			x_coord = (int)(data->minimap.player.x / MAP_TILE_SIZE) * MAP_TILE_SIZE + MAP_TILE_SIZE + MAP_TILE_SIZE * i; // координаты точки пересечения
+			ray->type = 'E';
+		}
 		y_coord = data->minimap.player.y - sin(ray->rad) * ray->ray;
 		j2 = y_coord / MAP_TILE_SIZE;
 		if (ray->rad > M_PI / 2 && ray->rad <= 3 * M_PI / 2)
@@ -180,9 +186,15 @@ void	calculate_ray(int x, int y, t_data *data, t_list *lst_rays)
 		ray->ray = ray_y;
 		x_coord = data->minimap.player.x + cos(ray->rad) * ray->ray;
 		if (ray->rad > 0 && ray->rad <= M_PI)
+		{
 			y_coord = (int)(data->minimap.player.y / MAP_TILE_SIZE) * MAP_TILE_SIZE - MAP_TILE_SIZE * i2;
+			ray->type = 'N';
+		}
 		else
+		{
 			y_coord = (int)(data->minimap.player.y / MAP_TILE_SIZE) * MAP_TILE_SIZE + MAP_TILE_SIZE + MAP_TILE_SIZE * i2;
+			ray->type = 'S';
+		}
 		if (ray->rad > 0 && ray->rad <= M_PI)
 			j2 = y_coord / MAP_TILE_SIZE - 1;
 		else
@@ -209,28 +221,20 @@ void	raycasting(t_data *data)
 	int		i;
 	t_ray	*ray;
 
-	i = 0;
 	ray = ft_calloc(1, sizeof(t_ray));
 	data->rays = ft_lstnew(ray);
 	ray->rad = data->rad;
 	calculate_offset(data);
 	// if (cos(data->rad) == 0 || sin(data->rad) == 0)
 	// 	return ;
-	while (i++ < WIDTH_WINDOW / 2)
+	i =  WIDTH_WINDOW / 2;
+	while (i-- > - WIDTH_WINDOW / 2)
 	{
 		calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
 		ray = ft_calloc(1, sizeof(t_ray));
 		ray->rad = data->rad + to_radiants((double)i / 15);
 		ft_lstadd_back(&data->rays, ft_lstnew(ray));
 	}
-	// i = 0;
-	// while (i++ < WIDTH_WINDOW / 2)
-	// {
-	// 	calculate_ray(data->minimap.x_off, data->minimap.y_off, data, ft_lstlast(data->rays));
-	// 	ray = ft_calloc(1, sizeof(t_ray));
-	// 	ray->rad = data->rad - to_radiants((double)i / 15);
-	// 	ft_lstadd_back(&data->rays, ft_lstnew(ray));
-	// }
 }
 
 void	floor_ceiling(t_data *data)
@@ -239,7 +243,15 @@ void	floor_ceiling(t_data *data)
 	int	y;
 
 	x = 0;
-	y =  HEIGTH_WINDOW / 2 - 1;
+	y =  0;
+	while (y < HEIGTH_WINDOW / 2)
+	{
+		while (x < WIDTH_WINDOW)
+			my_mlx_pixel_put(data->bg, x++, y, 0xFFFFFFFF);
+		x = 0;
+		y++;
+	}
+	x = 0;
 	while (y < HEIGTH_WINDOW)
 	{
 		while (x < WIDTH_WINDOW)
@@ -247,12 +259,6 @@ void	floor_ceiling(t_data *data)
 		x = 0;
 		y++;
 	}
-	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
-	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
-	if (data->sky_offset > 0)
-		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
-	else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
-		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
 }
 
 void	draw_map_bg(t_data *data)
@@ -359,11 +365,7 @@ void	mini_map(t_data *data, char **map)
 	int		j;
 	double	x;
 	double	y;
-	t_list *copy;
-	t_ray 	*ray;
-
-	ray = (t_ray *)data->rays->content;
-	copy = data->rays;
+	
 	i = 0;
 	j = 0;
 	x = 0;
@@ -392,6 +394,22 @@ void	mini_map(t_data *data, char **map)
 	}
 	draw_map_grid(data);
 	draw_map_player(data);
+}
+
+void draw_everything(t_data *data)
+{
+	t_list *copy;
+	t_ray 	*ray;
+
+	ray = (t_ray *)data->rays->content;
+	copy = data->rays;
+
+	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
+	if (data->sky_offset > 0)
+		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
+	else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
+		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
 	mlx_string_put(data->mlx, data->win, 20,
 		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.x_bitmap));
 	mlx_string_put(data->mlx, data->win, 40,
@@ -419,11 +437,52 @@ void	mini_map(t_data *data, char **map)
 		data->minimap.img->height + 100, 0x00FFFF00, ft_itoa((data->minimap.y_intsct)));
 }
 
+void	calculate_3d(t_data *data)
+{
+	int x;
+	int y;
+	int i;
+	int color;
+	t_list *lst;
+	t_ray *ray;
+
+	i = 0;
+	lst = data->rays;
+	ray = lst->content;
+	x = 0;
+	y = HEIGTH_WINDOW / 2 - 2000 / sqrt(ray->ray);
+	while (x < WIDTH_WINDOW)
+	{
+		if (ray->type == 'W')
+			color = 0x002b2b2b;
+		else if (ray->type == 'E')
+			color = 0x00595959;
+		else if (ray->type == 'N')
+			color = 0x005c4242;
+		else if (ray->type == 'S')
+			color = 0x00825f5f;
+		while (y < HEIGTH_WINDOW / 2 + 2000 / sqrt(ray->ray))
+		{
+			if (y < HEIGTH_WINDOW && y > 0)
+				my_mlx_pixel_put(data->bg, x, y, color);
+			y++;
+		}
+		printf("%d\n", i++);
+		lst = lst->next;
+		ray = lst->content;
+		y = HEIGTH_WINDOW / 2 - 2000 / sqrt(ray->ray);
+		x++;
+	}
+}
+
+
 int	raycast_loop(t_data	*data)
 {
-	floor_ceiling(data);
 	raycasting(data);
+	floor_ceiling(data);
+	calculate_3d(data);
 	mini_map(data, data->other.map);
+	draw_everything(data);
 	// put frame
 	return (0);
 }

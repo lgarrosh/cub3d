@@ -76,6 +76,7 @@ typedef struct	s_ray
 	double		y_end;
 	double	ray;
 	double 	rad;
+	char	type;
 }			t_ray;
 
 typedef struct s_data
