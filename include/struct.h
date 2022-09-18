@@ -92,7 +92,7 @@ typedef struct s_data
 	int			sky_offset;
 	double		rad;
 	double		ray;
-	t_list		*rays;
+	t_ray		rays[WIDTH_WINDOW];
 }				t_data;
 
 #endif
