@@ -48,35 +48,32 @@ typedef struct s_sprite
 
 typedef struct s_struct
 {
-	int			color;
-	int			f_color;
-	int			c_color;
-	char		**map;
-	int			bitmap_width;
-	int			bitmap_height;
-	int			mouse_x;
-	int			mouse_y;
+	int			f_color; // цвет пола
+	int			c_color; // цвет потолка
+	char		**map; // карта
+	int			bitmap_width; // ширина карты
+	int			bitmap_height; // высота карты
+	int			mouse_x; // координаты мышки 
+	int			mouse_y; // координаты мышки 
 } 				t_struct;
 
 typedef struct s_minimap
 {
-	t_vector	player;
-	int			x_bitmap;
-	int			y_bitmap;
-	int			x_off;
-	int			y_off;
-	int			x_intsct;
-	int			y_intsct;
-	t_data_img	*img;
+	t_vector	player; // координаты на всей карте
+	int			x_bitmap; // координаты клетки по x
+	int			y_bitmap; // координаты клетки по y
+	int			x_off; // отступ внутри клетки (положения игрока)
+	int			y_off; // отступ внутри клетки (положения игрока)
+	t_data_img	*img; // мини-карта
 } 				t_minimap;
 
 typedef struct	s_ray
 {
-	double		x_end;
-	double		y_end;
-	double	ray;
-	double 	rad;
-	char	type;
+	double		x_end; // координаты пересечения 
+	double		y_end; // координаты пересечения
+	double		ray; // длина 
+	double		rad; // угол 
+	char		type; // восток запод 
 }			t_ray;
 
 typedef struct s_data
@@ -88,11 +85,10 @@ typedef struct s_data
 	t_minimap	minimap;
 	t_player	play;
 	int			fps;
-	t_sprite	skybox;
-	int			sky_offset;
-	double		rad;
-	double		ray;
-	t_ray		rays[WIDTH_WINDOW];
+	t_sprite	skybox; // небо
+	int			sky_offset; // смещение небо по x
+	double		rad; // угол в ра
+	t_ray		rays[WIDTH_WINDOW]; // лучи
 }				t_data;
 
 #endif

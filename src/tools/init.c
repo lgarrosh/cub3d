@@ -32,13 +32,9 @@ void	init_data(t_data *data)
 
 	init_player(&play);
 	data->play = play;
-	data->ray = 30;
 	data->rad = 0;
 	data->mlx = mlx_init();
 	data->fps = 30;
-	data->minimap.x_intsct = 0;
-	data->minimap.y_intsct = 0;
-	data->other.color = 0x00000000;
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
 	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
 	data->skybox.img = mlx_xpm_file_to_image(data->mlx, "images/skybox.xpm",
