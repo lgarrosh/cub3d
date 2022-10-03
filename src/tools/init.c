@@ -14,47 +14,23 @@ void	init_img(t_data *data, t_data_img **img, int width, int heigth)
 	(*img)->height = heigth;
 }
 
-t_vector	*init_vector(double x, double y)
+t_vector	init_vector(double x, double y)
 {
-	t_vector	*vc;
+	t_vector	vc;
 
-	vc = malloc(sizeof(t_vector));
-	if (!vc)
-		return (NULL);
-	vc->x = x;
-	vc->y = y;
+	vc.x = x;
+	vc.y = y;
 	return (vc);
 }
 
 void	init_data(t_data *data)
 {
-	t_player	play;
-
-	init_player(&play);
-	data->play = play;
-	data->rad = 0;
 	data->mlx = mlx_init();
-	data->fps = 30;
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
+	data->fps = 30;
 	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
 	data->skybox.img = mlx_xpm_file_to_image(data->mlx, "images/skybox.xpm",
 		&data->skybox.width, &data->skybox.height);
-	init_img(data, &data->minimap.img, MAP_TILE_SIZE * 7, MAP_TILE_SIZE * 7);
+	init_img(data, &data->map.img, MAP_TILE_SIZE * 7, MAP_TILE_SIZE * 7);
 }
 
-void	init_player(t_player *play)
-{
-	t_vector	pos;
-	t_vector	dir;
-	t_vector	plane;
-
-	pos.x = 0;
-	pos.y = 0;
-	dir.x = pos.x + 2;
-	dir.y = pos.y + 0;
-	plane.x = dir.x + 0;
-	plane.y = dir.y + -0.5;
-	play->pos = pos;
-	play->dir = dir;
-	play->plane = plane;
-}

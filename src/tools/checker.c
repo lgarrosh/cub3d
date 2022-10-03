@@ -38,7 +38,7 @@ void	find_bitmap_dimensions(char *map, t_data *data)
 	j = 0;
 	k = 0;
 	i = 0;
-	data->other.bitmap_width = 0;
+	data->map.bitmap_width = 0;
 	while (map[i])
 	{
 		while (map[i] != '\n' && map[i] != '\0')
@@ -48,13 +48,13 @@ void	find_bitmap_dimensions(char *map, t_data *data)
 		}
 		if (map[i] == '\n' || map[i] != '\0')
 			k++;
-		if (j > data->other.bitmap_width)
-			data->other.bitmap_width = j;
+		if (j > data->map.bitmap_width)
+			data->map.bitmap_width = j;
 		j = 0;
 		i++;
 	}
 	k++;
-	data->other.bitmap_height = k;
+	data->map.bitmap_height = k;
 }
 
 void	string_to_array_of_strings(char *map, t_data *data)
@@ -66,9 +66,9 @@ void	string_to_array_of_strings(char *map, t_data *data)
 	i1 = 0;
 	i2 = 0;
 	j = 0;
-	data->other.map = ft_calloc(data->other.bitmap_height + 1, sizeof(char *));
-	while (i1 < data->other.bitmap_height)
-		data->other.map[i1++] = ft_calloc(data->other.bitmap_width + 1, sizeof(char));
+	data->map.map = ft_calloc(data->map.bitmap_height + 1, sizeof(char *));
+	while (i1 < data->map.bitmap_height)
+		data->map.map[i1++] = ft_calloc(data->map.bitmap_width + 1, sizeof(char));
 	i1 = 0;
 	while (map[j])
 	{
@@ -79,7 +79,7 @@ void	string_to_array_of_strings(char *map, t_data *data)
 		}
 		else
 		{
-			data->other.map[i1][i2] = map[j];
+			data->map.map[i1][i2] = map[j];
 			i2++;
 		}
 		j++;
@@ -94,12 +94,12 @@ void	empty_to_dash(t_data *data)
 
 	j = 0;
 	i = 0;
-	while (data->other.map[i] != NULL)
+	while (data->map.map[i] != NULL)
 	{
-		while (j < data->other.bitmap_width)
+		while (j < data->map.bitmap_width)
 		{
-			if (data->other.map[i][j] == ' ' || data->other.map[i][j] == '\0')
-				data->other.map[i][j] = '-';
+			if (data->map.map[i][j] == ' ' || data->map.map[i][j] == '\0')
+				data->map.map[i][j] = '-';
 			j++;
 		}
 		i++;
@@ -115,16 +115,16 @@ void	find_player_cooridnates(t_data *data)
 
 	i = 0;
 	j = 0;
-	while (data->other.map[i] != NULL)
+	while (data->map.map[i] != NULL)
 	{
-		while(data->other.map[i][j] != '\0')
+		while(data->map.map[i][j] != '\0')
 		{
-			if (data->other.map[i][j] == 'N')
+			if (data->map.map[i][j] == 'N')
 			{
-				data->minimap.x_bitmap = j;
-				data->minimap.y_bitmap = i;
-				data->minimap.player.x = j * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
-				data->minimap.player.y = i * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
+				data->play.map.x = j;
+				data->play.map.y = i;
+				data->play.pos.x = j * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
+				data->play.pos.y = i * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
 			}
 			j++;
 		}
@@ -153,7 +153,6 @@ int	save_color(char *string, int i, t_data *data, char f_or_c)
 
 	j = 0;
 	k = 0;
-	(void)data;
 	while (string[i] != '\n')
 	{
 		while (!ft_isdigit(string[i]))
@@ -167,8 +166,8 @@ int	save_color(char *string, int i, t_data *data, char f_or_c)
 		k = 0;
 	}
 	if (f_or_c == 'f')
-		data->other.f_color = string_to_rgb((char *)rgb);
+		data->f_color = string_to_rgb((char *)rgb);
 	else
-		data->other.c_color = string_to_rgb((char *)rgb);
+		data->c_color = string_to_rgb((char *)rgb);
 	return (0);
 }

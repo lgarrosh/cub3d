@@ -12,6 +12,7 @@ else
 endif
 
 LIBFT		= libft/libft.a
+INCLUDE		= $(INC_DIR)cube.h $(INC_DIR)struct.h
 INC_DIR 	= include/
 LIB_DIR		= libft/
 SRC_D		= src/
@@ -42,7 +43,7 @@ $(OBJ_D):
 		@mkdir -p $@
 		@mkdir -p $(addprefix $@/, $(MAIN) $(TOOLS) $(RAYCAST))
 
-$(NAME): $(OBJ_D) $(OBJ_F) $(LIBFT) $(INC_DIR)
+$(NAME): $(OBJ_D) $(OBJ_F) $(LIBFT) $(INCLUDE)
 	$(CC) $(OBJ_F) $(FLAGS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):

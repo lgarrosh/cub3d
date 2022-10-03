@@ -87,7 +87,6 @@ int	open_file(char *filename, t_data *data)
 {
 	int		fd;
 	char	*string;
-	(void)data;
 
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)

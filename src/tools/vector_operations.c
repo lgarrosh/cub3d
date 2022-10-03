@@ -12,13 +12,13 @@ double	mod_vectir(t_vector	vec)
 	return (mod);
 }
 
-t_vector	*sum_vector(t_vector v1, t_vector v2)
-{
-	t_vector	*newvector;
+// t_vector	*sum_vector(t_vector v1, t_vector v2)
+// {
+// 	t_vector	newvector;
 
-	newvector = init_vector(v1.x + v2.x, v1.y + v2.y);
-	return (newvector);
-}
+// 	newvector = init_vector(v1.x + v2.x, v1.y + v2.y);
+// 	return (&newvector);
+// }
 
 void	umnoj_v(t_vector *v, double nb)
 {

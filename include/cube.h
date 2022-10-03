@@ -29,11 +29,10 @@ int			save_color(char *map, int i, t_data *data, char f_or_c);
 //	init
 void        init_img(t_data *data, t_data_img **img, int width, int higth);
 void        init_data(t_data *data);
-t_vector	*init_vector(double x, double y);
-void	    init_player(t_player *play);
+t_vector	init_vector(double x, double y);
 // raycasting
 int	    	raycast_loop(t_data	*data);
-int     	mouse_action(int x, int y, void *param);
+void    	mouse_action(t_data	*data);
 int	    	render(void *param);
 
 #endif

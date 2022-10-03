@@ -40,7 +40,7 @@ void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
 		my_mlx_pixel_put(data, roundf(x), roundf(y), 0x00000000);
 	}
 }
-
+/*
 // считаем и записываем в структуру изначальные отступы игрока, с помощью которых считаются
 // изначальный луч (гипотенуза) от игрока до ближайшего пересечения до другой клетки
 void	calculate_offset(t_data *data)
@@ -72,7 +72,6 @@ void	calculate_offset(t_data *data)
 	}
 	data->minimap.x_off = xx;
 	data->minimap.y_off = yy;
-	//********************************************************
 	mlx_string_put(data->mlx, data->win, 20,
 		data->minimap.img->height + 70, 0x00FF00FF, ft_itoa(xx));
 	mlx_string_put(data->mlx, data->win, 40,
@@ -115,7 +114,7 @@ void	raycasting(t_data *data) // вычисляет лчи
 		j++;
 	}
 }
-
+*/
 void	floor_ceiling(t_data *data)
 {
 	int	x;
@@ -134,7 +133,7 @@ void	floor_ceiling(t_data *data)
 	while (y < HEIGTH_WINDOW)
 	{
 		while (x < WIDTH_WINDOW)
-			my_mlx_pixel_put(data->bg, x++, y, data->other.f_color);
+			my_mlx_pixel_put(data->bg, x++, y, data->f_color);
 		x = 0;
 		y++;
 	}
@@ -147,10 +146,10 @@ void	draw_map_bg(t_data *data) // рисует фон мини карты
 
 	x = 0;
 	y = 0;
-	while (y < data->minimap.img->height)
+	while (y < data->map.img->height)
 	{
-		while (x < data->minimap.img->width)
-			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0FFFFFF);
+		while (x < data->map.img->width)
+			my_mlx_pixel_put(data->map.img, x++, y, 0xA0FFFFFF);
 		x = 0;
 		y++;
 	}
@@ -165,18 +164,18 @@ void	draw_map_wall(float x, float y, t_data *data) // рисует стены н
 
 	paint_x = 0;
 	paint_y = 0;
-	offset_x = data->minimap.img->width / 2 - data->minimap.player.x;
-	offset_y = data->minimap.img->height / 2 - data->minimap.player.y;
+	offset_x = data->map.img->width / 2 - data->play.pos.x;
+	offset_y = data->map.img->height / 2 - data->play.pos.y;
 	while (paint_y < MAP_TILE_SIZE)
 	{
-		if ((y + paint_y + offset_y) < data->minimap.img->height
+		if ((y + paint_y + offset_y) < data->map.img->height
 			&& (y + paint_y + offset_y) >= 0)
 		{
 			while (paint_x < MAP_TILE_SIZE)
 			{
-				if ((x + offset_x + paint_x) < data->minimap.img->width
+				if ((x + offset_x + paint_x) < data->map.img->width
 					&& (x + offset_x + paint_x) >= 0)
-					my_mlx_pixel_put(data->minimap.img, x + offset_x + paint_x,
+					my_mlx_pixel_put(data->map.img, x + offset_x + paint_x,
 						y + paint_y + offset_y, 0xA00FF04F);
 				paint_x++;
 			}		
@@ -191,13 +190,13 @@ void	draw_map_player(t_data *data) // рисует игрока
 	double	x;
 	double	y;
 
-	x = data->minimap.img->width / 2 - 3;
-	y = data->minimap.img->height / 2 - 3;
-	while (y < data->minimap.img->height / 2 + 3)
+	x = data->map.img->width / 2 - 3;
+	y = data->map.img->height / 2 - 3;
+	while (y < data->map.img->height / 2 + 3)
 	{
-		while (x < data->minimap.img->width / 2 + 3)
-			my_mlx_pixel_put(data->minimap.img, x++, y, 0xA0000000);
-		x = data->minimap.img->width / 2 - 3;
+		while (x < data->map.img->width / 2 + 3)
+			my_mlx_pixel_put(data->map.img, x++, y, 0xA0000000);
+		x = data->map.img->width / 2 - 3;
 		y++;
 	}
 	x = 0;
@@ -217,25 +216,35 @@ void	draw_map_grid(t_data *data) // рисует сетку мини карты
 	x = 0;
 	while (i < 7)
 	{
-		hor_lines[i] = i * MAP_TILE_SIZE - data->minimap.player.y + MAP_TILE_SIZE / 2;
+		hor_lines[i] = i * MAP_TILE_SIZE - data->play.pos.y + MAP_TILE_SIZE / 2;
 		while (hor_lines[i] < 0)
-			hor_lines[i] = data->minimap.img->height + hor_lines[i];
-		while (hor_lines[i] > data->minimap.img->height)
-			hor_lines[i] = data->minimap.img->height - hor_lines[i];
-		ver_lines[i] = i * MAP_TILE_SIZE - data->minimap.player.x + MAP_TILE_SIZE / 2;
+			hor_lines[i] = data->map.img->height + hor_lines[i];
+		while (hor_lines[i] > data->map.img->height)
+			hor_lines[i] = data->map.img->height - hor_lines[i];
+		ver_lines[i] = i * MAP_TILE_SIZE - data->play.pos.x + MAP_TILE_SIZE / 2;
 		while (ver_lines[i] < 0)
-			ver_lines[i] = data->minimap.img->width + ver_lines[i];
-		while (ver_lines[i] > data->minimap.img->width)
-			ver_lines[i] = data->minimap.img->width - ver_lines[i];
-		while (y < data->minimap.img->height)
-			my_mlx_pixel_put(data->minimap.img, ver_lines[i], y++, 0x60000000);
-		while (x < data->minimap.img->width)
-			my_mlx_pixel_put(data->minimap.img, x++, hor_lines[i], 0x60000000);
+			ver_lines[i] = data->map.img->width + ver_lines[i];
+		while (ver_lines[i] > data->map.img->width)
+			ver_lines[i] = data->map.img->width - ver_lines[i];
+		while (y < data->map.img->height)
+			my_mlx_pixel_put(data->map.img, ver_lines[i], y++, 0x60000000);
+		while (x < data->map.img->width)
+			my_mlx_pixel_put(data->map.img, x++, hor_lines[i], 0x60000000);
 		i++;
 		y = 0;
 		x = 0;
 		// printf("%d\n", i);
 	}
+}
+
+void	draw_map_dir(t_data *data)
+{
+	t_vector dir;
+
+	dir = init_vector(MAP_TILE_SIZE * cos(data->rad), \
+			MAP_TILE_SIZE * cos(to_radiants(90) - data->rad));
+	line_dda(data->map.img, data->map.img->width / 2, data->map.img->height / 2, \
+			data->map.img->width / 2 + dir.x, data->map.img->height / 2 + dir.y);
 }
 
 void	mini_map(t_data *data, char **map) // рисует полностью мини карту 
@@ -253,13 +262,13 @@ void	mini_map(t_data *data, char **map) // рисует полностью ми�
 	// рисует стены 
 	while (map[j] != NULL)
 	{
-		if (j >= data->minimap.y_bitmap - 4
-			&& j <= data->minimap.y_bitmap + 4)
+		if (j >= data->play.map.y - 4
+			&& j <= data->play.map.y + 4)
 		{
 			while (map[j][i] != '\0')
 			{
-				if (i >= data->minimap.x_bitmap - 4
-					&& i <= data->minimap.x_bitmap + 4)
+				if (i >= data->play.map.x - 4
+					&& i <= data->play.map.x + 4)
 				{
 					x = i * MAP_TILE_SIZE;
 					y = j * MAP_TILE_SIZE;
@@ -274,41 +283,42 @@ void	mini_map(t_data *data, char **map) // рисует полностью ми�
 	}
 	draw_map_grid(data);
 	draw_map_player(data);
+	draw_map_dir(data);
 }
 
 void draw_everything(t_data *data) // вывод на экран
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
 	if (data->sky_offset > 0)
 		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
 	else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
 		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
-	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
-	mlx_string_put(data->mlx, data->win, 20,
-		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.x_bitmap));
-	mlx_string_put(data->mlx, data->win, 40,
-		data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.y_bitmap));
-	mlx_string_put(data->mlx, data->win, 20,
-		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
+	// mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
+	// mlx_string_put(data->mlx, data->win, 20,
+	// 	data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.x_bitmap));
+	// mlx_string_put(data->mlx, data->win, 40,
+	// 	data->minimap.img->height + 20, 0x00FFFFFF, ft_itoa(data->minimap.y_bitmap));
+	// mlx_string_put(data->mlx, data->win, 20,
+	// 	data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.x));
+	// mlx_string_put(data->mlx, data->win, 60,
+	// 	data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
+	// while (i < WIDTH_WINDOW)
+	// {
+	// 	line_dda(data->minimap.img, data->minimap.img->width / 2, data->minimap.img->height / 2,
+	// 	data->minimap.img->width / 2 + data->rays[i].x_end - data->minimap.player.x,
+	// 	data->minimap.img->height / 2 + data->rays[i].y_end - data->minimap.player.y);
+	// 	i++;
+	// }
+	mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
-		data->minimap.img->height + 40, 0x00FFFFFF, ft_itoa(data->minimap.player.y));
-	while (i < WIDTH_WINDOW)
-	{
-		line_dda(data->minimap.img, data->minimap.img->width / 2, data->minimap.img->height / 2,
-		data->minimap.img->width / 2 + data->rays[i].x_end - data->minimap.player.x,
-		data->minimap.img->height / 2 + data->rays[i].y_end - data->minimap.player.y);
-		i++;
-	}
-	mlx_put_image_to_window(data->mlx, data->win, data->minimap.img->img, 20, 20);
-	mlx_string_put(data->mlx, data->win, 60,
-		data->minimap.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->rad)));
+		data->map.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->rad)));
 	mlx_string_put(data->mlx, data->win, 90,
-		data->minimap.img->height + 80, 0x00FFFF00, ft_itoa((data->rad)));
+		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->rad)));
 }
-
+/*
 // void	make_fog(int *color, float height)
 // {
 // 	int r;
@@ -355,15 +365,17 @@ void	calculate_3d(t_data *data) // рисует 3d изображение
 		x++;
 	}
 }
-
+*/
 
 int	  raycast_loop(t_data	*data)
 {
+	// координаты мышки
+	mouse_action(data);
 	// алгоритм
-	raycasting(data); // высчитивает лучи
+	// raycasting(data); // высчитивает лучи
 	floor_ceiling(data); // пол потолок
-	calculate_3d(data); // преобразует в 3d изображение
-	mini_map(data, data->other.map); // алгоритм мини-карты
+	// calculate_3d(data); // преобразует в 3d изображение
+	mini_map(data, data->map.map); // алгоритм мини-карты
 	// вывод изображения
 	draw_everything(data); // вывод изображения
 	return (0);
