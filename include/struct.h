@@ -44,12 +44,24 @@ typedef struct s_sprite
 	char *path;
 } t_sprite;
 
+typedef struct s_ray
+{
+	t_vector	x_end; // координаты пересечения
+	t_vector	move_cor; // длина перемещения по x при движении в y на 1 еденицу (и наоборот)
+	t_vector	delta; // длина до первого пересечения по x и y
+	double		ray; // длина
+	double		rad; // угол
+	int			step; 
+} t_ray;
+
 typedef struct s_player
 {
 	t_vector	pos; // координаты игрока
 	t_pos		map; // координаты клетки на карте в которой находиться игрок
 	t_vector	dir; // вектор напровления
 	t_vector	off; // отступ внутри клетки
+	double		rad; // угол напровления в радианах
+	double		grad; // угол напровления в градусах
 } t_player;
 
 typedef struct s_minimap
@@ -59,14 +71,6 @@ typedef struct s_minimap
 	int bitmap_height; // высота карты
 	t_data_img *img;   // мини-карта
 } t_minimap;
-
-typedef struct s_ray
-{
-	t_vector x_end; // координаты пересечения со стеной
-	double ray;		// длина
-	double rad;		// угол
-	char type;		// восток запод
-} t_ray;
 
 typedef struct s_data
 {
@@ -80,8 +84,9 @@ typedef struct s_data
 	int			fps;
 	t_sprite	skybox; // небо
 	int			sky_offset;	// смещение небо по x
-	double		rad;
-	t_ray		rays[WIDTH_WINDOW]; // лучи
+	double		rad_del; // угол между лучам радианах
+	double		grad_del; // угол между лучам градусах
+	double		review; // обзор
 } t_data;
 
 // typedef struct s_minimap
