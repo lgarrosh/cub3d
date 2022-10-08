@@ -13,21 +13,33 @@
 // 		return (0);
 // 	return (1);
 // }
+int	ft_go(t_data *data, t_vector move)
+{
+	t_vector	map;
+	t_vector	pos;
 
+	pos = sum_vector(data->play.pos, move);
+	map.x = pos.x / MAP_TILE_SIZE;
+	map.y = pos.y / MAP_TILE_SIZE;
+	if (data->map.map[(int)map.y][(int)map.x] == '1')
+		return (1);
+	data->play.pos = pos;
+	data->play.map = map;
+	return (0);
+}
 int	keypress(int keycode, void *param)
 {
 	t_data		*data;
 	t_vector	move;
-	int			speed;
 
-	speed = 3;
 	data = (t_data *)param;
 	if (keycode == 65307 || keycode == 53)
 		close_window(param);
 	if (keycode == W_KEY || keycode == 119)
 	{
-		move.x = speed * cos(data->play.rad);
-		move.y = speed * cos(to_radiants(90) - data->play.rad);
+		move.x = SPEED * cos(data->play.rad);
+		move.y = SPEED * cos(to_radiants(90) - data->play.rad);
+		ft_go(data, move);
 	}
 	// if ((keycode == D_KEY || keycode == 100)
 	// 	&& check_collision(data->minimap.player.x - speed * cos(data->rad + M_PI / 2), data->minimap.player.y, data)
@@ -50,7 +62,6 @@ int	keypress(int keycode, void *param)
 	// 		data->minimap.player.y += speed * sin(data->rad - M_PI / 2);
 	// 		data->minimap.player.x -= speed * cos(data->rad - M_PI / 2);
 	// 	}
-	data->play.pos = sum_vector(data->play.pos, move);
 	return (0);
 }
 

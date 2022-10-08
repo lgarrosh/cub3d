@@ -148,8 +148,8 @@ void	draw_map_wall(float x, float y, t_data *data) // рисует стены н
 
 	paint_x = 0;
 	paint_y = 0;
-	offset_x = data->map.img->width / 2 - data->play.pos.x;
-	offset_y = data->map.img->height / 2 - data->play.pos.y;
+	offset_x = data->map.img->width / 2 - (int)data->play.pos.x;
+	offset_y = data->map.img->height / 2 - (int)data->play.pos.y;
 	while (paint_y < MAP_TILE_SIZE)
 	{
 		if ((y + paint_y + offset_y) < data->map.img->height
@@ -243,15 +243,15 @@ void	mini_map(t_data *data, char **map) // рисует полностью ми�
 	x = 0;
 	y = 0;
 	draw_map_bg(data);
-	// рисует стены 
+	// рисует стены
 	while (map[j] != NULL)
 	{
-		if (j >= data->play.map.y - 4
+		if (j >= data->play.map.y - 5
 			&& j <= data->play.map.y + 4)
 		{
 			while (map[j][i] != '\0')
 			{
-				if (i >= data->play.map.x - 4
+				if (i >= data->play.map.x - 5
 					&& i <= data->play.map.x + 4)
 				{
 					x = i * MAP_TILE_SIZE;
@@ -290,6 +290,12 @@ void draw_everything(t_data *data) // вывод на экран
 		data->map.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->play.rad)));
 	mlx_string_put(data->mlx, data->win, 90,
 		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->play.rad)));
+	mlx_string_put(data->mlx, data->win, 120,
+		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->flag)));
+	mlx_string_put(data->mlx, data->win, 60,
+		data->map.img->height + 100, 0x0000FF00, ft_itoa(data->play.map.x));
+	mlx_string_put(data->mlx, data->win, 90,
+		data->map.img->height + 100, 0x0000FF00, ft_itoa(data->play.map.y));
 }
 /*
 // void	make_fog(int *color, float height)
@@ -343,7 +349,7 @@ void	calculate_3d(t_data *data) // рисует 3d изображение
 void	raycasting(t_data *data) // вычисляет лчи  
 {
 	t_ray		ray;
-	int		i;
+	int			i;
 
 	i = -1;
 	calculate_off(data, &ray);
@@ -373,16 +379,32 @@ void	raycasting(t_data *data) // вычисляет лчи
 
 void	calculate_off(t_data *data, t_ray *ray)
 {
+	int	flag_y;
+	int	flag_x;
+
 	data->play.off.x = data->play.pos.x - (data->play.map.x * MAP_TILE_SIZE);
 	data->play.off.y = data->play.pos.y - (data->play.map.y * MAP_TILE_SIZE);
 	if (data->play.rad > 0 && data->play.rad < M_PI)
+	{
 		ray->delta.y = data->play.off.y;
+		flag_y = NEGATIVE_y;
+	}
 	else
+	{
 		ray->delta.y = MAP_TILE_SIZE - data->play.off.y;
+		flag_y = 7 - NEGATIVE_y;
+	}
 	if (data->play.rad > M_PI / 2 && data->play.rad < (3 * M_PI) / 2)
+	{
 		ray->delta.x = data->play.off.x;
+		flag_x = NEGATIVE_X;
+	}
 	else
+	{
 		ray->delta.x = MAP_TILE_SIZE - data->play.off.x;
+		flag_x = 7 - NEGATIVE_X;
+	}
+	data->flag = flag_x & flag_y;
 }
 
 void	calculate_ray(t_data *data, t_ray *ray)
@@ -394,7 +416,7 @@ void	calculate_ray(t_data *data, t_ray *ray)
 int	  raycast_loop(t_data	*data)
 {
 	mouse_action(data); // координаты мышки
-	// raycasting(data); // высчитивает лучи
+	raycasting(data); // высчитивает лучи
 	floor_ceiling(data); // пол потолок
 	// calculate_3d(data); // преобразует в 3d изображение
 	mini_map(data, data->map.map); // алгоритм мини-карты

@@ -17,7 +17,7 @@ int	close_window(t_data *data)
 
 double	to_radiants(double degrees) 
 {
-    return	(degrees * M_PI / 180.0);
+    return	(degrees * M_PI / -180.0);
 }
 
 double	to_degrees(double radiants) 

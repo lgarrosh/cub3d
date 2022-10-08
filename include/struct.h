@@ -8,6 +8,10 @@
 
 #define MAP_TILE_SIZE 30
 
+#define	NEGATIVE_y 1
+#define	NEGATIVE_X 3
+#define SPEED 2
+
 #define W_KEY 13
 #define D_KEY 2
 #define S_KEY 1
@@ -18,12 +22,6 @@ typedef struct s_vector
 	double x;
 	double y;
 } t_vector;
-
-typedef struct s_pos
-{
-	int x;
-	int y;
-}			t_pos;
 
 typedef struct s_data_img
 {
@@ -57,7 +55,7 @@ typedef struct s_ray
 typedef struct s_player
 {
 	t_vector	pos; // координаты игрока
-	t_pos		map; // координаты клетки на карте в которой находиться игрок
+	t_vector	map; // координаты клетки на карте в которой находиться игрок
 	t_vector	dir; // вектор напровления
 	t_vector	off; // отступ внутри клетки
 	double		rad; // угол напровления в радианах
@@ -87,6 +85,7 @@ typedef struct s_data
 	double		rad_del; // угол между лучам радианах
 	double		grad_del; // угол между лучам градусах
 	double		review; // обзор
+	int			flag; // напровление луча
 } t_data;
 
 // typedef struct s_minimap
