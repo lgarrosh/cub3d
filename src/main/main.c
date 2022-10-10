@@ -27,6 +27,7 @@ int	ft_go(t_data *data, t_vector move)
 	data->play.map = map;
 	return (0);
 }
+
 int	keypress(int keycode, void *param)
 {
 	t_data		*data;
@@ -41,6 +42,10 @@ int	keypress(int keycode, void *param)
 		move.y = SPEED * cos(to_radiants(90) - data->play.rad);
 		ft_go(data, move);
 	}
+	// calculate offset
+	data->play.off.x = data->play.pos.x - ((int)data->play.map.x * MAP_TILE_SIZE);
+	data->play.off.y = data->play.pos.y - ((int)data->play.map.y * MAP_TILE_SIZE);
+
 	// if ((keycode == D_KEY || keycode == 100)
 	// 	&& check_collision(data->minimap.player.x - speed * cos(data->rad + M_PI / 2), data->minimap.player.y, data)
 	// 	&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad + M_PI / 2), data))

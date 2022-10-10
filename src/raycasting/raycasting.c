@@ -1,6 +1,6 @@
 #include "cube.h"
 
-void	calculate_off(t_data *data, t_ray *ray);
+void	calculate_delta(t_data *data, t_ray *ray);
 void	calculate_ray(t_data *data, t_ray *ray);
 
 void line_dda(t_data_img *data, double x1, double y1, double x2, double y2)
@@ -267,7 +267,7 @@ void	mini_map(t_data *data, char **map) // рисует полностью ми�
 	}
 	draw_map_grid(data);
 	draw_map_player(data);
-	draw_map_dir(data);
+	// draw_map_dir(data);
 }
 
 void draw_everything(t_data *data) // вывод на экран
@@ -288,14 +288,28 @@ void draw_everything(t_data *data) // вывод на экран
 	mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
 		data->map.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->play.rad)));
-	mlx_string_put(data->mlx, data->win, 90,
-		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->play.rad)));
-	mlx_string_put(data->mlx, data->win, 120,
-		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->flag)));
 	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 100, 0x0000FF00, ft_itoa(data->play.map.x));
+		data->map.img->height + 100, 0x0000FF00, ft_itoa((data->play.rad)));
 	mlx_string_put(data->mlx, data->win, 90,
-		data->map.img->height + 100, 0x0000FF00, ft_itoa(data->play.map.y));
+		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->ray->ray.x)));
+	mlx_string_put(data->mlx, data->win, 90,
+		data->map.img->height + 100, 0x00FFFF00, ft_itoa((data->ray->ray.y)));
+	mlx_string_put(data->mlx, data->win, 120,
+		data->map.img->height + 80, 0x00FF0000, ft_itoa((data->ray->end.x)));
+	mlx_string_put(data->mlx, data->win, 120,
+		data->map.img->height + 100, 0x00FF0000, ft_itoa((data->ray->end.y)));
+	mlx_string_put(data->mlx, data->win, 150,
+		data->map.img->height + 80, 0x000000FF, ft_itoa(data->play.map.x));
+	mlx_string_put(data->mlx, data->win, 150,
+		data->map.img->height + 100, 0x000000FF, ft_itoa(data->play.map.y));
+	mlx_string_put(data->mlx, data->win, 150,
+		data->map.img->height + 120, 0x000000FF, ft_itoa(data->ray->flag));
+	mlx_string_put(data->mlx, data->win, 180,
+		data->map.img->height + 80, 0x0000FFFF, ft_itoa(data->ray->wall.x));
+	mlx_string_put(data->mlx, data->win, 180,
+		data->map.img->height + 100, 0x0000FFFF, ft_itoa(data->ray->wall.y));
+	mlx_string_put(data->mlx, data->win, 180,
+		data->map.img->height + 120, 0x00000000, ft_itoa(data->ray->gipo));
 }
 /*
 // void	make_fog(int *color, float height)
@@ -348,17 +362,11 @@ void	calculate_3d(t_data *data) // рисует 3d изображение
 
 void	raycasting(t_data *data) // вычисляет лчи  
 {
-	t_ray		ray;
-	int			i;
-
-	i = -1;
-	calculate_off(data, &ray);
-	ray.rad = data->play.rad - ((WIDTH_WINDOW / 2) * data->rad_del);
-	while (++i < WIDTH_WINDOW)
-	{
-		calculate_ray(data, &ray);
-		ray.rad += data->rad_del;
-	}
+	calculate_delta(data, data->ray);
+	data->ray->rad = data->play.rad;
+	// data->ray->rad = data->play.rad - ((WIDTH_WINDOW / 2) * data->rad_del);
+	calculate_ray(data, data->ray);
+	
 	// int	i;
 	// int j;
 
@@ -377,13 +385,108 @@ void	raycasting(t_data *data) // вычисляет лчи
 	// }
 }
 
-void	calculate_off(t_data *data, t_ray *ray)
+int	intersection_x(t_data *data, t_ray *ray)
+{
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
+	if (ray->flag & 6)
+		y = (int)data->play.map.y + ray->step.y;
+	else if ((int)data->play.map.y)
+		y = (int)data->play.map.y - ray->step.y;
+	if (ray->flag & 3)
+		x = (int)data->play.map.x - ray->step.x;
+	else if ((int)data->play.map.x)
+		x = (int)data->play.map.x + ray->step.x;
+	if (data->map.map[y][x] == '1')
+	{
+		ray->gipo = ray->ray.x;
+		ray->end.x = ray->gipo * cos(ray->rad);
+		ray->end.y = ray->gipo * -sin(ray->rad);
+		ray->wall.x = x;
+		ray->wall.y = y;
+		return (1);
+	}
+	ray->delta.x += MAP_TILE_SIZE;
+	return (0);
+}
+
+int intersection_y(t_data *data, t_ray *ray)
+{
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
+	if (ray->flag & 6)
+		y = (int)data->play.map.y + ray->step.y;
+	else if ((int)data->play.map.y)
+		y = (int)data->play.map.y - ray->step.y;
+	if (ray->flag & 3)
+		x = (int)data->play.map.x - ray->step.x;
+	else if ((int)data->play.map.x)
+		x = (int)data->play.map.x + ray->step.x;
+	if (data->map.map[y][x] == '1')
+	{
+		ray->gipo = ray->ray.y;
+		ray->end.x = ray->gipo * cos(ray->rad);
+		ray->end.y = ray->gipo * -sin(ray->rad);
+		ray->wall.x = x;
+		ray->wall.y = y;
+		return (1);
+	}
+	ray->delta.y += MAP_TILE_SIZE;
+	return (0);
+}
+
+int check_intersection(t_data *data, t_ray	*ray)
+{
+	if (ray->ray.x < ray->ray.y)
+	{
+		ray->step.x += 1;
+		return (intersection_x(data, ray));
+	}
+	else
+	{
+		ray->step.y += 1;
+		return (intersection_y(data, ray));
+	}
+	return (0);
+}
+
+void	calculate_ray(t_data *data, t_ray *ray)
+{
+	int	i;
+
+	i = 0;
+	ray->step.x = 0;
+	ray->step.y = 0;
+	while (1)
+	{
+		ray->ray.x = fabs(ray->delta.x / ft_cos(ray->rad));
+		ray->ray.y = fabs(ray->delta.y / ft_sin(ray->rad));
+		if (check_intersection(data, ray))
+		{
+			line_dda(data->map.img, data->map.img->width / 2, data->map.img->height / 2,
+					data->map.img->width / 2 + ray->end.x, data->map.img->height / 2 + ray->end.y);
+			return ;
+		}
+		if (i > 100)
+		{
+			printf("delta.x = %f\n, delta.y = %f\n, step.x = %f\n, step.y = %f\n", ray->delta.x, ray->delta.y, ray->step.x, ray->step.y);
+			exit (1);
+		}
+		i++;
+	}
+}
+
+void	calculate_delta(t_data *data, t_ray *ray)
 {
 	int	flag_y;
 	int	flag_x;
 
-	data->play.off.x = data->play.pos.x - (data->play.map.x * MAP_TILE_SIZE);
-	data->play.off.y = data->play.pos.y - (data->play.map.y * MAP_TILE_SIZE);
 	if (data->play.rad > 0 && data->play.rad < M_PI)
 	{
 		ray->delta.y = data->play.off.y;
@@ -404,22 +507,16 @@ void	calculate_off(t_data *data, t_ray *ray)
 		ray->delta.x = MAP_TILE_SIZE - data->play.off.x;
 		flag_x = 7 - NEGATIVE_X;
 	}
-	data->flag = flag_x & flag_y;
-}
-
-void	calculate_ray(t_data *data, t_ray *ray)
-{
-	(void)data;
-	(void)ray;
+	ray->flag = flag_x & flag_y;
 }
 
 int	  raycast_loop(t_data	*data)
 {
 	mouse_action(data); // координаты мышки
-	raycasting(data); // высчитивает лучи
 	floor_ceiling(data); // пол потолок
-	// calculate_3d(data); // преобразует в 3d изображение
 	mini_map(data, data->map.map); // алгоритм мини-карты
+	raycasting(data); // высчитивает лучи
+	// calculate_3d(data); // преобразует в 3d изображение
 	// вывод изображения
 	draw_everything(data); // вывод изображения
 	return (0);

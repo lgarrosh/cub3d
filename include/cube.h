@@ -21,6 +21,8 @@ int			close_window(t_data *data);
 int			ft_error(int fd, char *error, int ret);
 double		to_radiants(double degrees);
 double		to_degrees(double radiants);
+double	    ft_cos(double rad);
+double	    ft_sin(double rad);
 t_vector	sum_vector(t_vector v1, t_vector v2);
 //parser
 int			parser(int argc, char *argv[], t_data *data);

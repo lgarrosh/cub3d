@@ -31,6 +31,9 @@ void	init_data(t_data *data)
 	data->review = 66.0;
 	data->grad_del = data->review / WIDTH_WINDOW;
 	data->rad_del = to_radiants(data->grad_del);
+	data->ray = ft_calloc(sizeof(t_ray), WIDTH_WINDOW);
+	data->play.off.x = data->play.pos.x - ((int)data->play.map.x * MAP_TILE_SIZE);
+	data->play.off.y = data->play.pos.y - ((int)data->play.map.y * MAP_TILE_SIZE);
 	init_img(data, &data->bg, WIDTH_WINDOW, HEIGTH_WINDOW);
 	data->skybox.img = mlx_xpm_file_to_image(data->mlx, "images/skybox.xpm",
 		&data->skybox.width, &data->skybox.height);

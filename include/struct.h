@@ -44,12 +44,15 @@ typedef struct s_sprite
 
 typedef struct s_ray
 {
-	t_vector	x_end; // координаты пересечения
+	t_vector	end; // координаты пересечения
 	t_vector	move_cor; // длина перемещения по x при движении в y на 1 еденицу (и наоборот)
 	t_vector	delta; // длина до первого пересечения по x и y
-	double		ray; // длина
+	t_vector	ray; // длина
+	t_vector	step;
+	t_vector	wall;
+	double		gipo; // длина
 	double		rad; // угол
-	int			step; 
+	int			flag; // напровление луча
 } t_ray;
 
 typedef struct s_player
@@ -85,7 +88,7 @@ typedef struct s_data
 	double		rad_del; // угол между лучам радианах
 	double		grad_del; // угол между лучам градусах
 	double		review; // обзор
-	int			flag; // напровление луча
+	t_ray		*ray; // malloc
 } t_data;
 
 // typedef struct s_minimap
