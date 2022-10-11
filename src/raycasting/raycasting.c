@@ -287,7 +287,15 @@ void draw_everything(t_data *data) // вывод на экран
 	// }
 	mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 80, 0x0000FF00, ft_itoa(to_degrees(data->play.rad)));
+		data->map.img->height + 80, 0x00000000, ft_itoa(to_degrees(data->play.rad)));
+	mlx_string_put(data->mlx, data->win, 60,
+		data->map.img->height + 120, 0x00000000, ft_itoa(to_degrees(data->ray->rad)));
+	mlx_string_put(data->mlx, data->win, 60,
+		data->map.img->height + 140, 0x00000000, ft_itoa(to_degrees(data->ray[WIDTH_WINDOW - 1].rad)));
+	mlx_string_put(data->mlx, data->win, 90,
+		data->map.img->height + 120, 0x00000000, ft_itoa(data->ray->flag));
+	mlx_string_put(data->mlx, data->win, 90,
+		data->map.img->height + 140, 0x00000000, ft_itoa(data->ray[WIDTH_WINDOW - 1].flag));
 	mlx_string_put(data->mlx, data->win, 60,
 		data->map.img->height + 100, 0x0000FF00, ft_itoa((data->play.rad)));
 	mlx_string_put(data->mlx, data->win, 90,
@@ -362,10 +370,28 @@ void	calculate_3d(t_data *data) // рисует 3d изображение
 
 void	raycasting(t_data *data) // вычисляет лчи  
 {
-	calculate_delta(data, data->ray);
-	data->ray->rad = data->play.rad;
-	// data->ray->rad = data->play.rad - ((WIDTH_WINDOW / 2) * data->rad_del);
-	calculate_ray(data, data->ray);
+	int	i;
+
+	i = 0;
+	while (i < WIDTH_WINDOW)
+	{
+		data->ray[i].rad = data->play.rad - ((WIDTH_WINDOW / 2) * data->rad_del) + i * data->rad_del;
+		calculate_delta(data, &data->ray[i]);
+		calculate_ray(data, &data->ray[i]);
+		i++;
+	}
+	// calculate_delta(data, &data->ray[0]);
+	// // data->ray->rad = data->play.rad;
+	// data->ray[0].rad = data->play.rad + (WIDTH_WINDOW * data->rad_del);
+	// calculate_ray(data, &data->ray[0]);
+	// //
+	// calculate_delta(data, &data->ray[500]);
+	// data->ray[500].rad = data->play.rad;
+	// calculate_ray(data, &data->ray[500]);
+
+	// calculate_delta(data, &data->ray[WIDTH_WINDOW - 1]);
+	// data->ray[WIDTH_WINDOW - 1].rad = data->play.rad + ((WIDTH_WINDOW / 2) * data->rad_del);
+	// calculate_ray(data, &data->ray[WIDTH_WINDOW - 1]);
 	
 	// int	i;
 	// int j;
@@ -458,9 +484,6 @@ int check_intersection(t_data *data, t_ray	*ray)
 
 void	calculate_ray(t_data *data, t_ray *ray)
 {
-	int	i;
-
-	i = 0;
 	ray->step.x = 0;
 	ray->step.y = 0;
 	while (1)
@@ -473,12 +496,6 @@ void	calculate_ray(t_data *data, t_ray *ray)
 					data->map.img->width / 2 + ray->end.x, data->map.img->height / 2 + ray->end.y);
 			return ;
 		}
-		if (i > 100)
-		{
-			printf("delta.x = %f\n, delta.y = %f\n, step.x = %f\n, step.y = %f\n", ray->delta.x, ray->delta.y, ray->step.x, ray->step.y);
-			exit (1);
-		}
-		i++;
 	}
 }
 
@@ -487,7 +504,9 @@ void	calculate_delta(t_data *data, t_ray *ray)
 	int	flag_y;
 	int	flag_x;
 
-	if (data->play.rad > 0 && data->play.rad < M_PI)
+	if (ray->rad > 2 * M_PI)
+		ray->rad -= 2 * M_PI;
+	if (ray->rad > 0 && ray->rad < M_PI)
 	{
 		ray->delta.y = data->play.off.y;
 		flag_y = NEGATIVE_y;
@@ -497,7 +516,7 @@ void	calculate_delta(t_data *data, t_ray *ray)
 		ray->delta.y = MAP_TILE_SIZE - data->play.off.y;
 		flag_y = 7 - NEGATIVE_y;
 	}
-	if (data->play.rad > M_PI / 2 && data->play.rad < (3 * M_PI) / 2)
+	if (ray->rad > M_PI / 2 && ray->rad < (3 * M_PI) / 2)
 	{
 		ray->delta.x = data->play.off.x;
 		flag_x = NEGATIVE_X;

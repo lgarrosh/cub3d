@@ -39,34 +39,21 @@ int	keypress(int keycode, void *param)
 	if (keycode == W_KEY || keycode == 119)
 	{
 		move.x = SPEED * cos(data->play.rad);
-		move.y = SPEED * cos(to_radiants(90) - data->play.rad);
+		move.y = SPEED * -sin(data->play.rad);
 		ft_go(data, move);
 	}
-	// calculate offset
+	if (keycode == S_KEY || keycode == 115)
+	{
+		move.x = SPEED * -cos(data->play.rad);
+		move.y = SPEED * sin(data->play.rad);
+		ft_go(data, move);
+	}
+	if (keycode == D_KEY || keycode == 100)
+		ft_skybox((WIDTH_WINDOW / 2) + 4, data);
+	if (keycode == A_KEY || keycode == 97)
+		ft_skybox((WIDTH_WINDOW / 2) - 5, data);
 	data->play.off.x = data->play.pos.x - ((int)data->play.map.x * MAP_TILE_SIZE);
 	data->play.off.y = data->play.pos.y - ((int)data->play.map.y * MAP_TILE_SIZE);
-
-	// if ((keycode == D_KEY || keycode == 100)
-	// 	&& check_collision(data->minimap.player.x - speed * cos(data->rad + M_PI / 2), data->minimap.player.y, data)
-	// 	&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad + M_PI / 2), data))
-	// 	{
-	// 		data->minimap.player.y += speed * sin(data->rad + M_PI / 2);
-	// 		data->minimap.player.x -= speed * cos(data->rad + M_PI / 2);
-	// 	}
-	// if ((keycode == S_KEY || keycode == 115)
-	// 	&& check_collision(data->minimap.player.x, data->minimap.player.y - speed * sin(data->rad + M_PI), data)
-	// 	&& check_collision(data->minimap.player.x + speed * cos(data->rad + M_PI), data->minimap.player.y, data))
-	// 	{
-	// 		data->minimap.player.y -= speed * sin(data->rad + M_PI);
-	// 		data->minimap.player.x += speed * cos(data->rad + M_PI);
-	// 	}
-	// if ((keycode == A_KEY || keycode == 97)
-	// 	&& check_collision(data->minimap.player.x - speed * cos(data->rad - M_PI / 2), data->minimap.player.y, data)
-	// 	&& check_collision(data->minimap.player.x, data->minimap.player.y + speed * sin(data->rad - M_PI / 2), data))
-	// 	{
-	// 		data->minimap.player.y += speed * sin(data->rad - M_PI / 2);
-	// 		data->minimap.player.x -= speed * cos(data->rad - M_PI / 2);
-	// 	}
 	return (0);
 }
 

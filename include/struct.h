@@ -11,6 +11,7 @@
 #define	NEGATIVE_y 1
 #define	NEGATIVE_X 3
 #define SPEED 2
+#define MOUSE_SPEED 0.3
 
 #define W_KEY 13
 #define D_KEY 2

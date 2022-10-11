@@ -24,6 +24,7 @@ double		to_degrees(double radiants);
 double	    ft_cos(double rad);
 double	    ft_sin(double rad);
 t_vector	sum_vector(t_vector v1, t_vector v2);
+void	    ft_skybox(int x, t_data *data);
 //parser
 int			parser(int argc, char *argv[], t_data *data);
 //checker
