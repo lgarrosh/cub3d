@@ -18,6 +18,6 @@ double	ft_cos(double rad)
 double	ft_sin(double rad)
 {
 	if (rad == 0 || rad == M_PI)
-		rad += 0.000001;
+		rad += 0.0000001;
 	return(sin(rad));
 }

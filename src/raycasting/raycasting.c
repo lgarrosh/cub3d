@@ -272,12 +272,12 @@ void	mini_map(t_data *data, char **map) // рисует полностью ми�
 
 void draw_everything(t_data *data) // вывод на экран
 {
-	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
-	if (data->sky_offset > 0)
-		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
-	else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
-		mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
-	// mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
+	// mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset, 0);
+	// if (data->sky_offset > 0)
+	// 	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset - data->skybox.width , 0);
+	// else if (data->sky_offset < WIDTH_WINDOW - data->skybox.width)
+	// 	mlx_put_image_to_window(data->mlx, data->win, data->skybox.img, data->sky_offset + data->skybox.width , 0);
+	mlx_put_image_to_window(data->mlx, data->win, data->bg->img, 0, 0);
 	// while (i < WIDTH_WINDOW)
 	// {
 	// 	line_dda(data->minimap.img, data->minimap.img->width / 2, data->minimap.img->height / 2,
@@ -285,41 +285,13 @@ void draw_everything(t_data *data) // вывод на экран
 	// 	data->minimap.img->height / 2 + data->rays[i].y_end - data->minimap.player.y);
 	// 	i++;
 	// }
-	mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
+	// mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 80, 0x00000000, ft_itoa(to_degrees(data->play.rad)));
+		data->map.img->height + 80, 0x0000FFFF, ft_itoa(to_degrees(data->play.rad)));
 	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 120, 0x00000000, ft_itoa(to_degrees(data->ray->rad)));
-	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 140, 0x00000000, ft_itoa(to_degrees(data->ray[WIDTH_WINDOW - 1].rad)));
-	mlx_string_put(data->mlx, data->win, 90,
-		data->map.img->height + 120, 0x00000000, ft_itoa(data->ray->flag));
-	mlx_string_put(data->mlx, data->win, 90,
-		data->map.img->height + 140, 0x00000000, ft_itoa(data->ray[WIDTH_WINDOW - 1].flag));
-	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 100, 0x0000FF00, ft_itoa((data->play.rad)));
-	mlx_string_put(data->mlx, data->win, 90,
-		data->map.img->height + 80, 0x00FFFF00, ft_itoa((data->ray->ray.x)));
-	mlx_string_put(data->mlx, data->win, 90,
-		data->map.img->height + 100, 0x00FFFF00, ft_itoa((data->ray->ray.y)));
-	mlx_string_put(data->mlx, data->win, 120,
-		data->map.img->height + 80, 0x00FF0000, ft_itoa((data->ray->end.x)));
-	mlx_string_put(data->mlx, data->win, 120,
-		data->map.img->height + 100, 0x00FF0000, ft_itoa((data->ray->end.y)));
-	mlx_string_put(data->mlx, data->win, 150,
-		data->map.img->height + 80, 0x000000FF, ft_itoa(data->play.map.x));
-	mlx_string_put(data->mlx, data->win, 150,
-		data->map.img->height + 100, 0x000000FF, ft_itoa(data->play.map.y));
-	mlx_string_put(data->mlx, data->win, 150,
-		data->map.img->height + 120, 0x000000FF, ft_itoa(data->ray->flag));
-	mlx_string_put(data->mlx, data->win, 180,
-		data->map.img->height + 80, 0x0000FFFF, ft_itoa(data->ray->wall.x));
-	mlx_string_put(data->mlx, data->win, 180,
-		data->map.img->height + 100, 0x0000FFFF, ft_itoa(data->ray->wall.y));
-	mlx_string_put(data->mlx, data->win, 180,
-		data->map.img->height + 120, 0x00000000, ft_itoa(data->ray->gipo));
+		data->map.img->height + 100, 0x0000FFFF, ft_itoa(data->ray[(WIDTH_WINDOW / 2) - 1].gipo));
 }
-/*
+
 // void	make_fog(int *color, float height)
 // {
 // 	int r;
@@ -330,43 +302,66 @@ void draw_everything(t_data *data) // вывод на экран
 // 	g = (((*color & 0x0000FF00) >> 8) + 350 / (int)height) << 8;
 // 	b = (*color & 0x000000FF) + 350 / (int)height;
 // 	*color = r + g + b;
-	// *color = *color + 10 * height;
+// 	*color = *color + 10 * height;
 // }
 
-void	calculate_3d(t_data *data) // рисует 3d изображение 
+void	ver_line(int x, int draw_start, int draw_end, int color, t_data_img *img)
 {
-	int x;
 	int y;
-	int color;
-	float height;
 
-	height = sqrt(data->rays[0].ray);
-	x = 0;
-	color = 0;
-	y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
-	while (x < WIDTH_WINDOW)
+	y = draw_start;
+	while (y <= draw_end)
 	{
-		if (data->rays[x].type == 'W')
-			color = 0x002b2b2b;
-		else if (data->rays[x].type == 'E')
-			color = 0x00595959;
-		else if (data->rays[x].type == 'N')
-			color = 0x005c4242;
-		else if (data->rays[x].type == 'S')
-			color = 0x00825f5f;
-		// make_fog(&color, height);
-		while (y < HEIGTH_WINDOW / 2 + HEIGTH_WINDOW / height)
-		{
-			if (y < HEIGTH_WINDOW && y > 0)
-				my_mlx_pixel_put(data->bg, x, y, color);
-			y++;
-		}
-		height = sqrt(data->rays[0].ray);
-		y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
-		x++;
+		my_mlx_pixel_put(img, x, y, color);
+		y++;
 	}
 }
-*/
+
+void	calculate_3d(t_data *data, t_ray *ray, int x) // рисует 3d изображение
+{
+	double	corner;
+	double	perp_dist;
+	int		draw_start;
+	int		draw_end;
+	int		line_height;
+
+	corner = M_PI / 2 - (ray->rad - data->play.rad);
+	perp_dist = ray->gipo * ft_sin(corner);
+	line_height = (int)(HEIGTH_WINDOW / perp_dist);
+	draw_start = -line_height + HEIGTH_WINDOW / 2;
+    if(draw_start < 0)
+		draw_start = 0;
+    draw_end = line_height + HEIGTH_WINDOW / 2;
+    if(draw_end >= HEIGTH_WINDOW)
+		draw_end = HEIGTH_WINDOW - 1;
+	ver_line(x, draw_start, draw_end, 0x000000, data->bg);
+}
+// void	calculate_3d(t_data *data) // рисует 3d изображение
+// {
+// 	int x;
+// 	int y;
+// 	int color;
+// 	float height;
+
+// 	height = sqrt(data->ray[0].gipo);
+// 	x = 0;
+// 	color = 0;
+// 	y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
+// 	while (x < WIDTH_WINDOW)
+// 	{
+// 		color = 0x00825f5f;
+// 		make_fog(&color, height);
+// 		while (y < HEIGTH_WINDOW / 2 + HEIGTH_WINDOW / height)
+// 		{
+// 			if (y < HEIGTH_WINDOW && y > 0)
+// 				my_mlx_pixel_put(data->bg, x, y, color);
+// 			y++;
+// 		}
+// 		height = sqrt(data->ray[x].gipo);
+// 		y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
+// 		x++;
+// 	}
+// }
 
 void	raycasting(t_data *data) // вычисляет лчи  
 {
@@ -378,37 +373,9 @@ void	raycasting(t_data *data) // вычисляет лчи
 		data->ray[i].rad = data->play.rad - ((WIDTH_WINDOW / 2) * data->rad_del) + i * data->rad_del;
 		calculate_delta(data, &data->ray[i]);
 		calculate_ray(data, &data->ray[i]);
+		calculate_3d(data, &data->ray[i], i);
 		i++;
 	}
-	// calculate_delta(data, &data->ray[0]);
-	// // data->ray->rad = data->play.rad;
-	// data->ray[0].rad = data->play.rad + (WIDTH_WINDOW * data->rad_del);
-	// calculate_ray(data, &data->ray[0]);
-	// //
-	// calculate_delta(data, &data->ray[500]);
-	// data->ray[500].rad = data->play.rad;
-	// calculate_ray(data, &data->ray[500]);
-
-	// calculate_delta(data, &data->ray[WIDTH_WINDOW - 1]);
-	// data->ray[WIDTH_WINDOW - 1].rad = data->play.rad + ((WIDTH_WINDOW / 2) * data->rad_del);
-	// calculate_ray(data, &data->ray[WIDTH_WINDOW - 1]);
-	
-	// int	i;
-	// int j;
-
-	// j = 0;
-	// calculate_offset(data);
-	// data->rays[j].rad = data->rad;
-	// // if (cos(data->rad) == 0 || sin(data->rad) == 0)
-	// // 	return ;
-	// i =  WIDTH_WINDOW / 2;
-	// while (i-- > - WIDTH_WINDOW / 2)
-	// {
-	// 	calculate_ray(data->minimap.x_off, data->minimap.y_off, data, &(data->rays[j]));
-	// 	data->rays[j].rad = data->rad + to_radiants((double)i / 15);
-	// 	i++;
-	// 	j++;
-	// }
 }
 
 int	intersection_x(t_data *data, t_ray *ray)
@@ -533,7 +500,7 @@ int	  raycast_loop(t_data	*data)
 {
 	mouse_action(data); // координаты мышки
 	floor_ceiling(data); // пол потолок
-	mini_map(data, data->map.map); // алгоритм мини-карты
+	// mini_map(data, data->map.map); // алгоритм мини-карты
 	raycasting(data); // высчитивает лучи
 	// calculate_3d(data); // преобразует в 3d изображение
 	// вывод изображения

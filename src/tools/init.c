@@ -28,7 +28,7 @@ void	init_data(t_data *data)
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "Spice Boys");
 	data->fps = 30;
-	data->review = 66.0;
+	data->review = CORNER;
 	data->grad_del = data->review / WIDTH_WINDOW;
 	data->rad_del = to_radiants(data->grad_del);
 	data->ray = ft_calloc(sizeof(t_ray), WIDTH_WINDOW);

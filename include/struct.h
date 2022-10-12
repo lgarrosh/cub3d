@@ -3,15 +3,15 @@
 
 #include "libft.h"
 
-#define HEIGTH_WINDOW 704
-#define WIDTH_WINDOW 1000
-
-#define MAP_TILE_SIZE 30
+#define WIDTH_WINDOW 640
+#define HEIGTH_WINDOW 480
+#define CORNER 66.0
+#define MOUSE_SPEED 0.3
+#define MAP_TILE_SIZE 10
 
 #define	NEGATIVE_y 1
 #define	NEGATIVE_X 3
 #define SPEED 2
-#define MOUSE_SPEED 0.3
 
 #define W_KEY 13
 #define D_KEY 2
