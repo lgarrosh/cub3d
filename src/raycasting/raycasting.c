@@ -285,7 +285,7 @@ void draw_everything(t_data *data) // вывод на экран
 	// 	data->minimap.img->height / 2 + data->rays[i].y_end - data->minimap.player.y);
 	// 	i++;
 	// }
-	// mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
+	mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
 		data->map.img->height + 80, 0x0000FFFF, ft_itoa(to_degrees(data->play.rad)));
 	mlx_string_put(data->mlx, data->win, 60,
@@ -324,6 +324,7 @@ void	calculate_3d(t_data *data, t_ray *ray, int x) // рисует 3d изобр
 	int		draw_start;
 	int		draw_end;
 	int		line_height;
+	int		color;
 
 	corner = M_PI / 2 - (ray->rad - data->play.rad);
 	perp_dist = ray->gipo * ft_sin(corner);
@@ -334,34 +335,12 @@ void	calculate_3d(t_data *data, t_ray *ray, int x) // рисует 3d изобр
     draw_end = line_height + HEIGTH_WINDOW / 2;
     if(draw_end >= HEIGTH_WINDOW)
 		draw_end = HEIGTH_WINDOW - 1;
-	ver_line(x, draw_start, draw_end, 0x000000, data->bg);
+	if (ray->flag_direction == 'o' || ray->flag_direction == 'e')
+		color = 0x00FF0000;
+	else
+		color = 0x0000FFFF;
+	ver_line(x, draw_start, draw_end, color, data->bg);
 }
-// void	calculate_3d(t_data *data) // рисует 3d изображение
-// {
-// 	int x;
-// 	int y;
-// 	int color;
-// 	float height;
-
-// 	height = sqrt(data->ray[0].gipo);
-// 	x = 0;
-// 	color = 0;
-// 	y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
-// 	while (x < WIDTH_WINDOW)
-// 	{
-// 		color = 0x00825f5f;
-// 		make_fog(&color, height);
-// 		while (y < HEIGTH_WINDOW / 2 + HEIGTH_WINDOW / height)
-// 		{
-// 			if (y < HEIGTH_WINDOW && y > 0)
-// 				my_mlx_pixel_put(data->bg, x, y, color);
-// 			y++;
-// 		}
-// 		height = sqrt(data->ray[x].gipo);
-// 		y = HEIGTH_WINDOW / 2 - HEIGTH_WINDOW / height;
-// 		x++;
-// 	}
-// }
 
 void	raycasting(t_data *data) // вычисляет лчи  
 {
@@ -390,9 +369,15 @@ int	intersection_x(t_data *data, t_ray *ray)
 	else if ((int)data->play.map.y)
 		y = (int)data->play.map.y - ray->step.y;
 	if (ray->flag & 3)
+	{
 		x = (int)data->play.map.x - ray->step.x;
+		ray->flag_direction = 'o';
+	}
 	else if ((int)data->play.map.x)
+	{
 		x = (int)data->play.map.x + ray->step.x;
+		ray->flag_direction = 'e';
+	}
 	if (data->map.map[y][x] == '1')
 	{
 		ray->gipo = ray->ray.x;
@@ -414,9 +399,15 @@ int intersection_y(t_data *data, t_ray *ray)
 	x = 0;
 	y = 0;
 	if (ray->flag & 6)
+	{
 		y = (int)data->play.map.y + ray->step.y;
+		ray->flag_direction = 's';
+	}
 	else if ((int)data->play.map.y)
+	{
 		y = (int)data->play.map.y - ray->step.y;
+		ray->flag_direction = 'n';
+	}
 	if (ray->flag & 3)
 		x = (int)data->play.map.x - ray->step.x;
 	else if ((int)data->play.map.x)
@@ -500,9 +491,8 @@ int	  raycast_loop(t_data	*data)
 {
 	mouse_action(data); // координаты мышки
 	floor_ceiling(data); // пол потолок
-	// mini_map(data, data->map.map); // алгоритм мини-карты
+	mini_map(data, data->map.map); // алгоритм мини-карты
 	raycasting(data); // высчитивает лучи
-	// calculate_3d(data); // преобразует в 3d изображение
 	// вывод изображения
 	draw_everything(data); // вывод изображения
 	return (0);
