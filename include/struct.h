@@ -6,12 +6,12 @@
 #define WIDTH_WINDOW 640
 #define HEIGTH_WINDOW 480
 #define CORNER 66.0
-#define MOUSE_SPEED 0.3
+#define MOUSE_SPEED 0.2
 #define MAP_TILE_SIZE 10
 
 #define	NEGATIVE_y 1
 #define	NEGATIVE_X 3
-#define SPEED 2
+#define SPEED 1
 
 #define W_KEY 13
 #define D_KEY 2
@@ -53,7 +53,8 @@ typedef struct s_ray
 	t_vector	wall;
 	double		gipo; // длина
 	double		rad; // угол
-	int			flag; // напровление луча
+	int			flag; // расположение луча на координатной плоскасти
+	char		flag_direction; // части света
 } t_ray;
 
 typedef struct s_player

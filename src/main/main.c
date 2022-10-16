@@ -49,9 +49,21 @@ int	keypress(int keycode, void *param)
 		ft_go(data, move);
 	}
 	if (keycode == D_KEY || keycode == 100)
-		ft_skybox((WIDTH_WINDOW / 2) + 4, data);
+	{
+		move.x = SPEED * cos(data->play.rad - M_PI / 2);
+		move.y = SPEED * -sin(data->play.rad - M_PI / 2);
+		ft_go(data, move);
+	}
 	if (keycode == A_KEY || keycode == 97)
-		ft_skybox((WIDTH_WINDOW / 2) - 5, data);
+	{
+		move.x = SPEED * cos(data->play.rad + M_PI / 2);
+		move.y = SPEED * -sin(data->play.rad + M_PI / 2);
+		ft_go(data, move);
+	}
+	if (keycode == 65363)
+		ft_skybox((WIDTH_WINDOW / 2) + 10, data);
+	if (keycode == 65361)
+		ft_skybox((WIDTH_WINDOW / 2) - 10, data);
 	data->play.off.x = data->play.pos.x - ((int)data->play.map.x * MAP_TILE_SIZE);
 	data->play.off.y = data->play.pos.y - ((int)data->play.map.y * MAP_TILE_SIZE);
 	return (0);
