@@ -6,7 +6,7 @@
 #define WIDTH_WINDOW 640
 #define HEIGTH_WINDOW 480
 #define CORNER 66.0
-#define MOUSE_SPEED 0.5
+#define MOUSE_SPEED 0.2
 #define MAP_TILE_SIZE 10
 
 #define	NEGATIVE_y 1

@@ -328,7 +328,7 @@ void	calculate_3d(t_data *data, t_ray *ray, int x) // рисует 3d изобр
 
 	corner = M_PI / 2 - (ray->rad - data->play.rad);
 	perp_dist = ray->gipo * ft_sin(corner);
-	line_height = (int)(HEIGTH_WINDOW / perp_dist);
+	line_height = (int)((HEIGTH_WINDOW / perp_dist) * 5);
 	draw_start = -line_height + HEIGTH_WINDOW / 2;
     if(draw_start < 0)
 		draw_start = 0;
