@@ -119,7 +119,8 @@ void	find_player_cooridnates(t_data *data)
 	{
 		while(data->map.map[i][j] != '\0')
 		{
-			if (data->map.map[i][j] == 'N')
+			if (data->map.map[i][j] == 'N'
+			|| data->map.map[i][j] == 'N' )
 			{
 				data->play.map.x = j;
 				data->play.map.y = i;
@@ -133,41 +134,84 @@ void	find_player_cooridnates(t_data *data)
 	}
 }
 
+int	check_symbols(char *map)
+{
+	int	player;
+
+	player = 0;
+	while (*map)
+	{
+		if (*map != '1' && *map != '0'
+		&& *map != 'N' && *map != 'W'
+		&& *map != 'S' && *map != 'E'
+		&& *map != ' ' && *map != '\n')
+			return (1);
+		if (*map == 'N' || *map == 'W'
+		|| *map == 'S' || *map == 'E')
+			player++;
+		map++;
+	}
+	if (player != 1)
+		return (1);
+	return (0);
+}
+
+int	check_walls(t_data *data)
+{
+	int		x;
+	int		y;
+	int		i;
+	int		j;
+	char	**map;
+
+	x = data->map.bitmap_width;
+	y = data->map.bitmap_height;
+	map = data->map.map;
+	i = 0;
+	j = 0;
+	while (j < y)
+	{
+		while (i < x)
+		{
+			if (((i == 0 || j == 0) || (i == x - 1 || j == y - 1))
+			&& (map[j][i] != '1' && map[j][i] != '-'))
+				return (1);
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+	i = 0;
+	j = 0;
+	while (j < y)
+	{
+		while (i < x)
+		{
+			if (((i != 0 && j != 0) && (i != x - 1 && j != y - 1))
+			&& (map[j][i + 1] == '-' || map[j][i - 1] == '-'
+			|| map[j + 1][i] == '-' || map[j - 1][i] == '-') 
+			&& (map[j][i] != '1' && map[j][i] != '-'))
+				return (1);
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+	return (0);
+}
+
 int	save_map(char *string, int i, t_data *data)
 {
 	char	*map_string;
 
 	map_string = ft_substr(string, i, ft_strlen(&string[i]));
+	if (check_symbols(map_string))
+		return (1);
 	find_bitmap_dimensions(map_string, data);
 	string_to_array_of_strings(map_string, data);
 	empty_to_dash(data);
+	if (check_walls(data))
+		return (1);
 	find_player_cooridnates(data);
-	return (0);
-}
-
-int	save_color(char *string, int i, t_data *data, char f_or_c)
-{
-	char	rgb[3][4];
-	int		j;
-	int		k;
-
-	j = 0;
-	k = 0;
-	while (string[i] != '\n')
-	{
-		while (!ft_isdigit(string[i]))
-			i++;
-		while (ft_isdigit(string[i]))
-			rgb[j][k++] = string[i++];
-		while (k <= 2)
-			rgb[j][k++] = '.';
-		rgb[j][k] = '\0';
-		j++;
-		k = 0;
-	}
-	if (f_or_c == 'f')
-		data->f_color = string_to_rgb((char *)rgb);
-	else
-		data->c_color = string_to_rgb((char *)rgb);
 	return (0);
 }

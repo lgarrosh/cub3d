@@ -50,7 +50,7 @@ OBJ_B = $(SRC_B:.c=.o)
 
 HEADER = libft.h
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra
 
 all: $(NAME)
 

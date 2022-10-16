@@ -29,7 +29,8 @@ void	    ft_skybox(int x, t_data *data);
 int			parser(int argc, char *argv[], t_data *data);
 //checker
 int			save_map(char *map, int i, t_data *data);
-int			save_color(char *map, int i, t_data *data, char f_or_c);
+int			save_color(char *line, t_data *data, char dir);
+int			string_to_rgb(char *rgb_s);
 //	init
 void        init_img(t_data *data, t_data_img **img, int width, int higth);
 void        init_data(t_data *data);

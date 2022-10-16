@@ -82,6 +82,7 @@ typedef struct s_data
 	int			c_color; // цвет потолка
 	t_minimap	map; // мини-карта
 	t_data_img	*bg;
+	t_data_img	walls[4];
 	t_player	play; // игрок
 	int			fps;
 	t_sprite	skybox; // небо
