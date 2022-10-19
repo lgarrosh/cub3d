@@ -5,9 +5,10 @@
 
 #define WIDTH_WINDOW 640
 #define HEIGTH_WINDOW 480
+#define SIZE_TEXTURE 64
 #define CORNER 66.0
 #define MOUSE_SPEED 0.2
-#define MAP_TILE_SIZE 10
+#define MAP_TILE_SIZE 20
 
 #define	NEGATIVE_y 1
 #define	NEGATIVE_X 3
@@ -46,13 +47,13 @@ typedef struct s_sprite
 typedef struct s_ray
 {
 	t_vector	end; // координаты пересечения
-	t_vector	move_cor; // длина перемещения по x при движении в y на 1 еденицу (и наоборот)
 	t_vector	delta; // длина до первого пересечения по x и y
 	t_vector	ray; // длина
 	t_vector	step;
 	t_vector	wall;
 	double		gipo; // длина
 	double		rad; // угол
+	double		wall_x;
 	int			flag; // расположение луча на координатной плоскасти
 	char		flag_direction; // части света
 } t_ray;
@@ -91,6 +92,8 @@ typedef struct s_data
 	double		rad_del; // угол между лучам радианах
 	double		grad_del; // угол между лучам градусах
 	double		review; // обзор
+	int			**texture;
+	char		**path_txtur;
 	t_ray		*ray; // malloc
 } t_data;
 

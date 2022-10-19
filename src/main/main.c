@@ -73,15 +73,16 @@ int	main(int argc, char *argv[])
 {
 	t_data	data;
 
-	printf("%d\n", getpid());
+	printf("%f\n", floor(-1.9));
+	init_data(&data);
 	if (parser(argc, argv, &data))
 		return (0);
-	init_data(&data);
 	mlx_mouse_hide(data.mlx, data.win);
 	mlx_hook(data.win, 17, 0, close_window, &data); // закрывает программу
 	mlx_hook(data.win, 2, 1L<<0, keypress, &data); // отслеживает нажатие клавиш
 	// mlx_hook(data.win, 6, 1L<<6, mouse_action, &data); // обрабатывает взаимодействие с мышкой
 	// ***основной цикл игры***
+	load_img(&data, &data.walls[0], data.texture);
 	mlx_loop_hook(data.mlx, raycast_loop, &data);
 	// ***основной цикл игры***
 	mlx_loop(data.mlx);

@@ -286,10 +286,15 @@ void draw_everything(t_data *data) // вывод на экран
 	// 	i++;
 	// }
 	mlx_put_image_to_window(data->mlx, data->win, data->map.img->img, 20, 20);
+	// mlx_put_image_to_window(data->mlx, data->win, data->walls[0].img, 20, 20);
 	mlx_string_put(data->mlx, data->win, 60,
 		data->map.img->height + 80, 0x0000FFFF, ft_itoa(to_degrees(data->play.rad)));
 	mlx_string_put(data->mlx, data->win, 60,
-		data->map.img->height + 100, 0x0000FFFF, ft_itoa(data->ray[(WIDTH_WINDOW / 2) - 1].gipo));
+		data->map.img->height + 100, 0x0000FFFF, ft_itoa(data->ray[(WIDTH_WINDOW / 2) - 1].wall_x));
+	// mlx_string_put(data->mlx, data->win, 60,
+	// 	data->map.img->height + 120, 0x0000FFFF, ft_itoa(data->ray[(WIDTH_WINDOW / 2) - 1].end.x + data->play.pos.x));
+	// mlx_string_put(data->mlx, data->win, 60,
+	// 	data->map.img->height + 140, 0x0000FFFF, ft_itoa(data->play.pos.x));
 }
 
 // void	make_fog(int *color, float height)
@@ -305,41 +310,60 @@ void draw_everything(t_data *data) // вывод на экран
 // 	*color = *color + 10 * height;
 // }
 
-void	ver_line(int x, int draw_start, int draw_end, int color, t_data_img *img)
+void	ver_line(t_data *data, int x, int draw_start, int draw_end, double step, double tex_pos, double tex_x, t_data_img *img)
 {
-	int y;
+	int tex_y;
+	int color;
 
-	y = draw_start;
-	while (y <= draw_end)
+	while (draw_start <= draw_end)
 	{
-		my_mlx_pixel_put(img, x, y, color);
-		y++;
+		tex_y = (int)tex_pos % (SIZE_TEXTURE - 1);
+		tex_pos += step;
+		color = data->texture[0][(int)(SIZE_TEXTURE * tex_y + tex_x)];
+		my_mlx_pixel_put(img, x, draw_start, color);
+		draw_start++;
 	}
+	// while (cub->draw_start < cub->draw_end)
+	// {
+	// 	cub->tex_y = (int)cub->tex_pos % TEXH;
+	// 	cub->tex_pos += cub->step;
+	// 	color = cub->texture[cub->text][TEXH * cub->tex_y + cub->tex_x];
+	// 	if (cub->side == 1)
+	// 		color = (color >> 1) & 8355711;
+	// 	cub->buf[cub->draw_start][x] = color;
+	// 	cub->draw_start++;
+	// }
 }
 
 void	calculate_3d(t_data *data, t_ray *ray, int x) // рисует 3d изображение
 {
+	double	tex_x;
+	double	step;
+	double	tex_pos;
 	double	corner;
 	double	perp_dist;
 	int		draw_start;
 	int		draw_end;
 	int		line_height;
-	int		color;
 
 	corner = M_PI / 2 - (ray->rad - data->play.rad);
 	perp_dist = ray->gipo * ft_sin(corner);
-	line_height = (int)((HEIGTH_WINDOW / perp_dist) * 5);
-	draw_start = -line_height + HEIGTH_WINDOW / 2;
-    if(draw_start < 0)
+	line_height = (int)((HEIGTH_WINDOW / perp_dist) * MAP_TILE_SIZE);
+	draw_start = -line_height / 2 + HEIGTH_WINDOW / 2;
+    draw_end = line_height / 2 + HEIGTH_WINDOW / 2;
+	if(draw_start < 0)
 		draw_start = 0;
-    draw_end = line_height + HEIGTH_WINDOW / 2;
     if(draw_end >= HEIGTH_WINDOW)
 		draw_end = HEIGTH_WINDOW - 1;
-	if (ray->flag_direction == 'o' || ray->flag_direction == 'e')
-		color = 0x00FF0000;
-	else
-		color = 0x0000FFFF;
-	ver_line(x, draw_start, draw_end, color, data->bg);
+	tex_x = (ray->wall_x / MAP_TILE_SIZE) * SIZE_TEXTURE;
+	step = 1.0 * SIZE_TEXTURE / line_height;
+	tex_pos = (draw_start - HEIGTH_WINDOW \
+		/ 2 + line_height / 2) * step;
+	// if (ray->flag_direction == 'o' || ray->flag_direction == 'e')
+	// 	color = 0x00FF0000;
+	// else
+	// 	color = 0x0000FFFF;
+	ver_line(data, x, draw_start, draw_end, step, tex_pos, tex_x, data->bg);
 }
 
 void	raycasting(t_data *data) // вычисляет лчи  
@@ -385,6 +409,7 @@ int	intersection_x(t_data *data, t_ray *ray)
 		ray->end.y = ray->gipo * -sin(ray->rad);
 		ray->wall.x = x;
 		ray->wall.y = y;
+		ray->wall_x = data->play.pos.y + ray->end.y - (y * MAP_TILE_SIZE);
 		return (1);
 	}
 	ray->delta.x += MAP_TILE_SIZE;
@@ -419,6 +444,7 @@ int intersection_y(t_data *data, t_ray *ray)
 		ray->end.y = ray->gipo * -sin(ray->rad);
 		ray->wall.x = x;
 		ray->wall.y = y;
+		ray->wall_x = data->play.pos.x + ray->end.x - (ray->wall.x * MAP_TILE_SIZE);
 		return (1);
 	}
 	ray->delta.y += MAP_TILE_SIZE;
