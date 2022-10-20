@@ -310,7 +310,7 @@ void draw_everything(t_data *data) // вывод на экран
 // 	*color = *color + 10 * height;
 // }
 
-void	ver_line(t_data *data, int x, int draw_start, int draw_end, double step, double tex_pos, double tex_x, t_data_img *img)
+void	ver_line(t_data *data, int x, int draw_start, int draw_end, double step, double tex_pos, double tex_x, t_ray *ray)
 {
 	int tex_y;
 	int color;
@@ -319,8 +319,8 @@ void	ver_line(t_data *data, int x, int draw_start, int draw_end, double step, do
 	{
 		tex_y = (int)tex_pos % (SIZE_TEXTURE - 1);
 		tex_pos += step;
-		color = data->texture[0][(int)(SIZE_TEXTURE * tex_y + tex_x)];
-		my_mlx_pixel_put(img, x, draw_start, color);
+		color = data->texture[(int)ray->flag_direction][(int)(SIZE_TEXTURE * tex_y + tex_x)];
+		my_mlx_pixel_put(data->bg, x, draw_start, color);
 		draw_start++;
 	}
 	// while (cub->draw_start < cub->draw_end)
@@ -363,10 +363,10 @@ void	calculate_3d(t_data *data, t_ray *ray, int x) // рисует 3d изобр
 	// 	color = 0x00FF0000;
 	// else
 	// 	color = 0x0000FFFF;
-	ver_line(data, x, draw_start, draw_end, step, tex_pos, tex_x, data->bg);
+	ver_line(data, x, draw_start, draw_end, step, tex_pos, tex_x, ray);
 }
 
-void	raycasting(t_data *data) // вычисляет лчи  
+void	raycasting(t_data *data) // вычисляет лyчи  
 {
 	int	i;
 
@@ -395,12 +395,12 @@ int	intersection_x(t_data *data, t_ray *ray)
 	if (ray->flag & 3)
 	{
 		x = (int)data->play.map.x - ray->step.x;
-		ray->flag_direction = 'o';
+		ray->flag_direction = 3;
 	}
 	else if ((int)data->play.map.x)
 	{
 		x = (int)data->play.map.x + ray->step.x;
-		ray->flag_direction = 'e';
+		ray->flag_direction = 1;
 	}
 	if (data->map.map[y][x] == '1')
 	{
@@ -426,12 +426,12 @@ int intersection_y(t_data *data, t_ray *ray)
 	if (ray->flag & 6)
 	{
 		y = (int)data->play.map.y + ray->step.y;
-		ray->flag_direction = 's';
+		ray->flag_direction = 2;
 	}
 	else if ((int)data->play.map.y)
 	{
 		y = (int)data->play.map.y - ray->step.y;
-		ray->flag_direction = 'n';
+		ray->flag_direction = 0;
 	}
 	if (ray->flag & 3)
 		x = (int)data->play.map.x - ray->step.x;

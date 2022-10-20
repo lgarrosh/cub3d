@@ -5,7 +5,7 @@
 
 #define WIDTH_WINDOW 640
 #define HEIGTH_WINDOW 480
-#define SIZE_TEXTURE 480
+#define SIZE_TEXTURE 64
 #define CORNER 66.0
 #define MOUSE_SPEED 0.1
 #define MAP_TILE_SIZE 20

@@ -139,14 +139,16 @@ int	main(int argc, char *argv[])
 	init_data(&data);
 	if (parser(argc, argv, &data))
 		return (0);
-	printf("%d\n", data.walls[0].width);
+	load_img(&data, &data.walls[0], &data.texture[0]);
+	load_img(&data, &data.walls[1], &data.texture[1]);
+	load_img(&data, &data.walls[2], &data.texture[2]);
+	load_img(&data, &data.walls[3], &data.texture[3]);
 	mlx_mouse_hide(data.mlx, data.win);
 	mlx_hook(data.win, 17, 0, &close_window, &data); // закрывает программу
 	mlx_hook(data.win, 2, 1L<<0, &keypress, &data); // отслеживает нажатие клавиш
 	// mlx_hook(data.win, 6, 1L<<6, mouse_action, &data); // обрабатывает взаимодействие с мышкой
 	// ***основной цикл игры***
-	load_img(&data, &data.walls[0], data.texture);
-	mlx_loop_hook(data.mlx, raycast_loop, &data);
+	mlx_loop_hook(data.mlx, &raycast_loop, &data);
 	mlx_hook(data.win, 3, 1L << 1, &key_release, &data);
 	// ***основной цикл игры***
 	mlx_loop(data.mlx);
