@@ -26,6 +26,7 @@ double	    ft_sin(double rad);
 t_vector	sum_vector(t_vector v1, t_vector v2);
 void	    ft_skybox(int x, t_data *data);
 void	    load_img(t_data *data, t_data_img *img, int **texture);
+void	    move(t_data *data);
 //parser
 int			parser(int argc, char *argv[], t_data *data);
 //checker

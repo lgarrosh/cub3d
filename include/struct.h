@@ -5,14 +5,14 @@
 
 #define WIDTH_WINDOW 640
 #define HEIGTH_WINDOW 480
-#define SIZE_TEXTURE 64
+#define SIZE_TEXTURE 480
 #define CORNER 66.0
-#define MOUSE_SPEED 0.2
+#define MOUSE_SPEED 0.1
 #define MAP_TILE_SIZE 20
 
 #define	NEGATIVE_y 1
 #define	NEGATIVE_X 3
-#define SPEED 1
+#define SPEED 0.5
 
 #define W_KEY 13
 #define D_KEY 2
@@ -66,6 +66,12 @@ typedef struct s_player
 	t_vector	off; // отступ внутри клетки
 	double		rad; // угол напровления в радианах
 	double		grad; // угол напровления в градусах
+	int			forward;
+	int			back;
+	int			left;
+	int			right;
+	int			turn_l;
+	int			turn_r;
 } t_player;
 
 typedef struct s_minimap

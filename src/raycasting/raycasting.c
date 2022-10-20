@@ -515,6 +515,7 @@ void	calculate_delta(t_data *data, t_ray *ray)
 
 int	  raycast_loop(t_data	*data)
 {
+	move(data);
 	mouse_action(data); // координаты мышки
 	floor_ceiling(data); // пол потолок
 	mini_map(data, data->map.map); // алгоритм мини-карты
