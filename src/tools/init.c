@@ -40,12 +40,15 @@ void	init_data(t_data *data)
 {
 	data->mlx = mlx_init();
 	data->win = mlx_new_window(data->mlx, WIDTH_WINDOW, HEIGTH_WINDOW, "cub3d");
-	data->fps = 30;
 	data->review = CORNER;
 	data->texture = (int **)ft_calloc(sizeof(int *), 4);
 	data->grad_del = data->review / WIDTH_WINDOW;
 	data->rad_del = to_radiants(data->grad_del);
 	data->ray = ft_calloc(sizeof(t_ray), WIDTH_WINDOW);
+	data->play.forward = 0;
+	data->play.back = 0;
+	data->play.right = 0;
+	data->play.left = 0;
 	data->play.off.x = data->play.pos.x - \
 		((int)data->play.map.x * MAP_TILE_SIZE);
 	data->play.off.y = data->play.pos.y - \
@@ -55,4 +58,3 @@ void	init_data(t_data *data)
 			&data->skybox.width, &data->skybox.height);
 	init_img(data, &data->map.img, MAP_TILE_SIZE * 7, MAP_TILE_SIZE * 7);
 }
-

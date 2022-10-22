@@ -3,27 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 05:58:31 by arman             #+#    #+#             */
-/*   Updated: 2022/10/22 06:21:29 by arman            ###   ########.fr       */
+/*   Updated: 2022/10/22 21:32:19 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define WIDTH_WINDOW 640
-# define HEIGTH_WINDOW 480
+# define WIDTH_WINDOW 1020
+# define HEIGTH_WINDOW 780
 # define SIZE_TEXTURE 64
 # define CORNER 66.0
-# define MOUSE_SPEED 0.1
+# define MOUSE_SPEED 0.3
 # define MAP_TILE_SIZE 20
 # define NEGATIVE_Y 1
 # define NEGATIVE_X 3
-# define SPEED 0.5
+# define SPEED 1.0
 # define W_KEY 13
 # define D_KEY 2
 # define S_KEY 1
@@ -69,7 +67,13 @@ typedef struct s_ray
 	double		rad;
 	double		wall_x;
 	int			flag;
-	char		flag_direction;
+	int			flag_direction;
+	double		tex_x;
+	double		st;
+	double		tex_pos;
+	double		corner;
+	double		perp_dist;
+	int			line_height;
 }		t_ray;
 
 typedef struct s_player
@@ -113,6 +117,7 @@ typedef struct s_data
 	double		grad_del;
 	double		review;
 	int			**texture;
+	char		naprav;
 	t_ray		*ray;
 }		t_data;
 

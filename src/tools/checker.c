@@ -107,28 +107,19 @@ void	empty_to_dash(t_data *data)
 	i = 0;
 }
 
-void	find_player_cooridnates(t_data *data)
+void	ft_rad(t_data *data, char ch)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (data->map.map[i] != NULL)
-	{
-		while (data->map.map[i][j] != '\0')
-		{
-			if (data->map.map[i][j] == 'N'
-			|| data->map.map[i][j] == 'N' )
-			{
-				data->play.map.x = j;
-				data->play.map.y = i;
-				data->play.pos.x = j * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
-				data->play.pos.y = i * MAP_TILE_SIZE + MAP_TILE_SIZE / 2;
-			}
-			j++;
-		}
-		j = 0;
-		i++;
-	}
+	if (ch == 'N')
+		data->sky_offset = 270;
+	if (ch == 'S')
+		data->sky_offset = 90;
+	if (ch == 'W')
+		data->sky_offset = 180;
+	if (ch == 'E')
+		data->sky_offset = 0;
+	data->play.rad = to_radiants(data->sky_offset / 1);
+	while (data->play.rad >= 2 * M_PI)
+		data->play.rad -= 2 * M_PI;
+	while (data->play.rad < 0)
+		data->play.rad += 2 * M_PI;
 }

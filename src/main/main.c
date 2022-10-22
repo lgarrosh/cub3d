@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 05:53:59 by arman             #+#    #+#             */
-/*   Updated: 2022/10/22 07:13:44 by arman            ###   ########.fr       */
+/*   Updated: 2022/10/22 18:03:52 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	key_release(int keycode, void *param)
 		data->play.right = 0;
 	else if (keycode == A_KEY || keycode == 97)
 		data->play.left = 0;
-	else if (keycode == 65363)
+	else if (keycode == 65363 || keycode == 124)
 		data->play.turn_l = 0;
-	else if (keycode == 65361)
+	else if (keycode == 65361 || keycode == 123)
 		data->play.turn_r = 0;
 	return (0);
 }
@@ -62,9 +62,9 @@ int	keypress(int keycode, void *param)
 		data->play.right = 1;
 	else if (keycode == A_KEY || keycode == 97)
 		data->play.left = 1;
-	else if (keycode == 65363)
+	else if (keycode == 65363 || keycode == 124)
 		data->play.turn_l = 1;
-	else if (keycode == 65361)
+	else if (keycode == 65361 || keycode == 123)
 		data->play.turn_r = 1;
 	return (0);
 }
@@ -73,6 +73,7 @@ void	move(t_data *data)
 {
 	t_vector	move;
 
+	move = init_vector(0, 0);
 	if (data->play.forward)
 		move = sum_vector(move, init_vector(SPEED * cos(data->play.rad), \
 			SPEED * -sin(data->play.rad)));

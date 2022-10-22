@@ -3,19 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   checker2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 06:27:42 by arman             #+#    #+#             */
-/*   Updated: 2022/10/22 06:54:06 by arman            ###   ########.fr       */
+/*   Updated: 2022/10/22 21:47:57 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
-
-void	find_bitmap_dimensions(char *map, t_data *data);
-void	string_to_array_of_strings(char *map, t_data *data);
-void	empty_to_dash(t_data *data);
-void	find_player_cooridnates(t_data *data);
 
 int	check_symbols(char *map)
 {

@@ -94,30 +94,15 @@ int	check_map_t(t_data *data, char *string, int i)
 	return (0);
 }
 
-int	check_map(char *string, t_data *data)
+void	ft_free_info(char **info)
 {
-	int		i;
-	int		j;
-	int		line_length;
-	char	**info;
+	int	i;
 
-	j = 0;
-	info = ft_calloc(7, sizeof(char *));
-	i = -1;
-	line_length = 0;
-	while (j != 6 && string[++i] != '\0')
+	i = 0;
+	while (info[i])
 	{
-		i--;
-		while (string[++i] != '\n')
-			line_length++;
-		if (line_length)
-		{
-			info[j] = ft_calloc(line_length + 1, sizeof(char *));
-			ft_memcpy(info[j++], &string[i - line_length], line_length);
-			line_length = 0;
-		}
+		free(info[i]);
+		i++;
 	}
-	if (j != 6 || check_and_save_data(info, data))
-		return (1);
-	return (check_map_t(data, string, i));
+	free(info);
 }

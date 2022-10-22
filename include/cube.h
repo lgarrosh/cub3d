@@ -45,5 +45,27 @@ t_vector	init_vector(double x, double y);
 int			raycast_loop(t_data	*data);
 void		mouse_action(t_data	*data);
 int			render(void *param);
+void		draw_map_grid(t_data *data);
+void		calculate_delta(t_data *data, t_ray *ray);
+void		calculate_ray(t_data *data, t_ray *ray);
+void		ft_ravno(int *x, int *y, int i, int j);
+void		mini_map(t_data *data, char **map);
+void		line_dda(t_data_img *data, t_vector a, t_vector b);
+void		calculate_3d(t_data *data, t_ray *ray, int x);
+void		calculate_ray(t_data *data, t_ray *ray);
+void		raycasting(t_data *data);
+void		floor_ceiling(t_data *data);
+void		draw_everything(t_data *data);
+void		uslov(t_data *data, char ch, int i, int j);
+void		find_bitmap_dimensions(char *map, t_data *data);
+void		string_to_array_of_strings(char *map, t_data *data);
+void		empty_to_dash(t_data *data);
+void		find_player_cooridnates(t_data *data);
+int			check_map(char *string, t_data *data);
+void		ft_free_info(char **info);
+int			check_and_save_data(char **info, t_data *data);
+int			check_map_t(t_data *data, char *string, int i);
+int			check_map(char *string, t_data *data);
+void		ft_rad(t_data *data, char ch);
 
 #endif

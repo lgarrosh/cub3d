@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 06:40:32 by arman             #+#    #+#             */
-/*   Updated: 2022/10/22 06:40:36 by arman            ###   ########.fr       */
+/*   Updated: 2022/10/22 21:30:56 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+void	ft_ravno(int *x, int *y, int i, int j)
+{
+	*x = i;
+	*y = j;
+}
 
 int	create_trgb(int t, int r, int g, int b)
 {

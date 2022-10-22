@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 06:22:30 by arman             #+#    #+#             */
-/*   Updated: 2022/10/22 07:55:29 by arman            ###   ########.fr       */
+/*   Updated: 2022/10/22 20:06:46 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	save_wall_texture(char *line, t_data *data, int i)
 	path = ft_strdup(&line[j]);
 	data->walls[i].img = mlx_xpm_file_to_image(data->mlx, path,
 			&data->walls[i].width, &data->walls[i].height);
+	free(path);
 	if (!data->walls[i].img)
-		return (0);
+		return (1);
 	return (0);
 }
