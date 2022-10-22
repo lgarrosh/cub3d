@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/22 05:53:59 by arman             #+#    #+#             */
+/*   Updated: 2022/10/22 07:13:44 by arman            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cube.h"
-int key_release(int keycode, void *param)
+
+int	key_release(int keycode, void *param)
 {
 	t_data		*data;
 
@@ -61,96 +74,45 @@ void	move(t_data *data)
 	t_vector	move;
 
 	if (data->play.forward)
-	{
-		move.x = SPEED * cos(data->play.rad);
-		move.y = SPEED * -sin(data->play.rad);
-		ft_go(data, move);
-	}
+		move = sum_vector(move, init_vector(SPEED * cos(data->play.rad), \
+			SPEED * -sin(data->play.rad)));
 	if (data->play.back)
-	{
-		move.x = SPEED * -cos(data->play.rad);
-		move.y = SPEED * sin(data->play.rad);
-		ft_go(data, move);
-	}
+		move = sum_vector(move, init_vector(SPEED * -cos(data->play.rad), \
+			SPEED * sin(data->play.rad)));
 	if (data->play.right)
-	{
-		move.x = SPEED * cos(data->play.rad - M_PI / 2);
-		move.y = SPEED * -sin(data->play.rad - M_PI / 2);
-		ft_go(data, move);
-	}
+		move = sum_vector(move, init_vector(SPEED * cos(data->play.rad - \
+			M_PI / 2), SPEED * -sin(data->play.rad - M_PI / 2)));
 	if (data->play.left)
-	{
-		move.x = SPEED * cos(data->play.rad + M_PI / 2);
-		move.y = SPEED * -sin(data->play.rad + M_PI / 2);
-		ft_go(data, move);
-	}
+		move = sum_vector(move, init_vector(SPEED * cos(data->play.rad + \
+			M_PI / 2), SPEED * -sin(data->play.rad + M_PI / 2)));
+	ft_go(data, move);
 	if (data->play.turn_l)
 		ft_skybox((WIDTH_WINDOW / 2) + 10, data);
 	if (data->play.turn_r)
 		ft_skybox((WIDTH_WINDOW / 2) - 10, data);
-	data->play.off.x = data->play.pos.x - ((int)data->play.map.x * MAP_TILE_SIZE);
-	data->play.off.y = data->play.pos.y - ((int)data->play.map.y * MAP_TILE_SIZE);
+	data->play.off.x = data->play.pos.x - \
+		((int)data->play.map.x * MAP_TILE_SIZE);
+	data->play.off.y = data->play.pos.y - \
+		((int)data->play.map.y * MAP_TILE_SIZE);
 }
-// int	keypress(int keycode, void *param)
-// {
-// 	t_data		*data;
-// 	t_vector	move;
-
-// 	data = (t_data *)param;
-// 	if (keycode == 65307 || keycode == 53)
-// 		close_window(param);
-// 	if (keycode == W_KEY || keycode == 119)
-// 	{
-// 		move.x = SPEED * cos(data->play.rad);
-// 		move.y = SPEED * -sin(data->play.rad);
-// 		ft_go(data, move);
-// 	}
-// 	if (keycode == S_KEY || keycode == 115)
-// 	{
-// 		move.x = SPEED * -cos(data->play.rad);
-// 		move.y = SPEED * sin(data->play.rad);
-// 		ft_go(data, move);
-// 	}
-// 	if (keycode == D_KEY || keycode == 100)
-// 	{
-// 		move.x = SPEED * cos(data->play.rad - M_PI / 2);
-// 		move.y = SPEED * -sin(data->play.rad - M_PI / 2);
-// 		ft_go(data, move);
-// 	}
-// 	if (keycode == A_KEY || keycode == 97)
-// 	{
-// 		move.x = SPEED * cos(data->play.rad + M_PI / 2);
-// 		move.y = SPEED * -sin(data->play.rad + M_PI / 2);
-// 		ft_go(data, move);
-// 	}
-// 	if (keycode == 65363)
-// 		ft_skybox((WIDTH_WINDOW / 2) + 10, data);
-// 	if (keycode == 65361)
-// 		ft_skybox((WIDTH_WINDOW / 2) - 10, data);
-// 	data->play.off.x = data->play.pos.x - ((int)data->play.map.x * MAP_TILE_SIZE);
-// 	data->play.off.y = data->play.pos.y - ((int)data->play.map.y * MAP_TILE_SIZE);
-// 	return (0);
-// }
 
 int	main(int argc, char *argv[])
 {
 	t_data	data;
 
+	printf("%d\n", getpid());
 	init_data(&data);
 	if (parser(argc, argv, &data))
 		return (0);
-	load_img(&data, &data.walls[0], &data.texture[0]);
-	load_img(&data, &data.walls[1], &data.texture[1]);
-	load_img(&data, &data.walls[2], &data.texture[2]);
-	load_img(&data, &data.walls[3], &data.texture[3]);
+	load_img(&data.walls[0], &data.texture[0]);
+	load_img(&data.walls[1], &data.texture[1]);
+	load_img(&data.walls[2], &data.texture[2]);
+	load_img(&data.walls[3], &data.texture[3]);
 	mlx_mouse_hide(data.mlx, data.win);
-	mlx_hook(data.win, 17, 0, &close_window, &data); // закрывает программу
-	mlx_hook(data.win, 2, 1L<<0, &keypress, &data); // отслеживает нажатие клавиш
-	// mlx_hook(data.win, 6, 1L<<6, mouse_action, &data); // обрабатывает взаимодействие с мышкой
-	// ***основной цикл игры***
+	mlx_hook(data.win, 17, 0, &close_window, &data);
+	mlx_hook(data.win, 2, 1L << 0, &keypress, &data);
 	mlx_loop_hook(data.mlx, &raycast_loop, &data);
 	mlx_hook(data.win, 3, 1L << 1, &key_release, &data);
-	// ***основной цикл игры***
 	mlx_loop(data.mlx);
 	return (0);
 }

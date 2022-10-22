@@ -1,5 +1,17 @@
-#ifndef CUB_H
-# define CUB_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cube.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/22 05:54:51 by arman             #+#    #+#             */
+/*   Updated: 2022/10/22 05:54:51 by arman            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef CUBE_H
+# define CUBE_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -11,35 +23,27 @@
 # include "struct.h"
 # include "libft.h"
 
-#define mapWidth 24 
-#define mapHeight 24 
-
-//tools
-void		my_mlx_pixel_put(t_data_img	*data, int	x, int	y, int	color);
-int			create_trgb(int	t, int	r, int	g, int	b);
+void		my_mlx_pixel_put(t_data_img	*data, int x, int y, int color);
+int			create_trgb(int t, int r, int g, int b);
 int			close_window(t_data *data);
 int			ft_error(int fd, char *error, int ret);
 double		to_radiants(double degrees);
 double		to_degrees(double radiants);
-double	    ft_cos(double rad);
-double	    ft_sin(double rad);
+double		ft_cos(double rad);
+double		ft_sin(double rad);
 t_vector	sum_vector(t_vector v1, t_vector v2);
-void	    ft_skybox(int x, t_data *data);
-void	    load_img(t_data *data, t_data_img *img, int **texture);
-void	    move(t_data *data);
-//parser
+void		ft_skybox(int x, t_data *data);
+void		load_img(t_data_img *img, int **texture);
+void		move(t_data *data);
 int			parser(int argc, char *argv[], t_data *data);
-//checker
 int			save_map(char *map, int i, t_data *data);
 int			save_color(char *line, t_data *data, char dir);
 int			string_to_rgb(char *rgb_s);
-//	init
-void        init_img(t_data *data, t_data_img **img, int width, int higth);
-void        init_data(t_data *data);
+void		init_img(t_data *data, t_data_img **img, int width, int higth);
+void		init_data(t_data *data);
 t_vector	init_vector(double x, double y);
-// raycasting
-int	    	raycast_loop(t_data	*data);
-void    	mouse_action(t_data	*data);
-int	    	render(void *param);
+int			raycast_loop(t_data	*data);
+void		mouse_action(t_data	*data);
+int			render(void *param);
 
 #endif

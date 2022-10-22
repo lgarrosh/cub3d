@@ -1,127 +1,119 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   struct.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/22 05:58:31 by arman             #+#    #+#             */
+/*   Updated: 2022/10/22 06:21:29 by arman            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+
 #ifndef STRUCT_H
-#define STRUCT_H
+# define STRUCT_H
 
-#include "libft.h"
+# define WIDTH_WINDOW 640
+# define HEIGTH_WINDOW 480
+# define SIZE_TEXTURE 64
+# define CORNER 66.0
+# define MOUSE_SPEED 0.1
+# define MAP_TILE_SIZE 20
+# define NEGATIVE_Y 1
+# define NEGATIVE_X 3
+# define SPEED 0.5
+# define W_KEY 13
+# define D_KEY 2
+# define S_KEY 1
+# define A_KEY 0
 
-#define WIDTH_WINDOW 640
-#define HEIGTH_WINDOW 480
-#define SIZE_TEXTURE 64
-#define CORNER 66.0
-#define MOUSE_SPEED 0.1
-#define MAP_TILE_SIZE 20
-
-#define	NEGATIVE_y 1
-#define	NEGATIVE_X 3
-#define SPEED 0.5
-
-#define W_KEY 13
-#define D_KEY 2
-#define S_KEY 1
-#define A_KEY 0
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+# endif
 
 typedef struct s_vector
 {
-	double x;
-	double y;
-} t_vector;
+	double	x;
+	double	y;
+}		t_vector;
 
 typedef struct s_data_img
 {
-	void *img;
-	char *addr;
-	int bits_per_pixel;
-	int line_length;
-	int endian;
-	int width;
-	int height;
-} t_data_img;
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		width;
+	int		height;
+}		t_data_img;
 
 typedef struct s_sprite
 {
-	void *img;
-	int width;
-	int height;
-	char *path;
-} t_sprite;
+	void	*img;
+	int		width;
+	int		height;
+	char	*path;
+}		t_sprite;
 
 typedef struct s_ray
 {
-	t_vector	end; // координаты пересечения
-	t_vector	delta; // длина до первого пересечения по x и y
-	t_vector	ray; // длина
+	t_vector	end;
+	t_vector	delta;
+	t_vector	ray;
 	t_vector	step;
 	t_vector	wall;
-	double		gipo; // длина
-	double		rad; // угол
+	double		gipo;
+	double		rad;
 	double		wall_x;
-	int			flag; // расположение луча на координатной плоскасти
-	char		flag_direction; // части света
-} t_ray;
+	int			flag;
+	char		flag_direction;
+}		t_ray;
 
 typedef struct s_player
 {
-	t_vector	pos; // координаты игрока
-	t_vector	map; // координаты клетки на карте в которой находиться игрок
-	t_vector	dir; // вектор напровления
-	t_vector	off; // отступ внутри клетки
-	double		rad; // угол напровления в радианах
-	double		grad; // угол напровления в градусах
+	t_vector	pos;
+	t_vector	map;
+	t_vector	dir;
+	t_vector	off;
+	double		rad;
+	double		grad;
 	int			forward;
 	int			back;
 	int			left;
 	int			right;
 	int			turn_l;
 	int			turn_r;
-} t_player;
+}		t_player;
 
 typedef struct s_minimap
 {
-	char **map;		   // карта
-	int bitmap_width;  // ширина карты
-	int bitmap_height; // высота карты
-	t_data_img *img;   // мини-карта
-} t_minimap;
+	char		**map;
+	int			bitmap_width;
+	int			bitmap_height;
+	t_data_img	*img;
+}		t_minimap;
 
 typedef struct s_data
 {
 	void		*mlx;
 	void		*win;
-	int			f_color; // цвет пола
-	int			c_color; // цвет потолка
-	t_minimap	map; // мини-карта
+	int			f_color;
+	int			c_color;
+	t_minimap	map;
 	t_data_img	*bg;
 	t_data_img	walls[4];
-	t_player	play; // игрок
+	t_player	play;
 	int			fps;
-	t_sprite	skybox; // небо
-	int			sky_offset;	// смещение небо по x
-	double		rad_del; // угол между лучам радианах
-	double		grad_del; // угол между лучам градусах
-	double		review; // обзор
+	t_sprite	skybox;
+	int			sky_offset;
+	double		rad_del;
+	double		grad_del;
+	double		review;
 	int			**texture;
-	char		**path_txtur;
-	t_ray		*ray; // malloc
-} t_data;
-
-// typedef struct s_minimap
-// {
-// 	t_vector	player; // координаты на всей карте
-// 	int			x_bitmap; // координаты клетки по x
-// 	int			y_bitmap; // координаты клетки по y
-// 	int			x_off; // отступ внутри клетки (положения игрока)
-// 	int			y_off; // отступ внутри клетки (положения игрока)
-// 	t_data_img	*img; // мини-карта
-// } 				t_minimap;
-
-// typedef struct s_struct
-// {
-// 	int			f_color; // цвет пола
-// 	int			c_color; // цвет потолка
-// 	char		**map; // карта
-// 	int			bitmap_width; // ширина карты
-// 	int			bitmap_height; // высота карты
-// 	int			mouse_x; // координаты мышки
-// 	int			mouse_y; // координаты мышки
-// } 				t_struct;
+	t_ray		*ray;
+}		t_data;
 
 #endif

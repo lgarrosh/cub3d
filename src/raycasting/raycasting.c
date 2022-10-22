@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arman <arman@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/22 06:22:22 by arman             #+#    #+#             */
+/*   Updated: 2022/10/22 06:22:22 by arman            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cube.h"
 
 void	calculate_delta(t_data *data, t_ray *ray);
@@ -493,12 +505,12 @@ void	calculate_delta(t_data *data, t_ray *ray)
 	if (ray->rad > 0 && ray->rad < M_PI)
 	{
 		ray->delta.y = data->play.off.y;
-		flag_y = NEGATIVE_y;
+		flag_y = NEGATIVE_Y;
 	}
 	else
 	{
 		ray->delta.y = MAP_TILE_SIZE - data->play.off.y;
-		flag_y = 7 - NEGATIVE_y;
+		flag_y = 7 - NEGATIVE_Y;
 	}
 	if (ray->rad > M_PI / 2 && ray->rad < (3 * M_PI) / 2)
 	{
