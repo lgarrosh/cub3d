@@ -6,13 +6,13 @@
 /*   By: lgarrosh <lgarrosh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/20 11:11:25 by lgarrosh          #+#    #+#             */
-/*   Updated: 2021/10/20 11:12:08 by lgarrosh         ###   ########.fr       */
+/*   Updated: 2022/10/22 21:53:51 by lgarrosh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_arr(unsigned int	t, int s)
+static char	*ft_arr(unsigned int t, int s)
 {
 	char			*ch;
 	size_t			len;

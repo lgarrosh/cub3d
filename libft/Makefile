@@ -50,11 +50,11 @@ OBJ_B = $(SRC_B:.c=.o)
 
 HEADER = libft.h
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra
 
 all: $(NAME)
 
-$(NAME): $(OBJ_F)
+$(NAME): $(OBJ_F) bonus
 	ar crs $(NAME) $(OBJ_F)
 
 .PHONY	:	all clean fclean re bonus
@@ -62,8 +62,8 @@ $(NAME): $(OBJ_F)
 %.o: %.c $(HEADER)
 	cc $(CFLAGS) -c $< -o $@
 
-bonus: $(OBJ_B)
-	ar crs $(NAME) $(OBJ_B)
+bonus: $(OBJ_B) $(OBJ_F)
+	ar crs $(NAME) $(OBJ_B) $(OBJ_F)
 
 clean:
 	rm -rf $(OBJ_F) $(OBJ_B)
